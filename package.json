@@ -1,0 +1,38 @@
+{
+  "name": "minty-hydro",
+  "version": "1.0.0",
+  "description": "Minty Hydroponic Controller",
+  "main": "src/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev": "NODE_ENV=development node server.js",
+    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "hydro": "concurrently --kill-others \"npm run dev\" \"node arduino.js\"",
+    "arduino:prod": "NODE_ENV=production node arduino.js"
+  },
+  "repository": "https://github.com/geradrum/johnny-five-led-sockets",
+  "author": "Rob Gregory [Minty]",
+  "license": "MIT",
+  "dependencies": {
+    "encoder7bit": "^1.0.0",
+    "express": "^4.15.3",
+    "firmata": "^2.2.0",
+    "johnny-five": "^1.4.0",
+    "serialport": "^8.0.6",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.1",
+    "concurrently": "^3.4.0",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "html-webpack-plugin": "^2.28.0",
+    "rimraf": "^2.6.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^2.6.1",
+    "webpack-dev-middleware": "^1.10.2"
+  }
+}

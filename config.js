@@ -1,17 +1,17 @@
 const SERIAL_PORT = "COM7";
+const SOCKET_IO_NAMESPACE = 'arduino';
 const LED_PIN = 13;
+const IP_ADDRESS = '192.168.0.12';
 
 const development = {
-  host: 'http://localhost',
-  namespace: 'arduino', // For socket.io
+  host: 'http://' + IP_ADDRESS,
+  namespace: SOCKET_IO_NAMESPACE,
   port: 4000
 };
 
 const production = {
-  // host: 'https://arduino-sockets.herokuapp.com', // Replace
-  // namespace: 'arduino' // For socket.io
-  host: 'http://localhost',
-  namespace: 'arduino', // For socket.io
+  host: 'http://' + IP_ADDRESS,
+  namespace: SOCKET_IO_NAMESPACE,
   port: 4000  
 };
 

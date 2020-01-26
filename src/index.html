@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+    <meta name='viewport' content='width=device-width,initial-scale=2.0'>
     <meta name='theme-color' content='var(--theme-primary)'>
-    <title>Minty Sensor Server</title>
+    <title>Minty Hydro Controller</title>
     <!-- <link rel='manifest' href='fav-icon/manifest.json'>
     <link rel='stylesheet' href='assets/fontawesome-pro/css/all.min.css'> -->
     <title>Minty Hydro Server</title>
@@ -29,8 +29,16 @@
     </style>
 </head>
 <body>
-    <button class="off" id="LED_OFF">Led Off</button>
-    <button class="on" id="LED_ON">Led On</button>
+    
+    <i class="fal fa-fan"></i>   
+    <button class="off" id="AIR_INTAKE_FAN_OFF">Air Intake Fan Off</button>
+    <button class="low" id="AIR_INTAKE_FAN_LOW">Air Intake Fan Low</button>
+    <button class="high" id="AIR_INTAKE_FAN_HIGH">Air Intake Fan High</button>
+    <br/>
+    <i class="fal fa-humidity"></i>
+    <button class="off" id="HUMIDIFIER_OFF">Humidifier Off</button>
+    <button class="low" id="HUMIDIFIER_LOW">Humidifier Low</button>
+    <button class="high" id="HUMIDIFIER_HIGH">Humidifier High</button>
     <br/>
     <i class="fal fa-lightbulb-on"></i>
     <i class="fal fa-lightbulb"></i>
@@ -54,11 +62,6 @@
     <button class="off" id="AIR_PUMP_OFF">Air Pump Off</button>
     <button class="on" id="AIR_PUMP_ON">Air Pump On</button>
     <br/>
-    <i class="fal fa-fan"></i>   
-    <button class="off" id="AIR_INTAKE_FAN_OFF">Air Intake Fan Off</button>
-    <button class="low" id="AIR_INTAKE_FAN_LOW">Air Intake Fan Low</button>
-    <button class="high" id="AIR_INTAKE_FAN_HIGH">Air Intake Fan High</button>
-    <br/>
     <i class="fal fa-fan-table"></i>
     <button class="off" id="AIR_MOVEMENT_FAN_SMALL_OFF">Air Movement Small Fan Off</button>
     <button class="on" id="AIR_MOVEMENT_FAN_SMALL_ON">Air Movement Small Fan On</button>
@@ -71,11 +74,6 @@
     <button class="off" id="AIR_EXTRACT_FAN_OFF">Air Extract Fan Off</button>
     <button class="on" id="AIR_EXTRACT_FAN_ON">Air Extract Fan On</button>
     <br/>
-    <i class="fal fa-humidity"></i>
-    <button class="off" id="HUMIDIFIER_OFF">Humidifier Off</button>
-    <button class="low" id="HUMIDIFIER_LOW">Humidifier Low</button>
-    <button class="high" id="HUMIDIFIER_HIGH">Humidifier High</button>
-    <br/>
     <i class="fal fa-dewpoint"></i>
     <button class="off" id="DEHUMIDIFIER_OFF">Dehumidifier Off</button>
     <button class="on" id="DEHUMIDIFIER_ON">Dehumidifier On</button>
@@ -85,12 +83,15 @@
     <br/>
     <button class="off" id="DRAIN_POTS_OFF">Close Pots</button>
     <button class="on" id="DRAIN_POTS_ON">Drain Pots</button>
-    <br/>
+    <br/>    
+    <button class="off" id="LED_OFF">Led Off</button>
+    <button class="on" id="LED_ON">Led On</button>
+    <!-- <br/>
     <i class="fal fa-outlet"></i>
     <button class="off" id="EXTENTION_OFF">Extention Off</button>
     <button class="on" id="EXTENTION_ON">Extention On</button>
     <br/>
     <button class="off" id="ALL_OFF">ALL Off</button>
-    <button class="on" id="ALL_ON">ALL On</button>
+    <button class="on" id="ALL_ON">ALL On</button> -->
 </body>
 </html>

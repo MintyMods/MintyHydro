@@ -6,114 +6,138 @@ import { url } from '../config';
     // Connect to the socket server
     const socket = io.connect(url);
 
-    document.getElementById("LED_OFF").addEventListener("click", function() {
-      console.log("led off");
-      socket.emit("HW:LED:OFF");
-    });
-    document.getElementById("LED_ON").addEventListener("click", function() {
-      console.log("led on");
-      socket.emit("HW:LED:ON");
-    });
-    document.getElementById("EXTENTION_OFF").addEventListener("click", function() {
-      socket.emit("RF:EXTENTION:OFF");
-    });
-    document.getElementById("EXTENTION_ON").addEventListener("click", function() {
-      socket.emit("RF:EXTENTION:ON");
-    });
-    document.getElementById("WATER_PUMP_OFF").addEventListener("click", function() {
-      socket.emit("RF:WATER_PUMP:OFF");
-    });
-    document.getElementById("WATER_PUMP_ON").addEventListener("click", function() {
+    function waterPumpOn() {
       socket.emit("RF:WATER_PUMP:ON");
-    });
-    document.getElementById("WATER_HEATER_OFF").addEventListener("click", function() {
+    }
+    function waterPumpOff() {
+      socket.emit("RF:WATER_PUMP:OFF");
+    }
+    function waterHeaterOff() {
       socket.emit("RF:WATER_HEATER:OFF");
-    });
-    document.getElementById("WATER_HEATER_ON").addEventListener("click", function() {
+    }; 
+    function waterHeaterOn() {
       socket.emit("RF:WATER_HEATER:ON");
-    });
-    document.getElementById("AIR_PUMP_OFF").addEventListener("click", function() {
-      socket.emit("RF:AIR_PUMP:OFF");
-    });
-    document.getElementById("AIR_PUMP_ON").addEventListener("click", function() {
+    }; 
+    function airPumpOn() {
       socket.emit("RF:AIR_PUMP:ON");
-    });
-    document.getElementById("DEHUMIDIFIER_OFF").addEventListener("click", function() {
-      socket.emit("RF:DEHUMIDIFIER:OFF");
-    });
-    document.getElementById("DEHUMIDIFIER_ON").addEventListener("click", function() {
+    }
+    function airPumpOff() {
+      socket.emit("RF:AIR_PUMP:OFF");
+    }
+    function dehumifierOn() {
       socket.emit("RF:DEHUMIDIFIER:ON");
-    });
-    document.getElementById("HUMIDIFIER_OFF").addEventListener("click", function() {
+    }
+    function dehumifierOff() {
+      socket.emit("RF:DEHUMIDIFIER:OFF");
+    }
+    function humidifierOff() {
       socket.emit("RF:HUMIDIFIER:OFF");
-    });
-    document.getElementById("HUMIDIFIER_LOW").addEventListener("click", function() {
+    }
+    function humidifierLow() {
       socket.emit("RF:HUMIDIFIER:LOW");
-    });
-    document.getElementById("HUMIDIFIER_HIGH").addEventListener("click", function() {
+    }
+    function humidifierHigh() {
       socket.emit("RF:HUMIDIFIER:HIGH");
-    });
-    document.getElementById("HEATER_OFF").addEventListener("click", function() {
+    }
+    function heaterOff() {
       socket.emit("RF:HEATER:OFF");
-    });
-    document.getElementById("HEATER_ON").addEventListener("click", function() {
+    }
+    function heaterOn() {
       socket.emit("RF:HEATER:ON");
-    });
-    document.getElementById("AIR_EXTRACT_FAN_OFF").addEventListener("click", function() {
+    }
+    function airExtractFanOff() {
       socket.emit("RF:AIR_EXTRACT_FAN:OFF");
-    });
-    document.getElementById("AIR_EXTRACT_FAN_ON").addEventListener("click", function() {
+    }
+    function airExtractFanOn() {
       socket.emit("RF:AIR_EXTRACT_FAN:ON");
-    });
-    document.getElementById("AIR_INTAKE_FAN_OFF").addEventListener("click", function() {
+    }
+    function airIntakeFanOff() {
       socket.emit("RF:AIR_INTAKE_FAN:OFF");
-    });
-    document.getElementById("AIR_INTAKE_FAN_LOW").addEventListener("click", function() {
+    }
+    function airIntakeFanLow() {
       socket.emit("RF:AIR_INTAKE_FAN:LOW");
-    });
-    document.getElementById("AIR_INTAKE_FAN_HIGH").addEventListener("click", function() {
+    }
+    function airIntakeFanHigh() {
       socket.emit("RF:AIR_INTAKE_FAN:HIGH");
-    });
-    document.getElementById("AIR_MOVEMENT_FAN_SMALL_OFF").addEventListener("click", function() {
+    }
+    function airMovementFanSmallOff() {
       socket.emit("RF:AIR_MOVEMENT_FAN_SMALL:OFF");
-    });
-    document.getElementById("AIR_MOVEMENT_FAN_SMALL_ON").addEventListener("click", function() {
+    }
+    function airMovementFanSmallOn() {
       socket.emit("RF:AIR_MOVEMENT_FAN_SMALL:ON");
-    });
-    document.getElementById("AIR_MOVEMENT_FAN_LARGE_OFF").addEventListener("click", function() {
+    }
+    function airMovementFanLargeOff() {
       socket.emit("RF:AIR_MOVEMENT_FAN_LARGE:OFF");
-    });
-    document.getElementById("AIR_MOVEMENT_FAN_LARGE_ON").addEventListener("click", function() {
+    }
+    function airMovementFanLargeOn() {
       socket.emit("RF:AIR_MOVEMENT_FAN_LARGE:ON");
-    });
-    document.getElementById("LIGHT_OFF").addEventListener("click", function() {
-      socket.emit("RF:LIGHT:OFF");
-    });
-    document.getElementById("LIGHT_ON").addEventListener("click", function() {
+    }
+    function lightOn() {
       socket.emit("RF:LIGHT:ON");
-    });
-    document.getElementById("DRAIN_RES_ON").addEventListener("click", function() {
+    }
+    function lightOff() {
+      socket.emit("RF:LIGHT:OFF");
+    }
+    function drainRes() {
       console.log("Drain Res");
       socket.emit("RF:DRAIN_RES:ON");
-    });
-    document.getElementById("DRAIN_RES_OFF").addEventListener("click", function() {
+    }
+    function closeRes() {
       console.log("Close Res");
       socket.emit("RF:DRAIN_RES:OFF");
-    });
-    document.getElementById("DRAIN_POTS_ON").addEventListener("click", function() {
+    }
+    function drainPots() {
       console.log("Drain Pots");
       socket.emit("RF:DRAIN_POTS:ON");
-    });
-    document.getElementById("DRAIN_POTS_OFF").addEventListener("click", function() {
+    }
+    function closePots() {
       console.log("Close Pots");
       socket.emit("RF:DRAIN_POTS:OFF");
-    });
-    document.getElementById("ALL_OFF").addEventListener("click", function() {
-      socket.emit("RF:ALL:OFF");
-    });
-    document.getElementById("ALL_ON").addEventListener("click", function() {
-      socket.emit("RF:ALL:ON");
-    });
+    }
+    function ledOff() {
+      console.log("led off");
+      socket.emit("HW:LED:OFF");
+    }
+    function ledOn() {
+      console.log("led on");
+      socket.emit("HW:LED:ON");
+    }
 
+    function getById(id) {
+      return document.getElementById(id);
+    }
+
+    ['click','ontouchstart'].forEach( function(evt) {
+      getById("WATER_PUMP_ON").addEventListener(evt, waterPumpOn, false);
+      getById("WATER_PUMP_OFF").addEventListener(evt, waterPumpOff, false);
+      getById("WATER_HEATER_ON").addEventListener(evt, waterHeaterOn, false);
+      getById("WATER_HEATER_OFF").addEventListener(evt, waterHeaterOff, false);
+      getById("AIR_PUMP_ON").addEventListener(evt, airPumpOn, false);
+      getById("AIR_PUMP_OFF").addEventListener(evt, airPumpOff, false);
+      getById("DEHUMIDIFIER_ON").addEventListener(evt, dehumifierOn, false);
+      getById("DEHUMIDIFIER_OFF").addEventListener(evt, dehumifierOff, false);
+      getById("HUMIDIFIER_OFF").addEventListener(evt, humidifierOff, false);
+      getById("HUMIDIFIER_LOW").addEventListener(evt, humidifierLow, false);
+      getById("HUMIDIFIER_HIGH").addEventListener(evt, humidifierHigh, false);
+      getById("HEATER_OFF").addEventListener(evt, heaterOff, false);
+      getById("HEATER_ON").addEventListener(evt, heaterOn, false);
+      getById("AIR_EXTRACT_FAN_OFF").addEventListener(evt, airExtractFanOff, false);
+      getById("AIR_EXTRACT_FAN_ON").addEventListener(evt, airExtractFanOn, false);
+      getById("AIR_INTAKE_FAN_OFF").addEventListener(evt, airIntakeFanOff, false);
+      getById("AIR_INTAKE_FAN_LOW").addEventListener(evt, airIntakeFanLow, false);
+      getById("AIR_INTAKE_FAN_HIGH").addEventListener(evt, airIntakeFanHigh, false);
+      getById("AIR_MOVEMENT_FAN_SMALL_OFF").addEventListener(evt, airMovementFanSmallOff, false);
+      getById("AIR_MOVEMENT_FAN_SMALL_ON").addEventListener(evt, airMovementFanSmallOn, false);
+      getById("AIR_MOVEMENT_FAN_LARGE_OFF").addEventListener(evt, airMovementFanLargeOff, false);
+      getById("AIR_MOVEMENT_FAN_LARGE_ON").addEventListener(evt, airMovementFanLargeOn, false);
+      getById("LIGHT_OFF").addEventListener(evt, lightOff, false);
+      getById("LIGHT_ON").addEventListener(evt, lightOn, false);
+      getById("DRAIN_RES_ON").addEventListener(evt, drainRes, false);
+      getById("DRAIN_RES_OFF").addEventListener(evt, closeRes, false);
+      getById("DRAIN_POTS_ON").addEventListener(evt, drainPots, false);
+      getById("DRAIN_POTS_OFF").addEventListener(evt, closePots, false);
+      getById("LED_OFF").addEventListener(evt, ledOff, false);
+      getById("LED_ON").addEventListener(evt, ledOn, false);
+    });
   }
 )();

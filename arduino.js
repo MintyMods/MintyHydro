@@ -20,7 +20,7 @@ const RCOUTPUT_CODE_LONG = (0x22);
 
 const RF_CODE_INTAKE_LOW = "7446194"; 
 const RF_CODE_INTAKE_HIGH = "7446193"; 
-const RF_CODE_INTAKE_OFF = "7446196"; 
+const RF_CODE_INTAKE_OFF = "7446196";
 const RF_CODE_HUMID_LOW = "12562584"; 
 const RF_CODE_HUMID_HIGH = "12562578";
 const RF_CODE_HUMID_OFF_LOW = "12562580"; 
@@ -124,6 +124,70 @@ console.log("Minty-Hydro Arduino Controller starting - config URL: " + config.ur
 board.on('ready', function() {
   console.log("Johnny-Five Board Init - " + config.serialPort);
   const led = new five.Led(config.ledPin);
+
+  // try {
+  //   // GROVE Motor Controller Test
+  //   var pumpPhUp = new five.Motor({
+  //     controller: "GROVE_I2C_MOTOR_DRIVER",
+  //     pin: "A",
+  //   });
+
+  //   var pumpPhDown = new five.Motor({
+  //     controller: "GROVE_I2C_MOTOR_DRIVER",
+  //     pin: "B",
+  //   });
+
+  //   this.wait(3000, function() {
+  //     console.log("PH Pumps FORWARD");
+  //     pumpPhUp.fwd(127);
+  //     pumpPhDown.fwd(127);
+
+  //     // Demonstrate motor stop in 2 seconds
+  //     this.wait(3000, function() {
+  //       console.log("PH Pumps STOP");
+  //       pumpPhUp.stop();
+  //       pumpPhDown.stop();
+
+  //       // Terminate Exit
+  //       // this.wait(1000, function() {
+  //       //   process.emit("SIGINT");
+  //       // });
+  //     }.bind(this));
+  //   }.bind(this));
+  // } catch (err) {
+  //   console.log('Grove Motor Shield Failed: ' + err);
+  // }
+
+  // // END GROVE Motor Controller Test
+
+  // try {
+
+  //   // AdaFruit Motor Controller Test
+  //   var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
+  //   // floraMicro MUST be added first!!
+  //   var pumpFloraMicro = new five.Motor(configs.M1);
+  //   var pumpFloraBloom = new five.Motor(configs.M2);
+  //   var pumpFloraGrow = new five.Motor(configs.M3);
+  //   var pumpCalMag = new five.Motor(configs.M4);
+    
+  //   // Start the motor at maximum speed
+  //   console.log("Nutrient Pumps Starting");
+  //   pumpFloraMicro.start(255);
+  //   pumpFloraBloom.start(255);
+  //   pumpFloraGrow.start(255);
+  //   pumpCalMag.start(255);
+    
+  //   this.wait(3000, function() {
+  //     console.log("Nutrient Pumps STOP");
+  //     pumpFloraMicro.stop();
+  //     pumpFloraBloom.stop();
+  //     pumpFloraGrow.stop();
+  //     pumpCalMag.stop();
+      
+  //   }.bind(this));
+  // } catch (err) {
+  //   console.log('AdaFruit Motor Shield Failed: ' + err);
+  // }
 
   socket.on('RF:WATER_PUMP:OFF', function() {
     sendRcCode(RF.WaterPump.off);

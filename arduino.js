@@ -12,7 +12,7 @@ const board = new five.Board({
   debug: true
 });
 
-const RC_OUT_PIN = 2;
+const RC_OUT_PIN = 8; // Pin 2 conflicts with Atlas Tenticle Shield!
 const RC_PULSE_LENGTH = 185;
 const SYSEX_START = (0xF0);
 const SYSEX_END = (0xF7);
@@ -444,7 +444,6 @@ sendRF = function(code) {
   if (RC_PULSE_LENGTH) {
       sendSerial(RCOUTPUT_PULSE_LENGTH, RC_OUT_PIN, RC_PULSE_LENGTH);
   }
-
   let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(longToByteArray(code)));
   sendSerial(RCOUTPUT_CODE_LONG, RC_OUT_PIN,  bytes);
 };

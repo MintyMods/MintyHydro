@@ -21,7 +21,7 @@ const server = app.listen(process.env.PORT || config.port, function() {
 const io = require('socket.io')(server);
 io.of('/arduino').on('connection', (socket) => {
 
-  console.log('New connection to /arduino : ' + socket.id);
+  console.log('New connection to Arduino@' + socket.id);
 
   socket.on('HW:LED:ON', function() {
     console.log("HW:LED:ON");

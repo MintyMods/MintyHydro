@@ -102,6 +102,25 @@ import { url } from '../config';
       console.log("led on");
       socket.emit("HW:LED:ON");
     }
+    function atlasGetTemp() {
+      socket.emit("I2C:TEMP:GET");
+    }
+    socket.on('I2C:TEMP:RESULT', function(bytes) {
+      getById("atlas_temp_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+    });
+    function atlasGetPh() {
+      socket.emit("I2C:PH:GET");
+    }
+    socket.on('I2C:PH:RESULT', function(bytes) {
+      getById("atlas_ph_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+    });
+    function atlasGetEc() {
+      socket.emit("I2C:EC:GET");
+    }
+    socket.on('I2C:EC:RESULT', function(bytes) {
+      getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+    });
+    
 
     function getById(id) {
       return document.getElementById(id);
@@ -138,6 +157,9 @@ import { url } from '../config';
       getById("DRAIN_POTS_OFF").addEventListener(evt, closePots, false);
       getById("LED_OFF").addEventListener(evt, ledOff, false);
       getById("LED_ON").addEventListener(evt, ledOn, false);
+      getById("ATLAS_GET_TEMP").addEventListener(evt, atlasGetTemp, false);
+      getById("ATLAS_GET_PH").addEventListener(evt, atlasGetPh, false);
+      getById("ATLAS_GET_EC").addEventListener(evt, atlasGetEc, false);
     });
   }
 )();

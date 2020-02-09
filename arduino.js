@@ -6,7 +6,11 @@ const Serialport = require("serialport");
 const Encoder7Bit = require('encoder7bit');
 
 const serial = new Serialport(config.serialPort);
-const board = new five.Board({ port: serial });
+const board = new five.Board({ 
+  port: serial,
+  repl: true, // disable for production
+  debug: true
+});
 
 const RC_OUT_PIN = 2;
 const RC_PULSE_LENGTH = 185;
@@ -18,6 +22,19 @@ const RCOUTPUT_DETACH = (0x02);
 const RCOUTPUT_PULSE_LENGTH = (0x12);
 const RCOUTPUT_CODE_LONG = (0x22);
 
+const I2C_BME280_SENSOR_ADDR = (0x76); 
+const I2C_GROVE_MOTORBOARD_ADDR = (0x14);
+const I2C_ADAFRUIT_MOTORBOARD_A_ADDR = (0x60);
+const I2C_ADAFRUIT_MOTORBOARD_B_ADDR = (0x70);
+const I2C_ATLAS_PH_SENSOR_ADDR = (0x63);
+const I2C_ATLAS_EC_SENSOR_ADDR = (0x64);
+const I2C_ATLAS_TEMP_SENSOR_ADDR = (0x66);
+
+const ATLAS_READ_CHARCODE = ['r'.charCodeAt(0)];
+const ATLAS_BYTES_TO_READ = 10;
+const ATLAS_REPEAT_INTERVAL = 10000; 
+const ATLAS_DELAY = 1000; 
+
 const RF_CODE_INTAKE_LOW = "7446194"; 
 const RF_CODE_INTAKE_HIGH = "7446193"; 
 const RF_CODE_INTAKE_OFF = "7446196";
@@ -26,29 +43,28 @@ const RF_CODE_HUMID_HIGH = "12562578";
 const RF_CODE_HUMID_OFF_LOW = "12562580"; 
 const RF_CODE_HUMID_OFF_HIGH = "12562577";
 
-
-const RF_CODE_12V_A = "2775137";
+const RF_CODE_12V_A = "2775137"; // Drain
 const RF_CODE_12V_B = "2775138"; // pulse Length 361
 const RF_CODE_12V_C = "2775140";
 const RF_CODE_12V_D = "2775144";
 
-const RF_CODE_S1_ON = "5264691";
+const RF_CODE_S1_ON = "5264691"; // Dehumidifier
 const RF_CODE_S1_OFF = "5264700";
-const RF_CODE_S2_ON = "5264835";
+const RF_CODE_S2_ON = "5264835"; // Air Heater
 const RF_CODE_S2_OFF = "5264844";
-const RF_CODE_S3_ON = "5265155";
+const RF_CODE_S3_ON = "5265155"; // Air Fan Large
 const RF_CODE_S3_OFF = "5265164";
-const RF_CODE_S4_ON = "5266691";
+const RF_CODE_S4_ON = "5266691"; // Air Extract
 const RF_CODE_S4_OFF = "5266700";
-const RF_CODE_S5_ON = "5272835";
-const RF_CODE_S5_OFF = "5272844";
-const RF_CODE_Q1_ON = "8950879";
+const RF_CODE_S5_ON = "5272835"; // Light
+const RF_CODE_S5_OFF = "5272844"; 
+const RF_CODE_Q1_ON = "8950879"; // Water Pump
 const RF_CODE_Q1_OFF = "8950878";
-const RF_CODE_Q2_ON = "8950871";
+const RF_CODE_Q2_ON = "8950871"; // Water Heater
 const RF_CODE_Q2_OFF = "8950870";
-const RF_CODE_Q3_ON = "8950875";
+const RF_CODE_Q3_ON = "8950875"; // Air Pump
 const RF_CODE_Q3_OFF = "8950874";
-const RF_CODE_Q4_ON = "8950867";
+const RF_CODE_Q4_ON = "8950867"; // Air Fan Small
 const RF_CODE_Q4_OFF = "8950866";
 const RF_CODE_QALL_ON = "8950877";
 const RF_CODE_QALL_OFF = "8950876";
@@ -117,13 +133,92 @@ const RF = {
 
 }
 
+
+
+
 // Connect to the socket server
 const socket = io.connect(config.url);
 console.log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
 
-board.on('ready', function() {
+function processAtlasTempReading(bytes) {
+  console.log("Temperature: " + String.fromCharCode.apply(String, bytes));
+  //@todo
+};
+
+function processAtlasPhReading(bytes) {
+  console.log("Ph: " + String.fromCharCode.apply(String, bytes));
+  //@todo
+};
+
+function processAtlasEcReading(bytes) {
+  console.log("Ec: " + String.fromCharCode.apply(String, bytes));
+  //@todo
+};
+
+board.on('ready', function() {  
   console.log("Johnny-Five Board Init - " + config.serialPort);
-  const led = new five.Led(config.ledPin);
+  //const led = new five.Led(config.ledPin);
+  board.i2cConfig();
+
+  // console.log('I2C[' + I2C_ATLAS_TEMP_SENSOR_ADDR + '] I2C: Water Temperature');
+  // board.wait(ATLAS_DELAY * 1, function() {
+  //   // setInterval(function(board) {
+  //     board.io.i2cWrite(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE);
+  //     board.wait(ATLAS_DELAY, function() {
+  //       board.i2cReadOnce(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasTempReading);
+  //     });    
+  //   // }, ATLAS_REPEAT_INTERVAL, board);
+  // });
+
+  // console.log('I2C[' + I2C_ATLAS_PH_SENSOR_ADDR + '] I2C: PH');
+  // board.wait(ATLAS_DELAY * 2, function() {
+  //   // setInterval(function(board) {
+  //     board.io.i2cWrite(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_READ_CHARCODE);
+  //     board.wait(ATLAS_DELAY, function() {
+  //       board.i2cReadOnce(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasPhReading);
+  //     });
+  //   // }, ATLAS_REPEAT_INTERVAL, board);
+  // });
+
+  // console.log('I2C[' + I2C_ATLAS_EC_SENSOR_ADDR + '] I2C: EC');
+  // board.wait(ATLAS_DELAY * 3, function() {
+  //   // setInterval(function(board) {
+  //     board.io.i2cWrite(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE);
+  //     board.wait(ATLAS_DELAY, function() {
+  //       board.i2cReadOnce(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasEcReading);
+  //     });
+  //   // }, ATLAS_REPEAT_INTERVAL, board);   
+  // });
+
+  // var multi = new five.Multi({
+  //   controller: "BME280",
+  //   address: I2C_BME280_SENSOR_ADDR
+  // });
+
+  
+  // multi.on("change", function() {
+  //   console.log("  celsius           : ", this.temperature.celsius);
+  //   console.log("  fahrenheit        : ", this.temperature.fahrenheit);
+  //   console.log("  relative humidity : ", this.hygrometer.relativeHumidity);
+  //   console.log("--------------------------------------");    
+  // });
+  
+  // this.i2cReadOnce(I2C_BME280_SENSOR_ADDR, 8, function(bytes) {
+  //   console.log("Read!" + bytes);
+  //   console.log("Bytes read : " + String.fromCharCode.apply(String, bytes));
+  // });
+  
+  // multi.thermometer.on('change', function(){
+  //   console.log("Thermometer:" + this.celsius);
+  // });
+
+  // multi.hygrometer.on('change', function(){
+  //  console.log("hygrometer" + this.RH); 
+  // });
+  // board.loop(500, () => {
+  //   // Whatever the last value was, write the opposite
+  //   board.digitalWrite(13, board.pins[13].value ? 0 : 1);
+  // });
 
   // try {
   //   // GROVE Motor Controller Test
@@ -190,108 +285,107 @@ board.on('ready', function() {
   // }
 
   socket.on('RF:WATER_PUMP:OFF', function() {
-    sendRcCode(RF.WaterPump.off);
+    sendRF(RF.WaterPump.off);
   });
   socket.on('RF:WATER_PUMP:ON', function() {
-    sendRcCode(RF.WaterPump.on);
+    sendRF(RF.WaterPump.on);
   });
   socket.on('RF:WATER_HEATER:OFF', function() {
-    sendRcCode(RF.WaterHeater.off);
+    sendRF(RF.WaterHeater.off);
   });
   socket.on('RF:WATER_HEATER:ON', function() {
-    sendRcCode(RF.WaterHeater.on);
+    sendRF(RF.WaterHeater.on);
   });
   socket.on('RF:AIR_PUMP:OFF', function() {
-    sendRcCode(RF.AirPump.off);
+    sendRF(RF.AirPump.off);
   });
   socket.on('RF:AIR_PUMP:ON', function() {
-    sendRcCode(RF.AirPump.on);
+    sendRF(RF.AirPump.on);
   });
   socket.on('RF:DEHUMIDIFIER:OFF', function() {
-    sendRcCode(RF.Dehumidifier.off);
+    sendRF(RF.Dehumidifier.off);
   });
   socket.on('RF:DEHUMIDIFIER:ON', function() {
-    sendRcCode(RF.Dehumidifier.on);
+    sendRF(RF.Dehumidifier.on);
   });
   socket.on('RF:HUMIDIFIER:LOW', function() {
-    sendRcCode(RF.Humidifier.low);
+    sendRF(RF.Humidifier.low);
     setTimeout(function(){
-      sendRcCode(RF.Humidifier.off_high);
+      sendRF(RF.Humidifier.off_high);
     },500);
   });
-
   socket.on('RF:HUMIDIFIER:HIGH', function() {
-    sendRcCode(RF.Humidifier.high);
+    sendRF(RF.Humidifier.high);
     setTimeout(function(){
-       sendRcCode(RF.Humidifier.low);
+       sendRF(RF.Humidifier.low);
     },500);
   });
   socket.on('RF:HUMIDIFIER:OFF', function() {
-    sendRcCode(RF.Humidifier.off_low);
+    sendRF(RF.Humidifier.off_low);
     setTimeout(function(){
-      sendRcCode(RF.Humidifier.off_high);
+      sendRF(RF.Humidifier.off_high);
     },500);
   });
   socket.on('RF:HEATER:OFF', function() {
-    sendRcCode(RF.Heater.off);
+    sendRF(RF.Heater.off);
   });
   socket.on('RF:HEATER:ON', function() {
-    sendRcCode(RF.Heater.on);
+    sendRF(RF.Heater.on);
   });
   socket.on('RF:AIR_EXTRACT_FAN:OFF', function() {
-    sendRcCode(RF.AirExtractFan.off);
+    sendRF(RF.AirExtractFan.off);
   });
   socket.on('RF:AIR_EXTRACT_FAN:ON', function() {
-    sendRcCode(RF.AirExtractFan.on);
+    sendRF(RF.AirExtractFan.on);
   });
   socket.on('RF:AIR_INTAKE_FAN:OFF', function() {
-    sendRcCode(RF.AirIntakeFan.off);
+    sendRF(RF.AirIntakeFan.off);
   });
   socket.on('RF:AIR_INTAKE_FAN:LOW', function() {
-    sendRcCode(RF.AirIntakeFan.low);
+    sendRF(RF.AirIntakeFan.low);
   });
   socket.on('RF:AIR_INTAKE_FAN:HIGH', function() {
-    sendRcCode(RF.AirIntakeFan.high);
+    sendRF(RF.AirIntakeFan.high);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_SMALL:OFF', function() {
-    sendRcCode(RF.AirMovementFanSmall.off);
+    sendRF(RF.AirMovementFanSmall.off);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_SMALL:ON', function() {
-    sendRcCode(RF.AirMovementFanSmall.on);
+    sendRF(RF.AirMovementFanSmall.on);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_LARGE:OFF', function() {
-    sendRcCode(RF.AirMovementFanLarge.off);
+    sendRF(RF.AirMovementFanLarge.off);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_LARGE:ON', function() {
-    sendRcCode(RF.AirMovementFanLarge.on);
+    sendRF(RF.AirMovementFanLarge.on);
   });
   socket.on('RF:LIGHT:OFF', function() {
-    sendRcCode(RF.Light.off);
+    sendRF(RF.Light.off);
   });
   socket.on('RF:LIGHT:ON', function() {
-    sendRcCode(RF.Light.on);
+    sendRF(RF.Light.on);
   });
   socket.on('RF:DRAIN_RES:ON', function() {
     console.log("RF:DRAIN_RES");
-    sendRcCode(RF.DrainRes.on);
+    sendRF(RF.DrainRes.on);
   });
   socket.on('RF:DRAIN_RES:OFF', function() {
     console.log("Close RF:DRAIN_RES");
-    sendRcCode(RF.DrainRes.off);
+    sendRF(RF.DrainRes.off);
   });
   socket.on('RF:DRAIN_POTS:ON', function() {
     console.log("RF:DRAIN_POTS");
-    sendRcCode(RF.DrainPots.on);
+    sendRF(RF.DrainPots.on);
   });
   socket.on('RF:DRAIN_POTS:OFF', function() {
     console.log("Close RF:DRAIN_POTS");
-    sendRcCode(RF.DrainPots.off);
+    sendRF(RF.DrainPots.off);
   });
   socket.on('RF:EXTENTION:ON', function(){
-    sendRcCode(RF.Extention.on);
+    sendRF(RF.Extention.on);
   });
   socket.on('RF:EXTENTION:OFF', function(){
-    sendRcCode(RF.Extention.off);
+    sendRF(RF.Extention.off);
   });
   socket.on('HW:LED:ON', function(){
     led.on();
@@ -300,16 +394,40 @@ board.on('ready', function() {
     led.off();
   });
   socket.on('RF:ALL:ON', function() {
-    sendRcCode(RF.Humidifier.low);
+    sendRF(RF.Humidifier.low);
     setTimeout(function(){
-      sendRcCode(RF.Humidifier.high);
+      sendRF(RF.Humidifier.high);
     },1000);
   });  
+  socket.on('I2C:TEMP:GET', function(){
+    sendI2C(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE, function(bytes){
+      socket.emit('I2C:TEMP:RESULT', bytes);
+    });
+  });
+  socket.on('I2C:PH:GET', function(){
+    sendI2C(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_READ_CHARCODE, function(bytes){
+      socket.emit('I2C:PH:RESULT', bytes);
+    });
+  });
+  socket.on('I2C:EC:GET', function(){
+    sendI2C(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE, function(bytes){
+      socket.emit('I2C:EC:RESULT', bytes); //  String.fromCharCode.apply(String, bytes) 
+    });
+  });
+
 });
 
+// Communicate with the Atlas Tenticle Shield, Motor Shields, etc via I2C
+sendI2C = function(channel, command, callback) {
+  console.log('I2C[' + channel + '] CMD:' + command);
+  board.io.i2cWrite(channel, command);
+  board.wait(ATLAS_DELAY, function() {
+      board.i2cReadOnce(channel, ATLAS_BYTES_TO_READ, callback);
+  });
+};
 
 // rework of https://github.com/git-developer/RCSwitchFirmata
-sendSerialCommand = function(command, pin, val) {
+sendSerial = function(command, pin, val) {
   var data = [];
   data.push(SYSEX_START);
   data.push(RCOUTPUT_DATA);
@@ -332,16 +450,17 @@ sendSerialCommand = function(command, pin, val) {
   serial.write(data);
 };
 
-sendRcCode = function(code) {
-  console.log("Sending :: " + code);
-  sendSerialCommand(RCOUTPUT_DETACH, RC_OUT_PIN);   
-  sendSerialCommand(RCOUTPUT_ATTACH, RC_OUT_PIN);
+// Remote RF 433mhz Receivers
+sendRF = function(code) {
+  console.log('RF[' + code + ']');
+  sendSerial(RCOUTPUT_DETACH, RC_OUT_PIN);   
+  sendSerial(RCOUTPUT_ATTACH, RC_OUT_PIN);
   if (RC_PULSE_LENGTH) {
-      sendSerialCommand(RCOUTPUT_PULSE_LENGTH, RC_OUT_PIN, RC_PULSE_LENGTH);
+      sendSerial(RCOUTPUT_PULSE_LENGTH, RC_OUT_PIN, RC_PULSE_LENGTH);
   }
 
   let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(longToByteArray(code)));
-  sendSerialCommand(RCOUTPUT_CODE_LONG, RC_OUT_PIN,  bytes);
+  sendSerial(RCOUTPUT_CODE_LONG, RC_OUT_PIN,  bytes);
 };
 
 // https://stackoverflow.com/questions/8482309/converting-javascript-integer-to-byte-array-and-back

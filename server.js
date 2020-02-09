@@ -19,7 +19,6 @@ const server = app.listen(process.env.PORT || config.port, function() {
 });
 
 const io = require('socket.io')(server);
-
 io.of('/arduino').on('connection', (socket) => {
 
   console.log('New connection to /arduino : ' + socket.id);
@@ -121,6 +120,27 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('RF:DRAIN_POTS:OFF', function() {
     socket.broadcast.emit('RF:DRAIN_POTS:OFF');
+  });
+  socket.on('I2C:TEMP:GET', function() {
+    socket.broadcast.emit('I2C:TEMP:GET');
+  });
+  socket.on('I2C:TEMP:RESULT', function(bytes) {
+    console.log("Temperature: " + String.fromCharCode.apply(String, bytes));
+    socket.broadcast.emit('I2C:TEMP:RESULT', bytes);
+  });
+  socket.on('I2C:PH:GET', function() {
+    socket.broadcast.emit('I2C:PH:GET');
+  });
+  socket.on('I2C:PH:RESULT', function(bytes) {
+    console.log("PH: " + String.fromCharCode.apply(String, bytes));
+    socket.broadcast.emit('I2C:PH:RESULT', bytes);
+  });
+  socket.on('I2C:EC:GET', function() {
+    socket.broadcast.emit('I2C:EC:GET');
+  });
+  socket.on('I2C:EC:RESULT', function(bytes) {
+    console.log("EC: " + String.fromCharCode.apply(String, bytes));
+    socket.broadcast.emit('I2C:EC:RESULT', bytes);
   });
 
 });

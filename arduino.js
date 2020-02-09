@@ -31,8 +31,7 @@ const I2C_ATLAS_EC_SENSOR_ADDR = (0x64);
 const I2C_ATLAS_TEMP_SENSOR_ADDR = (0x66);
 
 const ATLAS_READ_CHARCODE = ['r'.charCodeAt(0)];
-const ATLAS_BYTES_TO_READ = 10;
-const ATLAS_REPEAT_INTERVAL = 10000; 
+const ATLAS_BYTES_TO_READ = 8;
 const ATLAS_DELAY = 1000; 
 
 const RF_CODE_INTAKE_LOW = "7446194"; 
@@ -133,32 +132,16 @@ const RF = {
 
 }
 
-
-
-
 // Connect to the socket server
 const socket = io.connect(config.url);
 console.log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
 
-function processAtlasTempReading(bytes) {
-  console.log("Temperature: " + String.fromCharCode.apply(String, bytes));
-  //@todo
-};
-
-function processAtlasPhReading(bytes) {
-  console.log("Ph: " + String.fromCharCode.apply(String, bytes));
-  //@todo
-};
-
-function processAtlasEcReading(bytes) {
-  console.log("Ec: " + String.fromCharCode.apply(String, bytes));
-  //@todo
-};
-
 board.on('ready', function() {  
   console.log("Johnny-Five Board Init - " + config.serialPort);
-  //const led = new five.Led(config.ledPin);
+
   board.i2cConfig();
+  
+  //const led = new five.Led(config.ledPin);
 
   // console.log('I2C[' + I2C_ATLAS_TEMP_SENSOR_ADDR + '] I2C: Water Temperature');
   // board.wait(ATLAS_DELAY * 1, function() {
@@ -411,7 +394,7 @@ board.on('ready', function() {
   });
   socket.on('I2C:EC:GET', function(){
     sendI2C(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE, function(bytes){
-      socket.emit('I2C:EC:RESULT', bytes); //  String.fromCharCode.apply(String, bytes) 
+      socket.emit('I2C:EC:RESULT', bytes); 
     });
   });
 
@@ -419,10 +402,13 @@ board.on('ready', function() {
 
 // Communicate with the Atlas Tenticle Shield, Motor Shields, etc via I2C
 sendI2C = function(channel, command, callback) {
-  console.log('I2C[' + channel + '] CMD:' + command);
+  console.log('I2C[' + channel + '] Sending Command: ' + command);
   board.io.i2cWrite(channel, command);
   board.wait(ATLAS_DELAY, function() {
-      board.i2cReadOnce(channel, ATLAS_BYTES_TO_READ, callback);
+      board.i2cReadOnce(channel, ATLAS_BYTES_TO_READ, function(bytes) {
+        console.log('I2C[' + channel + '] Result: ' + decode(bytes));
+        callback(bytes);
+      });
   });
 };
 
@@ -481,3 +467,7 @@ byteArrayToLong = function(byteArray) {
   }
   return value;
 };
+
+decode = function(bytes) {
+  return String.fromCharCode.apply(String, bytes);
+}

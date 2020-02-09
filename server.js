@@ -125,21 +125,18 @@ io.of('/arduino').on('connection', (socket) => {
     socket.broadcast.emit('I2C:TEMP:GET');
   });
   socket.on('I2C:TEMP:RESULT', function(bytes) {
-    console.log("Temperature: " + String.fromCharCode.apply(String, bytes));
     socket.broadcast.emit('I2C:TEMP:RESULT', bytes);
   });
   socket.on('I2C:PH:GET', function() {
     socket.broadcast.emit('I2C:PH:GET');
   });
   socket.on('I2C:PH:RESULT', function(bytes) {
-    console.log("PH: " + String.fromCharCode.apply(String, bytes));
     socket.broadcast.emit('I2C:PH:RESULT', bytes);
   });
   socket.on('I2C:EC:GET', function() {
     socket.broadcast.emit('I2C:EC:GET');
   });
   socket.on('I2C:EC:RESULT', function(bytes) {
-    console.log("EC: " + String.fromCharCode.apply(String, bytes));
     socket.broadcast.emit('I2C:EC:RESULT', bytes);
   });
 

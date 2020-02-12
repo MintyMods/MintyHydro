@@ -94,6 +94,30 @@ import { url } from '../config';
       console.log("Close Pots");
       socket.emit("RF:DRAIN_POTS:OFF");
     }
+    function relayOneToggle() {
+      console.log("relay 1 toggle");
+      socket.emit("HW:RELAY:ONE:TOGGLE");
+    }
+    function relayOneOn() {
+      console.log("relay 1 on");
+      socket.emit("HW:RELAY:ONE:ON");
+    }
+    function relayOneOff() {
+      console.log("relay 1 off");
+      socket.emit("HW:RELAY:ONE:OFF");
+    }
+    function relayTwoToggle() {
+      console.log("relay 2 toggle");
+      socket.emit("HW:RELAY:TWO:TOGGLE");
+    }
+    function relayTwoOn() {
+      console.log("relay 2 on");
+      socket.emit("HW:RELAY:TWO:ON");
+    }
+    function relayTwoOff() {
+      console.log("relay 2 off");
+      socket.emit("HW:RELAY:TWO:OFF");
+    }
     function ledOff() {
       console.log("led off");
       socket.emit("HW:LED:OFF");
@@ -170,6 +194,12 @@ import { url } from '../config';
       addEvent("ATLAS_GET_TEMP", atlasGetTemp, evt);
       addEvent("ATLAS_GET_PH", atlasGetPh, evt);
       addEvent("ATLAS_GET_EC", atlasGetEc, evt);
+      addEvent("RELAY_ONE_ON", relayOneOn, evt);
+      addEvent("RELAY_ONE_OFF", relayOneOff, evt);
+      addEvent("RELAY_ONE_TOGGLE", relayOneToggle, evt);
+      addEvent("RELAY_TWO_ON", relayTwoOn, evt);
+      addEvent("RELAY_TWO_OFF", relayTwoOff, evt);
+      addEvent("RELAY_TWO_TOGGLE", relayTwoToggle, evt);
     });
   }
 )();

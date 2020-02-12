@@ -12,24 +12,30 @@ const board = new five.Board({
   debug: true
 });
 
-const RC_OUT_PIN = 8; // Pin 2 conflicts with Atlas Tenticle Shield!
+const HW_RELAY_ONE_PIN = 5; 
+const HW_RELAY_TWO_PIN = 6; 
+
+// RF433 Support
+const RC_OUT_PIN = 7; // Digital PIN 7 -- Pin 2 conflicts with Atlas Tenticle Shield!
+const RC_IN_PIN = 8; // Digital PIN 8  -- RESERVED 
 const RC_PULSE_LENGTH = 185;
+const RC_OUTPUT_DATA = (0x5C);
+const RC_OUTPUT_ATTACH = (0x01);
+const RC_OUTPUT_DETACH = (0x02);
+const RC_OUTPUT_PULSE_LENGTH = (0x12);
+const RC_OUTPUT_CODE_LONG = (0x22);
 const SYSEX_START = (0xF0);
 const SYSEX_END = (0xF7);
-const RCOUTPUT_DATA = (0x5C);
-const RCOUTPUT_ATTACH = (0x01);
-const RCOUTPUT_DETACH = (0x02);
-const RCOUTPUT_PULSE_LENGTH = (0x12);
-const RCOUTPUT_CODE_LONG = (0x22);
 
 const I2C_BME280_SENSOR_ADDR = (0x76); 
 const I2C_GROVE_MOTORBOARD_ADDR = (0x14);
 const I2C_ADAFRUIT_MOTORBOARD_A_ADDR = (0x60);
 const I2C_ADAFRUIT_MOTORBOARD_B_ADDR = (0x70);
+
+// Atlas Tenticle Shield Support
 const I2C_ATLAS_PH_SENSOR_ADDR = (0x63);
 const I2C_ATLAS_EC_SENSOR_ADDR = (0x64);
 const I2C_ATLAS_TEMP_SENSOR_ADDR = (0x66);
-
 const ATLAS_READ_CHARCODE = ['r'.charCodeAt(0)];
 const ATLAS_BYTES_TO_READ = 8;
 const ATLAS_DELAY = 1000; 
@@ -140,6 +146,16 @@ board.on('ready', function() {
   console.log("Johnny-Five Board Init - " + config.serialPort);
 
   board.i2cConfig();
+
+  var relay1 = new five.Relay({
+    pin: HW_RELAY_ONE_PIN,
+    type: "NC"
+  });
+  var relay2 = new five.Relay({
+    pin: HW_RELAY_TWO_PIN,
+    type: "NC"
+  });
+
   
   //const led = new five.Led(config.ledPin);
 
@@ -397,6 +413,24 @@ board.on('ready', function() {
       socket.emit('I2C:EC:RESULT', bytes); 
     });
   });
+  socket.on('HW:RELAY:ONE:ON', function(){
+    relay1.on();
+  });
+  socket.on('HW:RELAY:ONE:OFF', function(){
+    relay1.off();
+  });
+  socket.on('HW:RELAY:ONE:TOGGLE', function(){
+    relay1.toggle();
+  });
+  socket.on('HW:RELAY:TWO:ON', function(){
+    relay2.on();
+  });
+  socket.on('HW:RELAY:TWO:OFF', function(){
+    relay2.off();
+  });
+  socket.on('HW:RELAY:TWO:TOGGLE', function(){
+    relay2.toggle();
+  });
 
 });
 
@@ -416,7 +450,7 @@ sendI2C = function(channel, command, callback) {
 sendSerial = function(command, pin, val) {
   var data = [];
   data.push(SYSEX_START);
-  data.push(RCOUTPUT_DATA);
+  data.push(RC_OUTPUT_DATA);
   data.push(command);
   data.push(pin);
   if (val) {
@@ -439,13 +473,13 @@ sendSerial = function(command, pin, val) {
 // Remote RF 433mhz Receivers
 sendRF = function(code) {
   console.log('RF[' + code + ']');
-  sendSerial(RCOUTPUT_DETACH, RC_OUT_PIN);   
-  sendSerial(RCOUTPUT_ATTACH, RC_OUT_PIN);
+  sendSerial(RC_OUTPUT_DETACH, RC_OUT_PIN);   
+  sendSerial(RC_OUTPUT_ATTACH, RC_OUT_PIN);
   if (RC_PULSE_LENGTH) {
-      sendSerial(RCOUTPUT_PULSE_LENGTH, RC_OUT_PIN, RC_PULSE_LENGTH);
+      sendSerial(RC_OUTPUT_PULSE_LENGTH, RC_OUT_PIN, RC_PULSE_LENGTH);
   }
   let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(longToByteArray(code)));
-  sendSerial(RCOUTPUT_CODE_LONG, RC_OUT_PIN,  bytes);
+  sendSerial(RC_OUTPUT_CODE_LONG, RC_OUT_PIN,  bytes);
 };
 
 // https://stackoverflow.com/questions/8482309/converting-javascript-integer-to-byte-array-and-back

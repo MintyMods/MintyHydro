@@ -23,6 +23,30 @@ io.of('/arduino').on('connection', (socket) => {
 
   console.log('New connection to Arduino@' + socket.id);
 
+  socket.on('HW:RELAY:ONE:TOGGLE', function() {
+    console.log("HW:RELAY:ONE:TOGGLE");
+    socket.broadcast.emit('HW:RELAY:ONE:TOGGLE');
+  });
+  socket.on('HW:RELAY:ONE:ON', function() {
+    console.log("HW:RELAY:ONE:ON");
+    socket.broadcast.emit('HW:RELAY:ONE:ON');
+  });
+  socket.on('HW:RELAY:ONE:OFF', function() {
+    console.log("HW:RELAY:ONE:OFF");
+    socket.broadcast.emit('HW:RELAY:ONE:OFF');
+  });
+  socket.on('HW:RELAY:TWO:TOGGLE', function() {
+    console.log("HW:RELAY:TWO:TOGGLE");
+    socket.broadcast.emit('HW:RELAY:TWO:TOGGLE');
+  });
+  socket.on('HW:RELAY:TWO:ON', function() {
+    console.log("HW:RELAY:TWO:ON");
+    socket.broadcast.emit('HW:RELAY:TWO:ON');
+  });
+  socket.on('HW:RELAY:TWO:OFF', function() {
+    console.log("HW:RELAY:TWO:OFF");
+    socket.broadcast.emit('HW:RELAY:TWO:OFF');
+  });
   socket.on('HW:LED:ON', function() {
     console.log("HW:LED:ON");
     socket.broadcast.emit('HW:LED:ON');

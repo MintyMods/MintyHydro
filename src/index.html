@@ -9,9 +9,6 @@
     <link rel='stylesheet' href='assets/fontawesome-pro/css/all.min.css'> -->
     <title>Minty Hydro Server</title>
     <style>
-    * {
-        text-transform: lowercase;
-    }
     .on, .low {
         background-color: aquamarine;        
     }
@@ -21,6 +18,14 @@
     .high {
         background-color: yellow;
     }
+    .open {
+        background-color: limegreen;
+        font-weight: bold;
+    }
+    .close {
+        background-color: coral;
+        font-weight: bold;
+    }
     button {
         text-transform: capitalize;
         color: black;
@@ -29,7 +34,13 @@
     </style>
 </head>
 <body>
-    
+    <div class="waterlevels">
+        <span>Water Tank : </span>
+        <span id="WLS_TANK_HIGH">High Level</span> | <span id="WLS_TANK_LOW">Low Level</span>
+        <br/><span>Resovoir : </span>
+        <span id="WLS_RES_HIGH">High Level</span> |  <span id="WLS_RES_LOW">Low Level</span>
+    </div>
+    <br/>
     <i class="fal fa-fan"></i>   
     <button class="off" id="AIR_INTAKE_FAN_OFF">Air Intake Fan Off</button>
     <button class="low" id="AIR_INTAKE_FAN_LOW">Air Intake Fan Low</button>
@@ -86,15 +97,10 @@
     <br/>    
     <button class="off" id="RELAY_ONE_OFF">Relay 1 Off</button>
     <button class="on" id="RELAY_ONE_ON">Relay 1 On</button>
-    <button class="toggle" id="RELAY_ONE_TOGGLE">Relay 1 Toggle</button>
     <br/>    
     <button class="off" id="RELAY_TWO_OFF">Relay 2 Off</button>
     <button class="on" id="RELAY_TWO_ON">Relay 2 On</button>
-    <button class="toggle" id="RELAY_TWO_TOGGLE">Relay 2 Toggle</button>
     <br/>    
-    <button class="off" id="LED_OFF">Led Off</button>
-    <button class="on" id="LED_ON">Led On</button>
-    <br/>
     <button class="reading" id="ATLAS_GET_TEMP">Get Temperature</button>
     <span id="atlas_temp_reading">?</span>
     <button class="reading" id="ATLAS_GET_PH">Get PH</button>

@@ -23,10 +23,6 @@ io.of('/arduino').on('connection', (socket) => {
 
   console.log('New connection to Arduino@' + socket.id);
 
-  socket.on('HW:RELAY:ONE:TOGGLE', function() {
-    console.log("HW:RELAY:ONE:TOGGLE");
-    socket.broadcast.emit('HW:RELAY:ONE:TOGGLE');
-  });
   socket.on('HW:RELAY:ONE:ON', function() {
     console.log("HW:RELAY:ONE:ON");
     socket.broadcast.emit('HW:RELAY:ONE:ON');
@@ -35,10 +31,6 @@ io.of('/arduino').on('connection', (socket) => {
     console.log("HW:RELAY:ONE:OFF");
     socket.broadcast.emit('HW:RELAY:ONE:OFF');
   });
-  socket.on('HW:RELAY:TWO:TOGGLE', function() {
-    console.log("HW:RELAY:TWO:TOGGLE");
-    socket.broadcast.emit('HW:RELAY:TWO:TOGGLE');
-  });
   socket.on('HW:RELAY:TWO:ON', function() {
     console.log("HW:RELAY:TWO:ON");
     socket.broadcast.emit('HW:RELAY:TWO:ON');
@@ -46,20 +38,6 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('HW:RELAY:TWO:OFF', function() {
     console.log("HW:RELAY:TWO:OFF");
     socket.broadcast.emit('HW:RELAY:TWO:OFF');
-  });
-  socket.on('HW:LED:ON', function() {
-    console.log("HW:LED:ON");
-    socket.broadcast.emit('HW:LED:ON');
-  });
-  socket.on('HW:LED:OFF', function() {
-    console.log("HW:LED:OFF");
-    socket.broadcast.emit('HW:LED:OFF');
-  });
-  socket.on('RF:EXTENTION:ON', function() {
-    socket.broadcast.emit('RF:EXTENTION:ON');
-  });
-  socket.on('RF:EXTENTION:OFF', function() {
-    socket.broadcast.emit('RF:EXTENTION:OFF');
   });
   socket.on('RF:WATER_PUMP:OFF', function() {
     socket.broadcast.emit('RF:WATER_PUMP:OFF');
@@ -163,5 +141,32 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('I2C:EC:RESULT', function(bytes) {
     socket.broadcast.emit('I2C:EC:RESULT', bytes);
   });
+  socket.on('WLS:TANK:HIGH:OPEN', function(bytes) {
+    socket.broadcast.emit('WLS:TANK:HIGH:OPEN', bytes);
+  });
+  socket.on('WLS:TANK:HIGH:CLOSE', function(bytes) {
+    socket.broadcast.emit('WLS:TANK:HIGH:CLOSE', bytes);
+  });
+  socket.on('WLS:TANK:LOW:OPEN', function(bytes) {
+    socket.broadcast.emit('WLS:TANK:LOW:OPEN', bytes);
+  });
+  socket.on('WLS:TANK:LOW:CLOSE', function(bytes) {
+    socket.broadcast.emit('WLS:TANK:LOW:CLOSE', bytes);
+  });
+  socket.on('WLS:RES:HIGH:OPEN', function(bytes) {
+    socket.broadcast.emit('WLS:RES:HIGH:OPEN', bytes);
+  });
+  socket.on('WLS:RES:HIGH:CLOSE', function(bytes) {
+    socket.broadcast.emit('WLS:RES:HIGH:CLOSE', bytes);
+  });
+  socket.on('WLS:RES:LOW:OPEN', function(bytes) {
+    socket.broadcast.emit('WLS:RES:LOW:OPEN', bytes);
+  });
+  socket.on('WLS:RES:LOW:CLOSE', function(bytes) {
+    socket.broadcast.emit('WLS:RES:LOW:CLOSE', bytes);
+  });
+
+
+
 
 });

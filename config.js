@@ -1,4 +1,4 @@
-const SERIAL_PORT = "COM7";
+const SERIAL_PORT = "COM6";
 const SOCKET_IO_NAMESPACE = 'arduino';
 const LED_PIN = 13;
 const IP_ADDRESS = '192.168.0.12';

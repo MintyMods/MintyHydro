@@ -12,12 +12,15 @@ const board = new five.Board({
   debug: true
 });
 
-const HW_RELAY_ONE_PIN = 5; 
-const HW_RELAY_TWO_PIN = 6; 
+// Water Level Switches
+const WATER_LEVEL_TANK_LOW_PIN = 3; 
+const WATER_LEVEL_TANK_HIGH_PIN = 4; 
+const WATER_LEVEL_RES_LOW_PIN = 5; 
+const WATER_LEVEL_RES_HIGH_PIN = 6; 
 
 // RF433 Support
-const RC_OUT_PIN = 7; // Digital PIN 7 -- Pin 2 conflicts with Atlas Tenticle Shield!
-const RC_IN_PIN = 8; // Digital PIN 8  -- RESERVED 
+const RC_OUT_PIN = 7; 
+const RC_IN_PIN = 2; // Pin 2 conflicts with Atlas Tenticle Shield!
 const RC_PULSE_LENGTH = 185;
 const RC_OUTPUT_DATA = (0x5C);
 const RC_OUTPUT_ATTACH = (0x01);
@@ -27,10 +30,9 @@ const RC_OUTPUT_CODE_LONG = (0x22);
 const SYSEX_START = (0xF0);
 const SYSEX_END = (0xF7);
 
-const I2C_BME280_SENSOR_ADDR = (0x76); 
-const I2C_GROVE_MOTORBOARD_ADDR = (0x14);
-const I2C_ADAFRUIT_MOTORBOARD_A_ADDR = (0x60);
-const I2C_ADAFRUIT_MOTORBOARD_B_ADDR = (0x70);
+// 240v Relays
+const HW_RELAY_ONE_PIN = 8; 
+const HW_RELAY_TWO_PIN = 9; 
 
 // Atlas Tenticle Shield Support
 const I2C_ATLAS_PH_SENSOR_ADDR = (0x63);
@@ -48,10 +50,34 @@ const RF_CODE_HUMID_HIGH = "12562578";
 const RF_CODE_HUMID_OFF_LOW = "12562580"; 
 const RF_CODE_HUMID_OFF_HIGH = "12562577";
 
-const RF_CODE_12V_A = "2775137"; // Drain
-const RF_CODE_12V_B = "2775138"; // pulse Length 361
-const RF_CODE_12V_C = "2775140";
-const RF_CODE_12V_D = "2775144";
+// Geekcreit® 12V 4CH Channel 433Mhz 
+// Following RF codes will toggle all relay channels at once
+// e.g. to open Relays 2&4 and close Realys 1&3 we send 2775141
+//  RELAY_CHANNEL_1234 Where 0=CLOSED 1=OPEN
+const RF_CODE_12V_0000 = "2775136";
+const RF_CODE_12V_0001 = "2775137";
+const RF_CODE_12V_0010 = "2775138";
+const RF_CODE_12V_0011 = "2775139";
+const RF_CODE_12V_0100 = "2775140";
+const RF_CODE_12V_0101 = "2775141";
+const RF_CODE_12V_0110 = "2775142";
+const RF_CODE_12V_0111 = "2775143";
+const RF_CODE_12V_1000 = "2775144";
+const RF_CODE_12V_1001 = "2775145";
+const RF_CODE_12V_1010 = "2775146";
+const RF_CODE_12V_1011 = "2775147";
+const RF_CODE_12V_1100 = "2775148";
+const RF_CODE_12V_1101 = "2775149";
+const RF_CODE_12V_1110 = "2775150";
+const RF_CODE_12V_1111 = "2775151";
+
+const RF_12V_RELAY = {
+  Water : {
+    drain:  RF_CODE_12V_0111,
+    fill: RF_CODE_12V_1000,
+    off: RF_CODE_12V_0000
+  },
+}
 
 const RF_CODE_S1_ON = "5264691"; // Dehumidifier
 const RF_CODE_S1_OFF = "5264700";
@@ -79,14 +105,6 @@ const RF = {
   Light : {
     on:  RF_CODE_S5_ON,
     off: RF_CODE_S5_OFF
-  },
-  DrainRes : {
-    on:  RF_CODE_12V_A,
-    off: RF_CODE_12V_B,
-  },
-  DrainPots : {
-    on: RF_CODE_12V_C,
-    off: RF_CODE_12V_D
   },
   WaterPump : {
     on: RF_CODE_Q1_ON,
@@ -138,150 +156,215 @@ const RF = {
 
 }
 
+const I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR = (0x61);
+const I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR = (0x60);
+const I2C_ADAFRUIT_MOTORBOARD_ALL_CALL_ADDR = (0x70);
+
+const ADAFRUIT_MOTOR_SHIELD = {
+  M1: { // Pump A : Flora Micra
+    pins: {
+      pwm: 8,
+      dir: 9,
+      cdir: 10
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
+    controller: "PCA9685"
+  },
+  M2: { // Pump B
+    pins: {
+      pwm: 13,
+      dir: 12,
+      cdir: 11
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
+    controller: "PCA9685"
+  },
+  M3: { // Pump C
+    pins: {
+      pwm: 7,
+      dir: 6,
+      cdir: 5
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
+    controller: "PCA9685"
+  },
+  M4: { // Pump D
+    pins: {
+      pwm: 2,
+      dir: 3,
+      cdir: 4
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
+    controller: "PCA9685"
+  },
+  M5: { // Pump E
+    pins: {
+      pwm: 2,
+      dir: 3,
+      cdir: 4
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
+    controller: "PCA9685"
+  },
+  M6: { // Pump F
+    pins: {
+      pwm: 8,
+      dir: 9,
+      cdir: 10
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
+    controller: "PCA9685"
+  },
+  M7: { // Pump G : PH Up
+    pins: {
+      pwm: 13,
+      dir: 12,
+      cdir: 11
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
+    controller: "PCA9685"
+  },
+  M8: { // Pump H : PH Down
+    pins: {
+      pwm: 7,
+      dir: 6,
+      cdir: 5
+    },
+    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
+    controller: "PCA9685"
+  },
+};
+
 // Connect to the socket server
 const socket = io.connect(config.url);
 console.log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
 
 board.on('ready', function() {  
   console.log("Johnny-Five Board Init - " + config.serialPort);
-
   board.i2cConfig();
 
+  var waterLevelTankLow = new five.Switch({
+    pin: WATER_LEVEL_TANK_LOW_PIN,
+    type: "NO" 
+  });
+  var waterLevelTankHigh = new five.Switch({
+    pin: WATER_LEVEL_TANK_HIGH_PIN,
+    type: "NO" 
+  });
+  var waterLevelResLow = new five.Switch({
+    pin: WATER_LEVEL_RES_LOW_PIN,
+    type: "NO",
+    invert: true
+  });
+  var waterLevelResHigh = new five.Switch({
+    pin: WATER_LEVEL_RES_HIGH_PIN,
+    type: "NO" 
+  });
+    
+  waterLevelTankHigh.on("open",function(){
+    console.log("TANK HIGH OPEN:");
+    socket.emit('WLS:TANK:HIGH:OPEN');
+  });
+  waterLevelTankHigh.on("close",function(){
+    console.log("TANK HIGH CLOSE");
+    socket.emit('WLS:TANK:HIGH:CLOSE');
+  });
+  waterLevelTankLow.on("open",function(){
+    console.log("TANK LOW OPEN:");
+    socket.emit('WLS:TANK:LOW:OPEN');
+  });
+  waterLevelTankLow.on("close",function(){
+    console.log("TANK LOW CLOSE");
+    socket.emit('WLS:TANK:LOW:CLOSE');
+  });
+  waterLevelResHigh.on("open",function(){
+    console.log("RES HIGH OPEN:");
+    socket.emit('WLS:RES:HIGH:OPEN');
+  });
+  waterLevelResHigh.on("close",function(){
+    console.log("RES HIGH CLOSE");
+    socket.emit('WLS:RES:HIGH:CLOSE');
+  });
+  waterLevelResLow.on("open",function(){
+    console.log("RES LOW OPEN:");
+    socket.emit('WLS:RES:LOW:OPEN');
+  });
+  waterLevelResLow.on("close",function(){
+    console.log("RES LOW CLOSE");
+    socket.emit('WLS:RES:LOW:CLOSE');
+  });
+
   var relay1 = new five.Relay({
-    pin: HW_RELAY_ONE_PIN,
-    type: "NC"
+    pin: HW_RELAY_ONE_PIN, type: "NC"
   });
   var relay2 = new five.Relay({
-    pin: HW_RELAY_TWO_PIN,
-    type: "NC"
+    pin: HW_RELAY_TWO_PIN, type: "NC"
   });
 
-  
-  //const led = new five.Led(config.ledPin);
-
-  // console.log('I2C[' + I2C_ATLAS_TEMP_SENSOR_ADDR + '] I2C: Water Temperature');
-  // board.wait(ATLAS_DELAY * 1, function() {
-  //   // setInterval(function(board) {
-  //     board.io.i2cWrite(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE);
-  //     board.wait(ATLAS_DELAY, function() {
-  //       board.i2cReadOnce(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasTempReading);
-  //     });    
-  //   // }, ATLAS_REPEAT_INTERVAL, board);
-  // });
-
-  // console.log('I2C[' + I2C_ATLAS_PH_SENSOR_ADDR + '] I2C: PH');
-  // board.wait(ATLAS_DELAY * 2, function() {
-  //   // setInterval(function(board) {
-  //     board.io.i2cWrite(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_READ_CHARCODE);
-  //     board.wait(ATLAS_DELAY, function() {
-  //       board.i2cReadOnce(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasPhReading);
-  //     });
-  //   // }, ATLAS_REPEAT_INTERVAL, board);
-  // });
-
-  // console.log('I2C[' + I2C_ATLAS_EC_SENSOR_ADDR + '] I2C: EC');
-  // board.wait(ATLAS_DELAY * 3, function() {
-  //   // setInterval(function(board) {
-  //     board.io.i2cWrite(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE);
-  //     board.wait(ATLAS_DELAY, function() {
-  //       board.i2cReadOnce(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_BYTES_TO_READ, processAtlasEcReading);
-  //     });
-  //   // }, ATLAS_REPEAT_INTERVAL, board);   
-  // });
-
-  // var multi = new five.Multi({
-  //   controller: "BME280",
-  //   address: I2C_BME280_SENSOR_ADDR
-  // });
-
-  
-  // multi.on("change", function() {
-  //   console.log("  celsius           : ", this.temperature.celsius);
-  //   console.log("  fahrenheit        : ", this.temperature.fahrenheit);
-  //   console.log("  relative humidity : ", this.hygrometer.relativeHumidity);
-  //   console.log("--------------------------------------");    
-  // });
-  
-  // this.i2cReadOnce(I2C_BME280_SENSOR_ADDR, 8, function(bytes) {
-  //   console.log("Read!" + bytes);
-  //   console.log("Bytes read : " + String.fromCharCode.apply(String, bytes));
-  // });
-  
-  // multi.thermometer.on('change', function(){
-  //   console.log("Thermometer:" + this.celsius);
-  // });
-
-  // multi.hygrometer.on('change', function(){
-  //  console.log("hygrometer" + this.RH); 
-  // });
-  // board.loop(500, () => {
-  //   // Whatever the last value was, write the opposite
-  //   board.digitalWrite(13, board.pins[13].value ? 0 : 1);
-  // });
-
-  // try {
-  //   // GROVE Motor Controller Test
-  //   var pumpPhUp = new five.Motor({
-  //     controller: "GROVE_I2C_MOTOR_DRIVER",
-  //     pin: "A",
-  //   });
-
-  //   var pumpPhDown = new five.Motor({
-  //     controller: "GROVE_I2C_MOTOR_DRIVER",
-  //     pin: "B",
-  //   });
-
-  //   this.wait(3000, function() {
-  //     console.log("PH Pumps FORWARD");
-  //     pumpPhUp.fwd(127);
-  //     pumpPhDown.fwd(127);
-
-  //     // Demonstrate motor stop in 2 seconds
-  //     this.wait(3000, function() {
-  //       console.log("PH Pumps STOP");
-  //       pumpPhUp.stop();
-  //       pumpPhDown.stop();
-
-  //       // Terminate Exit
-  //       // this.wait(1000, function() {
-  //       //   process.emit("SIGINT");
-  //       // });
+    // floraMicro MUST be added first!!
+    var pumpA = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M1); // A
+    var pumpB = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M2); // B
+    var pumpC = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M3); // C
+    var pumpD = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M4); // D
+    var pumpE = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M5); // F
+    var pumpF = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M6); // G
+    var pumpG = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M7); // E
+    var pumpH = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M8); // H
+    
+  //   console.log("Testing PumpS");
+  //   const DELAY = 2000;
+  //   const SPEED = 125;
+  //   pumpA.fwd(SPEED);
+  //   this.wait(DELAY, function() {
+  //     pumpA.rev(SPEED);
+  //     console.log("B");
+  //     pumpB.start(SPEED);
+  //     this.wait(DELAY, function() {
+  //       pumpA.stop();
+  //       pumpB.rev(SPEED);
+  //       console.log("C");
+  //       pumpC.start(SPEED);
+  //       this.wait(DELAY, function() {
+  //         pumpB.stop();
+  //         pumpC.rev(SPEED);
+  //         console.log("D");
+  //         pumpD.start(SPEED);
+  //         this.wait(DELAY, function() {
+  //           pumpC.stop();
+  //           pumpD.rev(SPEED);
+  //           console.log("E");
+  //           pumpE.start(SPEED);
+  //           this.wait(DELAY, function() {
+  //             pumpE.rev(SPEED);
+  //             pumpD.stop();
+  //             console.log("F");
+  //             pumpF.start(SPEED);
+  //             this.wait(DELAY, function() {
+  //               pumpE.stop();
+  //               pumpF.rev(SPEED);
+  //               console.log("G");
+  //               pumpG.start(SPEED);
+  //               this.wait(DELAY, function() {
+  //                 pumpF.stop();
+  //                 pumpG.rev(SPEED);
+  //                 console.log("H");
+  //                 pumpH.start(SPEED);
+  //                 this.wait(DELAY, function() {
+  //                   pumpG.stop();
+  //                   pumpH.rev(SPEED);
+  //                   this.wait(DELAY, function() {
+  //                     pumpH.stop();
+                      
+  //                   }.bind(this));
+  //                 }.bind(this));
+  //               }.bind(this));
+  //             }.bind(this));
+  //           }.bind(this));
+  //         }.bind(this));
+  //       }.bind(this));
   //     }.bind(this));
   //   }.bind(this));
-  // } catch (err) {
-  //   console.log('Grove Motor Shield Failed: ' + err);
-  // }
 
-  // // END GROVE Motor Controller Test
-
-  // try {
-
-  //   // AdaFruit Motor Controller Test
-  //   var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
-  //   // floraMicro MUST be added first!!
-  //   var pumpFloraMicro = new five.Motor(configs.M1);
-  //   var pumpFloraBloom = new five.Motor(configs.M2);
-  //   var pumpFloraGrow = new five.Motor(configs.M3);
-  //   var pumpCalMag = new five.Motor(configs.M4);
-    
-  //   // Start the motor at maximum speed
-  //   console.log("Nutrient Pumps Starting");
-  //   pumpFloraMicro.start(255);
-  //   pumpFloraBloom.start(255);
-  //   pumpFloraGrow.start(255);
-  //   pumpCalMag.start(255);
-    
-  //   this.wait(3000, function() {
-  //     console.log("Nutrient Pumps STOP");
-  //     pumpFloraMicro.stop();
-  //     pumpFloraBloom.stop();
-  //     pumpFloraGrow.stop();
-  //     pumpCalMag.stop();
-      
-  //   }.bind(this));
-  // } catch (err) {
-  //   console.log('AdaFruit Motor Shield Failed: ' + err);
-  // }
 
   socket.on('RF:WATER_PUMP:OFF', function() {
     sendRF(RF.WaterPump.off);
@@ -380,24 +463,6 @@ board.on('ready', function() {
     console.log("Close RF:DRAIN_POTS");
     sendRF(RF.DrainPots.off);
   });
-  socket.on('RF:EXTENTION:ON', function(){
-    sendRF(RF.Extention.on);
-  });
-  socket.on('RF:EXTENTION:OFF', function(){
-    sendRF(RF.Extention.off);
-  });
-  socket.on('HW:LED:ON', function(){
-    led.on();
-  });
-  socket.on('HW:LED:OFF', function(){
-    led.off();
-  });
-  socket.on('RF:ALL:ON', function() {
-    sendRF(RF.Humidifier.low);
-    setTimeout(function(){
-      sendRF(RF.Humidifier.high);
-    },1000);
-  });  
   socket.on('I2C:TEMP:GET', function(){
     sendI2C(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE, function(bytes){
       socket.emit('I2C:TEMP:RESULT', bytes);
@@ -414,22 +479,16 @@ board.on('ready', function() {
     });
   });
   socket.on('HW:RELAY:ONE:ON', function(){
-    relay1.on();
+      relay1.on();
   });
   socket.on('HW:RELAY:ONE:OFF', function(){
-    relay1.off();
-  });
-  socket.on('HW:RELAY:ONE:TOGGLE', function(){
-    relay1.toggle();
+      relay1.off();
   });
   socket.on('HW:RELAY:TWO:ON', function(){
-    relay2.on();
+      relay2.on();
   });
   socket.on('HW:RELAY:TWO:OFF', function(){
-    relay2.off();
-  });
-  socket.on('HW:RELAY:TWO:TOGGLE', function(){
-    relay2.toggle();
+      relay2.off();
   });
 
 });

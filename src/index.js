@@ -94,10 +94,6 @@ import { url } from '../config';
       console.log("Close Pots");
       socket.emit("RF:DRAIN_POTS:OFF");
     }
-    function relayOneToggle() {
-      console.log("relay 1 toggle");
-      socket.emit("HW:RELAY:ONE:TOGGLE");
-    }
     function relayOneOn() {
       console.log("relay 1 on");
       socket.emit("HW:RELAY:ONE:ON");
@@ -106,10 +102,6 @@ import { url } from '../config';
       console.log("relay 1 off");
       socket.emit("HW:RELAY:ONE:OFF");
     }
-    function relayTwoToggle() {
-      console.log("relay 2 toggle");
-      socket.emit("HW:RELAY:TWO:TOGGLE");
-    }
     function relayTwoOn() {
       console.log("relay 2 on");
       socket.emit("HW:RELAY:TWO:ON");
@@ -117,14 +109,6 @@ import { url } from '../config';
     function relayTwoOff() {
       console.log("relay 2 off");
       socket.emit("HW:RELAY:TWO:OFF");
-    }
-    function ledOff() {
-      console.log("led off");
-      socket.emit("HW:LED:OFF");
-    }
-    function ledOn() {
-      console.log("led on");
-      socket.emit("HW:LED:ON");
     }
     function atlasGetTemp() {
       console.log("getTemp");
@@ -150,7 +134,39 @@ import { url } from '../config';
       console.log("gotEC");
       getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes);
     });
-    
+
+    socket.on('WLS:TANK:HIGH:OPEN', function(bytes) {
+      getById("WLS_TANK_HIGH").classList.add('open');
+      getById("WLS_TANK_HIGH").classList.remove('close');
+    });
+    socket.on('WLS:TANK:HIGH:CLOSE', function(bytes) {
+      getById("WLS_TANK_HIGH").classList.remove('open');
+      getById("WLS_TANK_HIGH").classList.add('close');      
+    });
+    socket.on('WLS:TANK:LOW:OPEN', function(bytes) {
+      getById("WLS_TANK_LOW").classList.add('open');
+      getById("WLS_TANK_LOW").classList.remove('close');
+    });
+    socket.on('WLS:TANK:LOW:CLOSE', function(bytes) {
+      getById("WLS_TANK_LOW").classList.remove('open');
+      getById("WLS_TANK_LOW").classList.add('close');      
+    });
+    socket.on('WLS:RES:HIGH:OPEN', function(bytes) {
+      getById("WLS_RES_HIGH").classList.add('open');
+      getById("WLS_RES_HIGH").classList.remove('close');      
+    });
+    socket.on('WLS:RES:HIGH:CLOSE', function(bytes) {
+      getById("WLS_RES_HIGH").classList.remove('open');
+      getById("WLS_RES_HIGH").classList.add('close');         
+    });
+    socket.on('WLS:RES:LOW:OPEN', function(bytes) {
+      getById("WLS_RES_LOW").classList.add('open');
+      getById("WLS_RES_LOW").classList.remove('close');      
+    });
+    socket.on('WLS:RES:LOW:CLOSE', function(bytes) {
+      getById("WLS_RES_LOW").classList.remove('open');
+      getById("WLS_RES_LOW").classList.add('close');         
+    });
 
     function getById(id) {
       return document.getElementById(id);
@@ -189,17 +205,14 @@ import { url } from '../config';
       addEvent("DRAIN_RES_OFF", closeRes, evt);
       addEvent("DRAIN_POTS_ON", drainPots, evt);
       addEvent("DRAIN_POTS_OFF", closePots, evt);
-      addEvent("LED_OFF", ledOff, evt);
-      addEvent("LED_ON", ledOn, evt);
       addEvent("ATLAS_GET_TEMP", atlasGetTemp, evt);
       addEvent("ATLAS_GET_PH", atlasGetPh, evt);
       addEvent("ATLAS_GET_EC", atlasGetEc, evt);
       addEvent("RELAY_ONE_ON", relayOneOn, evt);
       addEvent("RELAY_ONE_OFF", relayOneOff, evt);
-      addEvent("RELAY_ONE_TOGGLE", relayOneToggle, evt);
       addEvent("RELAY_TWO_ON", relayTwoOn, evt);
       addEvent("RELAY_TWO_OFF", relayTwoOff, evt);
-      addEvent("RELAY_TWO_TOGGLE", relayTwoToggle, evt);
+
     });
   }
 )();

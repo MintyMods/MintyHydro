@@ -78,95 +78,100 @@ import { url } from '../config';
     function lightOff() {
       socket.emit("RF:LIGHT:OFF");
     }
-    function drainRes() {
-      console.log("Drain Res");
-      socket.emit("RF:DRAIN_RES:ON");
-    }
-    function closeRes() {
-      console.log("Close Res");
-      socket.emit("RF:DRAIN_RES:OFF");
-    }
-    function drainPots() {
-      console.log("Drain Pots");
-      socket.emit("RF:DRAIN_POTS:ON");
-    }
-    function closePots() {
-      console.log("Close Pots");
-      socket.emit("RF:DRAIN_POTS:OFF");
-    }
     function relayOneOn() {
-      console.log("relay 1 on");
       socket.emit("HW:RELAY:ONE:ON");
     }
     function relayOneOff() {
-      console.log("relay 1 off");
       socket.emit("HW:RELAY:ONE:OFF");
     }
     function relayTwoOn() {
-      console.log("relay 2 on");
       socket.emit("HW:RELAY:TWO:ON");
     }
     function relayTwoOff() {
-      console.log("relay 2 off");
       socket.emit("HW:RELAY:TWO:OFF");
     }
     function atlasGetTemp() {
-      console.log("getTemp");
       socket.emit("I2C:TEMP:GET");
     }
     socket.on('I2C:TEMP:RESULT', function(bytes) {
-      console.log("gotTemp");
       getById("atlas_temp_reading").innerHTML = String.fromCharCode.apply(String, bytes);
     });
     function atlasGetPh() {
-      console.log("getPH");
       socket.emit("I2C:PH:GET");
     }
     socket.on('I2C:PH:RESULT', function(bytes) {
-      console.log("gotPH");
       getById("atlas_ph_reading").innerHTML = String.fromCharCode.apply(String, bytes);
     });
     function atlasGetEc() {
-      console.log("getEC");
       socket.emit("I2C:EC:GET");
     }
     socket.on('I2C:EC:RESULT', function(bytes) {
-      console.log("gotEC");
       getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes);
     });
 
-    socket.on('WLS:TANK:HIGH:OPEN', function(bytes) {
+    socket.on('WLS:TANK:HIGH:OPEN', function() {
       getById("WLS_TANK_HIGH").classList.add('open');
       getById("WLS_TANK_HIGH").classList.remove('close');
     });
-    socket.on('WLS:TANK:HIGH:CLOSE', function(bytes) {
+    socket.on('WLS:TANK:HIGH:CLOSE', function() {
       getById("WLS_TANK_HIGH").classList.remove('open');
       getById("WLS_TANK_HIGH").classList.add('close');      
     });
-    socket.on('WLS:TANK:LOW:OPEN', function(bytes) {
+    socket.on('WLS:TANK:LOW:OPEN', function() {
       getById("WLS_TANK_LOW").classList.add('open');
       getById("WLS_TANK_LOW").classList.remove('close');
     });
-    socket.on('WLS:TANK:LOW:CLOSE', function(bytes) {
+    socket.on('WLS:TANK:LOW:CLOSE', function() {
       getById("WLS_TANK_LOW").classList.remove('open');
       getById("WLS_TANK_LOW").classList.add('close');      
     });
-    socket.on('WLS:RES:HIGH:OPEN', function(bytes) {
+    socket.on('WLS:RES:HIGH:OPEN', function() {
       getById("WLS_RES_HIGH").classList.add('open');
       getById("WLS_RES_HIGH").classList.remove('close');      
     });
-    socket.on('WLS:RES:HIGH:CLOSE', function(bytes) {
+    socket.on('WLS:RES:HIGH:CLOSE', function() {
       getById("WLS_RES_HIGH").classList.remove('open');
       getById("WLS_RES_HIGH").classList.add('close');         
     });
-    socket.on('WLS:RES:LOW:OPEN', function(bytes) {
+    socket.on('WLS:RES:LOW:OPEN', function() {
       getById("WLS_RES_LOW").classList.add('open');
       getById("WLS_RES_LOW").classList.remove('close');      
     });
-    socket.on('WLS:RES:LOW:CLOSE', function(bytes) {
+    socket.on('WLS:RES:LOW:CLOSE', function() {
       getById("WLS_RES_LOW").classList.remove('open');
       getById("WLS_RES_LOW").classList.add('close');         
     });
+    socket.on('HTS:BME280:HUMIDITY:RH', function(bytes) {
+      getById("HTS_BME280_HUMIDITY").innerHTML = bytes + " RH%";
+    });
+    socket.on('HTS:BME280:TEMP:CELSIUS', function(bytes) {
+      getById("HTS_BME280_TEMP_CELSIUS").innerHTML = bytes + " °C";
+    });
+    
+    var pumpId = null;
+
+    function pumpSelect() {
+      socket.emit("PERI:PUMP:STOP:ALL");
+      pumpId = getById("PUMP_SELECT").value;
+    }
+    function pumpStart() {
+      var pumpSpeed = getById("PUMP_SPEED").value;
+      if (pumpId) socket.emit("PERI:PUMP:START", {pumpId, pumpSpeed});
+    }
+    function pumpStop() {
+      if (pumpId) socket.emit("PERI:PUMP:STOP", pumpId);
+    }
+    function pumpStartAll() {
+      socket.emit("PERI:PUMP:START:ALL", getById("PUMP_SPEED").value);
+    }
+    function pumpStopAll() {
+      socket.emit("PERI:PUMP:STOP:ALL");
+    }
+
+    function testRF() {
+      var control = getById("TEST_RF_12V");
+      socket.emit("RF:TEST:12V", control.value);
+    }
 
     function getById(id) {
       return document.getElementById(id);
@@ -201,10 +206,6 @@ import { url } from '../config';
       addEvent("AIR_MOVEMENT_FAN_LARGE_ON", airMovementFanLargeOn, evt);
       addEvent("LIGHT_OFF", lightOff, evt);
       addEvent("LIGHT_ON", lightOn, evt);
-      addEvent("DRAIN_RES_ON", drainRes, evt);
-      addEvent("DRAIN_RES_OFF", closeRes, evt);
-      addEvent("DRAIN_POTS_ON", drainPots, evt);
-      addEvent("DRAIN_POTS_OFF", closePots, evt);
       addEvent("ATLAS_GET_TEMP", atlasGetTemp, evt);
       addEvent("ATLAS_GET_PH", atlasGetPh, evt);
       addEvent("ATLAS_GET_EC", atlasGetEc, evt);
@@ -212,7 +213,13 @@ import { url } from '../config';
       addEvent("RELAY_ONE_OFF", relayOneOff, evt);
       addEvent("RELAY_TWO_ON", relayTwoOn, evt);
       addEvent("RELAY_TWO_OFF", relayTwoOff, evt);
-
+      addEvent("PUMP_START", pumpStart, evt);
+      addEvent("PUMP_STOP", pumpStop, evt);
+      addEvent("PUMP_START_ALL", pumpStartAll, evt);
+      addEvent("PUMP_STOP_ALL", pumpStopAll, evt);
     });
+    addEvent("TEST_RF_12V", testRF, "change");
+    addEvent("PUMP_SELECT", pumpSelect, "change");
+    // addEvent("TEST_RF_12V", testRF, "click");
   }
 )();

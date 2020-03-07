@@ -24,19 +24,15 @@ io.of('/arduino').on('connection', (socket) => {
   console.log('New connection to Arduino@' + socket.id);
 
   socket.on('HW:RELAY:ONE:ON', function() {
-    console.log("HW:RELAY:ONE:ON");
     socket.broadcast.emit('HW:RELAY:ONE:ON');
   });
   socket.on('HW:RELAY:ONE:OFF', function() {
-    console.log("HW:RELAY:ONE:OFF");
     socket.broadcast.emit('HW:RELAY:ONE:OFF');
   });
   socket.on('HW:RELAY:TWO:ON', function() {
-    console.log("HW:RELAY:TWO:ON");
     socket.broadcast.emit('HW:RELAY:TWO:ON');
   });
   socket.on('HW:RELAY:TWO:OFF', function() {
-    console.log("HW:RELAY:TWO:OFF");
     socket.broadcast.emit('HW:RELAY:TWO:OFF');
   });
   socket.on('RF:WATER_PUMP:OFF', function() {
@@ -111,18 +107,6 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('RF:LIGHT:ON', function() {
     socket.broadcast.emit('RF:LIGHT:ON');
   });
-  socket.on('RF:DRAIN_RES:ON', function() {
-    socket.broadcast.emit('RF:DRAIN_RES:ON');
-  });
-  socket.on('RF:DRAIN_RES:OFF', function() {
-    socket.broadcast.emit('RF:DRAIN_RES:OFF');
-  });
-  socket.on('RF:DRAIN_POTS:ON', function() {
-    socket.broadcast.emit('RF:DRAIN_POTS:ON');
-  });
-  socket.on('RF:DRAIN_POTS:OFF', function() {
-    socket.broadcast.emit('RF:DRAIN_POTS:OFF');
-  });
   socket.on('I2C:TEMP:GET', function() {
     socket.broadcast.emit('I2C:TEMP:GET');
   });
@@ -141,32 +125,56 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('I2C:EC:RESULT', function(bytes) {
     socket.broadcast.emit('I2C:EC:RESULT', bytes);
   });
-  socket.on('WLS:TANK:HIGH:OPEN', function(bytes) {
-    socket.broadcast.emit('WLS:TANK:HIGH:OPEN', bytes);
+  socket.on('WLS:TANK:HIGH:OPEN', function() {
+    socket.broadcast.emit('WLS:TANK:HIGH:OPEN', );
   });
-  socket.on('WLS:TANK:HIGH:CLOSE', function(bytes) {
-    socket.broadcast.emit('WLS:TANK:HIGH:CLOSE', bytes);
+  socket.on('WLS:TANK:HIGH:CLOSE', function() {
+    socket.broadcast.emit('WLS:TANK:HIGH:CLOSE', );
   });
-  socket.on('WLS:TANK:LOW:OPEN', function(bytes) {
-    socket.broadcast.emit('WLS:TANK:LOW:OPEN', bytes);
+  socket.on('WLS:TANK:LOW:OPEN', function() {
+    socket.broadcast.emit('WLS:TANK:LOW:OPEN', );
   });
-  socket.on('WLS:TANK:LOW:CLOSE', function(bytes) {
-    socket.broadcast.emit('WLS:TANK:LOW:CLOSE', bytes);
+  socket.on('WLS:TANK:LOW:CLOSE', function() {
+    socket.broadcast.emit('WLS:TANK:LOW:CLOSE', );
   });
-  socket.on('WLS:RES:HIGH:OPEN', function(bytes) {
-    socket.broadcast.emit('WLS:RES:HIGH:OPEN', bytes);
+  socket.on('WLS:RES:HIGH:OPEN', function() {
+    socket.broadcast.emit('WLS:RES:HIGH:OPEN', );
   });
-  socket.on('WLS:RES:HIGH:CLOSE', function(bytes) {
-    socket.broadcast.emit('WLS:RES:HIGH:CLOSE', bytes);
+  socket.on('WLS:RES:HIGH:CLOSE', function() {
+    socket.broadcast.emit('WLS:RES:HIGH:CLOSE', );
   });
-  socket.on('WLS:RES:LOW:OPEN', function(bytes) {
-    socket.broadcast.emit('WLS:RES:LOW:OPEN', bytes);
+  socket.on('WLS:RES:LOW:OPEN', function() {
+    socket.broadcast.emit('WLS:RES:LOW:OPEN', );
   });
-  socket.on('WLS:RES:LOW:CLOSE', function(bytes) {
-    socket.broadcast.emit('WLS:RES:LOW:CLOSE', bytes);
+  socket.on('WLS:RES:LOW:CLOSE', function() {
+    socket.broadcast.emit('WLS:RES:LOW:CLOSE', );
   });
-
-
-
+  socket.on('RF:TEST:12V', function(bytes) {
+    socket.broadcast.emit('RF:TEST:12V', bytes);
+  });
+  socket.on('HTS:BME280:TEMP:CELSIUS', function(bytes) {
+    socket.broadcast.emit('HTS:BME280:TEMP:CELSIUS', bytes);
+  });
+  socket.on('HTS:BME280:HUMIDITY:RH', function(bytes) {
+    socket.broadcast.emit('HTS:BME280:HUMIDITY:RH', bytes);
+  });
+  socket.on('HTS:TH02:TEMP:CELSIUS', function(bytes) {
+    socket.broadcast.emit('HTS:TH02:TEMP:CELSIUS', bytes);
+  });
+  socket.on('HTS:TH02:HUMIDITY:RH', function(bytes) {
+    socket.broadcast.emit('HTS:TH02:HUMIDITY:RH', bytes);
+  });
+  socket.on('PERI:PUMP:START', function(pump) {
+    socket.broadcast.emit('PERI:PUMP:START', pump);
+  });
+  socket.on('PERI:PUMP:STOP', function(pump) {
+    socket.broadcast.emit('PERI:PUMP:STOP', pump);
+  });
+  socket.on('PERI:PUMP:STOP:ALL', function(pump) {
+    socket.broadcast.emit('PERI:PUMP:STOP:ALL', pump);
+  });
+  socket.on('PERI:PUMP:START:ALL', function(pump) {
+    socket.broadcast.emit('PERI:PUMP:START:ALL', pump);
+  });
 
 });

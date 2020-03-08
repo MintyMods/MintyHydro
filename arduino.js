@@ -1,8 +1,9 @@
 const io = require('socket.io-client');
 const five = require('johnny-five');
 const config = require('./config');
+const MintyHydroBox = require('./mintyHydroBox');
+const MintyIO = require('./mintyIO');
 const Serialport = require("serialport");
-const Encoder7Bit = require('encoder7bit');
 
 const serial = new Serialport(config.serialPort, {
   baudRate: 9600,
@@ -15,308 +16,63 @@ const board = new five.Board({
   debug: config.debug
 });
 
-/* Arduino Digital Pin Assignment */
-const RESERVED_PIN = 2;
-const SPARE_PIN = 3; 
-
-/* HWR = Hardware Relays 240v */
-const HWR_RELAY_ONE_PIN = 4; 
-const HWR_RELAY_TWO_PIN = 5;
-
-/* RF433 Transmitter Support */
-const RCT_IN_PIN = 6;
-const RCT_OUT_PIN = 7;
-
-/* WLS = Water Level Switches */
-const WLS_RES_LOW_PIN = 9;
-const WLS_RES_HIGH_PIN = 10;
-const WLS_TANK_LOW_PIN = 11;
-const WLS_TANK_HIGH_PIN = 12;
-
-/* Arduino I2C Address Assignment */
-const I2C_GROVE_TEMP_HUMIDITY_ADDR = (0x40);
-const I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR = (0x60);
-const I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR = (0x61);
-const I2C_ATLAS_PH_SENSOR_ADDR = (0x63);
-const I2C_ATLAS_EC_SENSOR_ADDR = (0x64);
-const I2C_ATLAS_TEMP_SENSOR_ADDR = (0x66);
-const I2C_ADAFRUIT_MOTORBOARD_ALL_CALL_ADDR = (0x70);
-const I2C_BME280_SENSOR_ADDR = (0x76);
-
-
-const ATLAS_READ_CHARCODE = ['r'.charCodeAt(0)];
-const ATLAS_BYTES_TO_READ = 30;
-const ATLAS_DELAY = 1400;
-
-const RCT_PULSE_LENGTH = 185;
-const RCT_OUTPUT_DATA = (0x5C);
-const RCT_OUTPUT_ATTACH = (0x01);
-const RCT_OUTPUT_DETACH = (0x02);
-const RCT_OUTPUT_PULSE_LENGTH = (0x12);
-const RCT_OUTPUT_CODE_LONG = (0x22);
-const SYSEX_START = (0xF0);
-const SYSEX_END = (0xF7);
-
-/* Air Intake Fan */ 
-const RF_CODE_INTAKE_LOW = "7446194";
-const RF_CODE_INTAKE_HIGH = "7446193";
-const RF_CODE_INTAKE_OFF = "7446196";
-
-/* Minty HumiBox - Humidifier */
-const RF_CODE_HUMID_LOW = "12562584";
-const RF_CODE_HUMID_HIGH = "12562578";
-const RF_CODE_HUMID_OFF_LOW = "12562580";
-const RF_CODE_HUMID_OFF_HIGH = "12562577";
-
-/**
- * Geekcreit® 12V 4CH Channel 433Mhz 
- * Following RF codes will toggle all relay channels at once
- * e.g. to open Relays 2&4 and close Realys 1&3 we send 2775141
- * RELAY_CHANNEL_1234 Where 0=CLOSED 1=OPEN
- */
-const RF_CODE_12V_0000 = "2775136";
-const RF_CODE_12V_0001 = "2775137";
-const RF_CODE_12V_0010 = "2775138";
-const RF_CODE_12V_0011 = "2775139";
-const RF_CODE_12V_0100 = "2775140";
-const RF_CODE_12V_0101 = "2775141";
-const RF_CODE_12V_0110 = "2775142";
-const RF_CODE_12V_0111 = "2775143";
-const RF_CODE_12V_1000 = "2775144";
-const RF_CODE_12V_1001 = "2775145";
-const RF_CODE_12V_1010 = "2775146";
-const RF_CODE_12V_1011 = "2775147";
-const RF_CODE_12V_1100 = "2775148";
-const RF_CODE_12V_1101 = "2775149";
-const RF_CODE_12V_1110 = "2775150";
-const RF_CODE_12V_1111 = "2775151";
-const RF_12V_RELAY = {
-  Water: {
-    drain: RF_CODE_12V_0111,
-    fill: RF_CODE_12V_1000,
-    off: RF_CODE_12V_0000
-  },
-}
-
-/* Etekcity Wireless Remote Control Sockets */
-const RF_CODE_S1_ON = "5264691"; // Dehumidifier
-const RF_CODE_S1_OFF = "5264700";
-const RF_CODE_S2_ON = "5264835"; // Air Heater
-const RF_CODE_S2_OFF = "5264844";
-const RF_CODE_S3_ON = "5265155"; // Air Fan Large
-const RF_CODE_S3_OFF = "5265164";
-const RF_CODE_S4_ON = "5266691"; // Air Extract
-const RF_CODE_S4_OFF = "5266700";
-const RF_CODE_S5_ON = "5272835"; // Light
-const RF_CODE_S5_OFF = "5272844";
-
-/* Energenie Trailing Gang with Four Radio Controlled Surge Protected Sockets */
-const RF_CODE_Q1_ON = "8950879"; // SPARE
-const RF_CODE_Q1_OFF = "8950878";
-const RF_CODE_Q2_ON = "8950871"; // SPARE
-const RF_CODE_Q2_OFF = "8950870";
-const RF_CODE_Q3_ON = "8950875"; // Air Pump
-const RF_CODE_Q3_OFF = "8950874";
-const RF_CODE_Q4_ON = "8950867"; // Air Fan Small
-const RF_CODE_Q4_OFF = "8950866";
-const RF_CODE_QALL_ON = "8950877"; // Extention Block Over-ride
-const RF_CODE_QALL_OFF = "8950876";
-
-
-const RF = {
-  Light: {
-    on: RF_CODE_S5_ON,
-    off: RF_CODE_S5_OFF
-  },
-  WaterPump: {
-    on: RF_CODE_Q1_ON,
-    off: RF_CODE_Q1_OFF
-  },
-  AirPump: {
-    on: RF_CODE_Q3_ON,
-    off: RF_CODE_Q3_OFF
-  },
-  WaterHeater: {
-    on: RF_CODE_Q2_ON,
-    off: RF_CODE_Q2_OFF
-  },
-  Heater: {
-    on: RF_CODE_S2_ON,
-    off: RF_CODE_S2_OFF
-  },
-  AirMovementFanSmall: {
-    on: RF_CODE_Q4_ON,
-    off: RF_CODE_Q4_OFF
-  },
-  AirMovementFanLarge: {
-    on: RF_CODE_S3_ON,
-    off: RF_CODE_S3_OFF
-  },
-  AirExtractFan: {
-    on: RF_CODE_S4_ON,
-    off: RF_CODE_S4_OFF
-  },
-  AirIntakeFan: {
-    low: RF_CODE_INTAKE_LOW,
-    high: RF_CODE_INTAKE_HIGH,
-    off: RF_CODE_INTAKE_OFF
-  },
-  Dehumidifier: {
-    on: RF_CODE_S1_ON,
-    off: RF_CODE_S1_OFF
-  },
-  Humidifier: {
-    low: RF_CODE_HUMID_LOW,
-    high: RF_CODE_HUMID_HIGH,
-    off_low: RF_CODE_HUMID_OFF_LOW,
-    off_high: RF_CODE_HUMID_OFF_HIGH
-  },
-  Extention: {
-    on: RF_CODE_QALL_ON,
-    off: RF_CODE_QALL_OFF
-  }
-
-}
-
-const ADAFRUIT_MOTOR_SHIELD_DRIVER = "PCA9685";
-const ADAFRUIT_MOTOR_SHIELD = {
-  M1: { // Pump A : Flora Micra
-    pins: {
-      pwm: 8,
-      dir: 9,
-      cdir: 10
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M2: { // Pump B
-    pins: {
-      pwm: 13,
-      dir: 12,
-      cdir: 11
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M3: { // Pump C
-    pins: {
-      pwm: 7,
-      dir: 6,
-      cdir: 5
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M4: { // Pump D
-    pins: {
-      pwm: 2,
-      dir: 3,
-      cdir: 4
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M5: { // Pump E
-    pins: {
-      pwm: 2,
-      dir: 3,
-      cdir: 4
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M6: { // Pump F
-    pins: {
-      pwm: 8,
-      dir: 9,
-      cdir: 10
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M7: { // Pump G : PH Up
-    pins: {
-      pwm: 13,
-      dir: 12,
-      cdir: 11
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  },
-  M8: { // Pump H : PH Down
-    pins: {
-      pwm: 7,
-      dir: 6,
-      cdir: 5
-    },
-    address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
-  }
-};
-
-const BME280_REQUIRED_DELAY_FOR_TEMP_READ = 1000;
-
-// Connect to the socket server
+log("Minty-Hydro connecting to socket server: " + config.url);
 const socket = io.connect(config.url);
-log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
+const mintyIO = new MintyIO(board, socket, serial);
+const mintyHydro = new MintyHydroBox(mintyIO);
 
 board.on('ready', function () {
   log("Johnny-Five Board Init - " + config.serialPort);
-    board.on("message", function(event) {
-      log("%s sent a 'fail' message: %s", event.class, event.message);
-    });
-    board.on("exit", function() {
-      log("################  Board Exit");
-    });
   
-    // This will limit sampling of all Analog Input
-    // and I2C sensors to once per second (1000 milliseconds)
-  //  board.samplingInterval(1000);
-    
-  board.i2cConfig(BME280_REQUIRED_DELAY_FOR_TEMP_READ);
-  
+  let BME280_REQUIRED_DELAY_FOR_VALID_TEMPERATURE_READ = 1000;
+  board.i2cConfig(BME280_REQUIRED_DELAY_FOR_VALID_TEMPERATURE_READ);
+
   /* BME 280 Temperature and Humidity */
   var bme280 = new five.Multi({
       controller: "BME280",
-      address: I2C_BME280_SENSOR_ADDR
+      address: config.I2C_BME280_SENSOR_ADDR,
+      freq: 1000
   });
   
   bme280.on("change", function() {
+    mintyHydro.sensorReading.temp.air = this.thermometer.celsius;
+    mintyHydro.sensorReading.humidity = this.hygrometer.relativeHumidity;
     socketEmit('HTS:BME280:HUMIDITY:RH', this.hygrometer.relativeHumidity);
     socketEmit('HTS:BME280:TEMP:CELSIUS', this.thermometer.celsius);
   });
-  
+
   // Water Level Switches
   var waterLevelTankLow = new five.Switch({
-    pin: WLS_TANK_LOW_PIN, type: "NO"
+    pin: config.WLS_TANK_LOW_PIN, type: "NO"
   });
   var waterLevelTankHigh = new five.Switch({
-    pin: WLS_TANK_HIGH_PIN, type: "NO"
+    pin: config.WLS_TANK_HIGH_PIN, type: "NO"
   });
   var waterLevelResLow = new five.Switch({
-    pin: WLS_RES_LOW_PIN, type: "NO"
+    pin: config.WLS_RES_LOW_PIN, type: "NO"
   });
   var waterLevelResHigh = new five.Switch({
-    pin: WLS_RES_HIGH_PIN, type: "NO"
+    pin: config.WLS_RES_HIGH_PIN, type: "NO"
   });
 
   // 240v Relays
-  var relay1 = new five.Relay({
-    pin: HWR_RELAY_ONE_PIN, type: "NC"
+  var relayWaterPump = new five.Relay({
+    pin: config.HWR_RELAY_ONE_PIN, type: "NC"
   });
-  var relay2 = new five.Relay({
-    pin: HWR_RELAY_TWO_PIN, type: "NC"
+  var relayWaterHeater = new five.Relay({
+    pin: config.HWR_RELAY_TWO_PIN, type: "NC"
   });
 
   // Peristaltic Pump Motors
-  var pumpA = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M1); // A
-  var pumpB = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M2); // B
-  var pumpC = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M3); // C
-  var pumpD = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M4); // D
-  var pumpE = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M5); // F
-  var pumpF = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M6); // G
-  var pumpG = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M7); // E
-  var pumpH = new five.Motor(ADAFRUIT_MOTOR_SHIELD.M8); // H
+  var pumpA = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M1); // A
+  var pumpB = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M2); // B
+  var pumpC = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M3); // C
+  var pumpD = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M4); // D
+  var pumpE = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M5); // F
+  var pumpF = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M6); // G
+  var pumpG = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M7); // E
+  var pumpH = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M8); // H
+
   /** floraMicro MUST be added first!! */
 
   socket.on('PERI:PUMP:START', function (pump) {
@@ -351,6 +107,7 @@ board.on('ready', function () {
         break;        
     }
   });
+
   socket.on('PERI:PUMP:STOP', function (pump) {
     switch (pump) {
       case 'A' :
@@ -382,6 +139,7 @@ board.on('ready', function () {
         break; 
     }
   });
+
   socket.on('PERI:PUMP:START:ALL', function (pumpSpeed) {
     startAllPeriPumps();
   });
@@ -415,109 +173,109 @@ board.on('ready', function () {
   };
 
   socket.on('RF:WATER_PUMP:OFF', function () {
-    sendRF(RF.WaterPump.off);
+    sendRF(config.RF.WaterPump.off);
   });
   socket.on('RF:WATER_PUMP:ON', function () {
-    sendRF(RF.WaterPump.on);
+    sendRF(config.RF.WaterPump.on);
   });
   socket.on('RF:WATER_HEATER:OFF', function () {
-    sendRF(RF.WaterHeater.off);
+    sendRF(config.RF.WaterHeater.off);
   });
   socket.on('RF:WATER_HEATER:ON', function () {
-    sendRF(RF.WaterHeater.on);
+    sendRF(config.RF.WaterHeater.on);
   });
   socket.on('RF:AIR_PUMP:OFF', function () {
-    sendRF(RF.AirPump.off);
+    sendRF(config.RF.AirPump.off);
   });
   socket.on('RF:AIR_PUMP:ON', function () {
-    sendRF(RF.AirPump.on);
+    sendRF(config.RF.AirPump.on);
   });
   socket.on('RF:DEHUMIDIFIER:OFF', function () {
-    sendRF(RF.Dehumidifier.off);
+    sendRF(config.RF.Dehumidifier.off);
   });
   socket.on('RF:DEHUMIDIFIER:ON', function () {
-    sendRF(RF.Dehumidifier.on);
+    sendRF(config.RF.Dehumidifier.on);
   });
   socket.on('RF:HUMIDIFIER:LOW', function () {
-    sendRF(RF.Humidifier.low);
+    sendRF(config.RF.Humidifier.low);
     setTimeout(function () {
-      sendRF(RF.Humidifier.off_high);
+      sendRF(config.RF.Humidifier.off_high);
     }, 500);
   });
   socket.on('RF:HUMIDIFIER:HIGH', function () {
-    sendRF(RF.Humidifier.high);
+    sendRF(config.RF.Humidifier.high);
     setTimeout(function () {
-      sendRF(RF.Humidifier.low);
+      sendRF(config.RF.Humidifier.low);
     }, 500);
   });
   socket.on('RF:HUMIDIFIER:OFF', function () {
-    sendRF(RF.Humidifier.off_low);
+    sendRF(config.RF.Humidifier.off_low);
     setTimeout(function () {
-      sendRF(RF.Humidifier.off_high);
+      sendRF(config.RF.Humidifier.off_high);
     }, 500);
   });
   socket.on('RF:HEATER:OFF', function () {
-    sendRF(RF.Heater.off);
+    sendRF(config.RF.Heater.off);
   });
   socket.on('RF:HEATER:ON', function () {
-    sendRF(RF.Heater.on);
+    sendRF(config.RF.Heater.on);
   });
   socket.on('RF:AIR_EXTRACT_FAN:OFF', function () {
-    sendRF(RF.AirExtractFan.off);
+    sendRF(config.RF.AirExtractFan.off);
   });
   socket.on('RF:AIR_EXTRACT_FAN:ON', function () {
-    sendRF(RF.AirExtractFan.on);
+    sendRF(config.RF.AirExtractFan.on);
   });
   socket.on('RF:AIR_INTAKE_FAN:OFF', function () {
-    sendRF(RF.AirIntakeFan.off);
+    sendRF(config.RF.AirIntakeFan.off);
   });
   socket.on('RF:AIR_INTAKE_FAN:LOW', function () {
-    sendRF(RF.AirIntakeFan.low);
+    sendRF(config.RF.AirIntakeFan.low);
   });
   socket.on('RF:AIR_INTAKE_FAN:HIGH', function () {
-    sendRF(RF.AirIntakeFan.high);
+    sendRF(config.RF.AirIntakeFan.high);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_SMALL:OFF', function () {
-    sendRF(RF.AirMovementFanSmall.off);
+    sendRF(config.RF.AirMovementFanSmall.off);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_SMALL:ON', function () {
-    sendRF(RF.AirMovementFanSmall.on);
+    sendRF(config.RF.AirMovementFanSmall.on);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_LARGE:OFF', function () {
-    sendRF(RF.AirMovementFanLarge.off);
+    sendRF(config.RF.AirMovementFanLarge.off);
   });
   socket.on('RF:AIR_MOVEMENT_FAN_LARGE:ON', function () {
-    sendRF(RF.AirMovementFanLarge.on);
+    sendRF(config.RF.AirMovementFanLarge.on);
   });
   socket.on('RF:LIGHT:OFF', function () {
-    sendRF(RF.Light.off);
+    sendRF(config.RF.Light.off);
   });
   socket.on('RF:LIGHT:ON', function () {
-    sendRF(RF.Light.on);
+    sendRF(config.RF.Light.on);
   });
   socket.on('RF:DRAIN_RES:ON', function () {
-    sendRF(RF.DrainRes.on);
+    sendRF(config.RF.DrainRes.on);
   });
   socket.on('RF:DRAIN_RES:OFF', function () {
-    sendRF(RF.DrainRes.off);
+    sendRF(config.RF.DrainRes.off);
   });
   socket.on('RF:DRAIN_POTS:ON', function () {
-    sendRF(RF.DrainPots.on);
+    sendRF(config.RF.DrainPots.on);
   });
   socket.on('RF:DRAIN_POTS:OFF', function () {
-    sendRF(RF.DrainPots.off);
+    sendRF(config.RF.DrainPots.off);
   });
   socket.on('HW:RELAY:ONE:ON', function () {
-    relay1.on();
+    relayWaterPump.on();
   });
   socket.on('HW:RELAY:ONE:OFF', function () {
-    relay1.off();
+    relayWaterPump.off();
   });
   socket.on('HW:RELAY:TWO:ON', function () {
-    relay2.on();
+    relayWaterHeater.on();
   });
   socket.on('HW:RELAY:TWO:OFF', function () {
-    relay2.off();
+    relayWaterHeater.off();
   });
   waterLevelTankHigh.on("open", function () {
     socketEmit('WLS:TANK:HIGH:OPEN');
@@ -546,117 +304,42 @@ board.on('ready', function () {
   socket.on("RF:TEST:12V", function(value){
     sendRF(value);
   });
-
   socket.on('I2C:TEMP:GET', function () {
-    sendI2C(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:TEMP:RESULT', stripNull(bytes));
+    sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {
+      socketEmit('I2C:TEMP:RESULT', temp);
     });
   });
   socket.on('I2C:PH:GET', function () {
-    sendI2C(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:PH:RESULT', stripNull(bytes));
+    sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ph) {
+      socketEmit('I2C:PH:RESULT', ph);
     });
   });
   socket.on('I2C:EC:GET', function () {
-    sendI2C(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:EC:RESULT', stripNull(bytes));
+    sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ec) {
+      socketEmit('I2C:EC:RESULT', ec);
     });
   });
 
-  // this.loop(500, function(cancel) {
-  //   if (false) {
-  //     cancel();
-  //   }
-  //   socketEmit('ARDUINO:PING:CYCLE', new Date().getMilliseconds());
-  // });
-
+  mintyHydro.poll();
 
 });
 
-
-
-/* Communicate with the Atlas Tenticle Shield, Motor Shields, etc via I2C */
-sendI2C = function (channel, command, callback) {
-  log('I2C[' + channel + '] Sending Command: ' + command);
-  board.io.i2cWrite(channel, command);
-  board.wait(ATLAS_DELAY, function () {
-    board.i2cReadOnce(channel, ATLAS_BYTES_TO_READ, function (bytes) {
-      log('I2C[' + channel + '] Result: ' + decode(bytes));
-      callback(bytes);
-    });
-  });
-};
-
-/* rework of https://github.com/git-developer/RCSwitchFirmata */
-sendSerial = function (command, pin, val) {
-  var data = [];
-  data.push(SYSEX_START);
-  data.push(RCT_OUTPUT_DATA);
-  data.push(command);
-  data.push(pin);
-  if (val) {
-    if (Array.isArray(val)) {
-      for (var i = 0; i < val.length; i++) {
-        data.push(val[i]);
-      }
-    } else {
-      data.push(val & 0x7F);
-      val = val >> 7;
-      data.push(val & 0x7F);
-      val = val >> 7;
-      data.push(val & 0x7F);
-    }
-  }
-  data.push(SYSEX_END);
-  serial.write(data);
-};
-
-socketEmit = function (namespace, payload) {
-  socket.emit(namespace, payload);
-  log("EMIT@" + namespace, payload != undefined ? payload : "");
-};
-
-// Remote RF 433mhz Receivers
-sendRF = function (code) {
-  log('RF[' + code + ']');
-  sendSerial(RCT_OUTPUT_DETACH, RCT_OUT_PIN);
-  sendSerial(RCT_OUTPUT_ATTACH, RCT_OUT_PIN);
-  if (RCT_PULSE_LENGTH) {
-    sendSerial(RCT_OUTPUT_PULSE_LENGTH, RCT_OUT_PIN, RCT_PULSE_LENGTH);
-  }
-  let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(longToByteArray(code)));
-  sendSerial(RCT_OUTPUT_CODE_LONG, RCT_OUT_PIN, bytes);
-};
-
-// https://stackoverflow.com/questions/8482309/converting-javascript-integer-to-byte-array-and-back
-longToByteArray = function (long) {
-  var byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-  for (var index = 0; index < byteArray.length; index++) {
-    var byte = long & 0xff;
-    byteArray[index] = byte;
-    long = (long - byte) / 256;
-  }
-  return byteArray;
-};
-
-byteArrayToLong = function (byteArray) {
-  var value = 0;
-  for (var i = byteArray.length - 1; i >= 0; i--) {
-    value = (value * 256) + byteArray[i];
-  }
-  return value;
-};
-
-decode = function (bytes) {
-  return String.fromCharCode.apply(String, bytes);
+function sendRF(code) {
+  mintyIO.sendRF(code);
 }
 
-function stripNull(bytes) {
-  return bytes.filter(function (el) {
-    return el != null;
-  });
+function socketEmit(namespace, payload) {
+  mintyIO.socketEmit(namespace, payload);
 }
 
-function log(msg, args) {
-  if (config.debug) console.log(msg, args);
+function sendSerial(command, pin, val) {
+  mintyIO.sendSerial(command, pin, val);
+}
+
+function sendAtlasI2C(channel, command, callback) {
+  mintyIO.sendAtlasI2C(channel, command, callback);
+}
+
+function log(msg, payload) {
+  if (config.debug) console.log("[ARDUINO] " + msg,  payload != undefined ? payload : "");
 }

@@ -15,13 +15,13 @@ if (process.env.NODE_ENV === 'development') {
 
 const server = app.listen(process.env.PORT || config.port, function() {
   let port = process.env.PORT || config.port;
-  console.log('Socket server listening at: ' + port);
+  log('Socket server listening at: ' + port);
 });
 
 const io = require('socket.io')(server);
 io.of('/arduino').on('connection', (socket) => {
 
-  console.log('New connection to Arduino@' + socket.id);
+  log('New connection to ArduinoServer@' + socket.id);
 
   socket.on('HW:RELAY:ONE:ON', function() {
     socket.broadcast.emit('HW:RELAY:ONE:ON');
@@ -110,20 +110,20 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('I2C:TEMP:GET', function() {
     socket.broadcast.emit('I2C:TEMP:GET');
   });
-  socket.on('I2C:TEMP:RESULT', function(bytes) {
-    socket.broadcast.emit('I2C:TEMP:RESULT', bytes);
+  socket.on('I2C:TEMP:RESULT', function(temp) {
+    socket.broadcast.emit('I2C:TEMP:RESULT', temp);
   });
   socket.on('I2C:PH:GET', function() {
     socket.broadcast.emit('I2C:PH:GET');
   });
-  socket.on('I2C:PH:RESULT', function(bytes) {
-    socket.broadcast.emit('I2C:PH:RESULT', bytes);
+  socket.on('I2C:PH:RESULT', function(ph) {
+    socket.broadcast.emit('I2C:PH:RESULT', ph);
   });
   socket.on('I2C:EC:GET', function() {
     socket.broadcast.emit('I2C:EC:GET');
   });
-  socket.on('I2C:EC:RESULT', function(bytes) {
-    socket.broadcast.emit('I2C:EC:RESULT', bytes);
+  socket.on('I2C:EC:RESULT', function(ec) {
+    socket.broadcast.emit('I2C:EC:RESULT', ec);
   });
   socket.on('WLS:TANK:HIGH:OPEN', function() {
     socket.broadcast.emit('WLS:TANK:HIGH:OPEN', );
@@ -152,17 +152,11 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('RF:TEST:12V', function(bytes) {
     socket.broadcast.emit('RF:TEST:12V', bytes);
   });
-  socket.on('HTS:BME280:TEMP:CELSIUS', function(bytes) {
-    socket.broadcast.emit('HTS:BME280:TEMP:CELSIUS', bytes);
+  socket.on('HTS:BME280:TEMP:CELSIUS', function(temperature) {
+    socket.broadcast.emit('HTS:BME280:TEMP:CELSIUS', temperature);
   });
-  socket.on('HTS:BME280:HUMIDITY:RH', function(bytes) {
-    socket.broadcast.emit('HTS:BME280:HUMIDITY:RH', bytes);
-  });
-  socket.on('HTS:TH02:TEMP:CELSIUS', function(bytes) {
-    socket.broadcast.emit('HTS:TH02:TEMP:CELSIUS', bytes);
-  });
-  socket.on('HTS:TH02:HUMIDITY:RH', function(bytes) {
-    socket.broadcast.emit('HTS:TH02:HUMIDITY:RH', bytes);
+  socket.on('HTS:BME280:HUMIDITY:RH', function(humidity) {
+    socket.broadcast.emit('HTS:BME280:HUMIDITY:RH', humidity);
   });
   socket.on('PERI:PUMP:START', function(pump) {
     socket.broadcast.emit('PERI:PUMP:START', pump);
@@ -175,3 +169,7 @@ io.of('/arduino').on('connection', (socket) => {
   });
 
 });
+
+function log(msg, payload) {
+  console.log("[SERVER] " + msg, payload != undefined ? payload : "");
+}

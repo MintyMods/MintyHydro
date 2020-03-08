@@ -94,22 +94,22 @@ import { url } from '../config';
       getById("atlas_temp_reading").innerHTML = "???.???°C";
       socket.emit("I2C:TEMP:GET");
     }
-    socket.on('I2C:TEMP:RESULT', function(bytes) {
-      getById("atlas_temp_reading").innerHTML = String.fromCharCode.apply(String, bytes)  + "°C";
+    socket.on('I2C:TEMP:RESULT', function(temp) {
+      getById("atlas_temp_reading").innerHTML = temp  + "°C";
     });
     function atlasGetPh() {
       getById("atlas_ph_reading").innerHTML = "?.??? ph";
       socket.emit("I2C:PH:GET");
     }
-    socket.on('I2C:PH:RESULT', function(bytes) {
-      getById("atlas_ph_reading").innerHTML = String.fromCharCode.apply(String, bytes) + " ph";
+    socket.on('I2C:PH:RESULT', function(ph) {
+      getById("atlas_ph_reading").innerHTML = ph + " ph";
     });
     function atlasGetEc() {
       getById("atlas_ec_reading").innerHTML = "?.?? ppm";
       socket.emit("I2C:EC:GET");
     }
-    socket.on('I2C:EC:RESULT', function(bytes) {
-      getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes) + " ppm";
+    socket.on('I2C:EC:RESULT', function(ec) {
+      getById("atlas_ec_reading").innerHTML = ec + " ppm";
     });
 
     socket.on('WLS:TANK:HIGH:OPEN', function() {

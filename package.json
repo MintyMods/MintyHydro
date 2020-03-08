@@ -8,6 +8,7 @@
     "dev": "NODE_ENV=development node server.js",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "hydro": "concurrently --kill-others \"npm run dev\" \"node --inspect arduino.js\"",
+    "hydro-forever": "concurrently --kill-others \"forever start -a dev\" \"node --inspect arduino.js\"",
     "arduino:prod": "NODE_ENV=production node arduino.js"
   },
   "repository": "https://github.com/geradrum/johnny-five-led-sockets",

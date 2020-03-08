@@ -178,6 +178,7 @@ const RF = {
 
 }
 
+const ADAFRUIT_MOTOR_SHIELD_DRIVER = "PCA9685";
 const ADAFRUIT_MOTOR_SHIELD = {
   M1: { // Pump A : Flora Micra
     pins: {
@@ -186,7 +187,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 10
     },
     address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M2: { // Pump B
     pins: {
@@ -195,7 +196,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 11
     },
     address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M3: { // Pump C
     pins: {
@@ -204,7 +205,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 5
     },
     address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M4: { // Pump D
     pins: {
@@ -213,7 +214,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 4
     },
     address: I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M5: { // Pump E
     pins: {
@@ -222,7 +223,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 4
     },
     address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M6: { // Pump F
     pins: {
@@ -231,7 +232,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 10
     },
     address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M7: { // Pump G : PH Up
     pins: {
@@ -240,7 +241,7 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 11
     },
     address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: "PCA9685"
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
   M8: { // Pump H : PH Down
     pins: {
@@ -249,30 +250,30 @@ const ADAFRUIT_MOTOR_SHIELD = {
       cdir: 5
     },
     address: I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
-    controller: "PCA9685"
-  },
+    controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
+  }
 };
+
+const BME280_REQUIRED_DELAY_FOR_TEMP_READ = 1000;
 
 // Connect to the socket server
 const socket = io.connect(config.url);
-console.log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
-
-
+log("Minty-Hydro Arduino Controller starting - config URL: " + config.url);
 
 board.on('ready', function () {
-  console.log("Johnny-Five Board Init - " + config.serialPort);
+  log("Johnny-Five Board Init - " + config.serialPort);
     board.on("message", function(event) {
-      console.log("%s sent a 'fail' message: %s", event.class, event.message);
+      log("%s sent a 'fail' message: %s", event.class, event.message);
     });
     board.on("exit", function() {
-      console.log("################  Board Exit");
+      log("################  Board Exit");
     });
   
     // This will limit sampling of all Analog Input
     // and I2C sensors to once per second (1000 milliseconds)
-    board.samplingInterval(1000);
+  //  board.samplingInterval(1000);
     
-    board.i2cConfig(1000);
+  board.i2cConfig(BME280_REQUIRED_DELAY_FOR_TEMP_READ);
   
   /* BME 280 Temperature and Humidity */
   var bme280 = new five.Multi({
@@ -284,17 +285,6 @@ board.on('ready', function () {
     socketEmit('HTS:BME280:HUMIDITY:RH', this.hygrometer.relativeHumidity);
     socketEmit('HTS:BME280:TEMP:CELSIUS', this.thermometer.celsius);
   });
-
-  /* TH02+ Temperature and Humidity */
-  // var th02 = new five.Multi({
-  //   controller: "TH02",
-  //   address: I2C_GROVE_TEMP_HUMIDITY_ADDR    
-  // });
-
-  // th02.on("change", function() {
-  //   socketEmit('HTS:TH02:HUMIDITY:RH', this.hygrometer.relativeHumidity);
-  //   socketEmit('HTS:TH02:TEMP:CELSIUS', this.thermometer.celsius);
-  // });
   
   // Water Level Switches
   var waterLevelTankLow = new five.Switch({
@@ -330,7 +320,7 @@ board.on('ready', function () {
   /** floraMicro MUST be added first!! */
 
   socket.on('PERI:PUMP:START', function (pump) {
-    console.log("Starting Pump "+ pump.pumpId + " @ " + pump.pumpSpeed);
+    log("Starting Pump "+ pump.pumpId + " @ " + pump.pumpSpeed);
     switch (pump.pumpId) {
       case 'A' :
         pumpA.start(pump.pumpSpeed);
@@ -356,6 +346,9 @@ board.on('ready', function () {
       case 'H' :
         pumpH.start(pump.pumpSpeed);
         break;
+      case 'ALL' :
+        startAllPeriPumps(pump.pumpSpeed);
+        break;        
     }
   });
   socket.on('PERI:PUMP:STOP', function (pump) {
@@ -384,10 +377,21 @@ board.on('ready', function () {
       case 'H' :
         pumpH.stop();
         break;
+      case 'ALL' :
+        stopAllPeriPumps()
+        break; 
     }
   });
   socket.on('PERI:PUMP:START:ALL', function (pumpSpeed) {
-    console.log("Starting ALL pumps @ " + pumpSpeed);
+    startAllPeriPumps();
+  });
+
+  socket.on('PERI:PUMP:STOP:ALL', function () {
+    stopAllPeriPumps();
+  });
+
+  function startAllPeriPumps(pumpSpeed) {
+    log("Starting ALL pumps @ " + pumpSpeed);
     pumpA.start(pumpSpeed);
     pumpB.start(pumpSpeed);
     pumpC.start(pumpSpeed);
@@ -395,11 +399,11 @@ board.on('ready', function () {
     pumpE.start(pumpSpeed);
     pumpF.start(pumpSpeed);
     pumpG.start(pumpSpeed);
-    pumpH.start(pumpSpeed);
-  });
+    pumpH.start(pumpSpeed);  
+  };
 
-  socket.on('PERI:PUMP:STOP:ALL', function () {
-    console.log("Stopping ALL pumps");
+  function stopAllPeriPumps() {
+    log("Stopping ALL pumps");
     pumpA.stop();
     pumpB.stop();
     pumpC.stop();
@@ -408,9 +412,7 @@ board.on('ready', function () {
     pumpF.stop();
     pumpG.stop();
     pumpH.stop();
-  });
-
-
+  };
 
   socket.on('RF:WATER_PUMP:OFF', function () {
     sendRF(RF.WaterPump.off);
@@ -505,7 +507,6 @@ board.on('ready', function () {
   socket.on('RF:DRAIN_POTS:OFF', function () {
     sendRF(RF.DrainPots.off);
   });
-
   socket.on('HW:RELAY:ONE:ON', function () {
     relay1.on();
   });
@@ -548,31 +549,39 @@ board.on('ready', function () {
 
   socket.on('I2C:TEMP:GET', function () {
     sendI2C(I2C_ATLAS_TEMP_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:TEMP:RESULT', bytes);
+      socketEmit('I2C:TEMP:RESULT', stripNull(bytes));
     });
   });
   socket.on('I2C:PH:GET', function () {
     sendI2C(I2C_ATLAS_PH_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:PH:RESULT', bytes);
+      socketEmit('I2C:PH:RESULT', stripNull(bytes));
     });
   });
   socket.on('I2C:EC:GET', function () {
     sendI2C(I2C_ATLAS_EC_SENSOR_ADDR, ATLAS_READ_CHARCODE, function (bytes) {
-      socketEmit('I2C:EC:RESULT', bytes);
+      socketEmit('I2C:EC:RESULT', stripNull(bytes));
     });
   });
 
+  // this.loop(500, function(cancel) {
+  //   if (false) {
+  //     cancel();
+  //   }
+  //   socketEmit('ARDUINO:PING:CYCLE', new Date().getMilliseconds());
+  // });
 
 
 });
 
+
+
 /* Communicate with the Atlas Tenticle Shield, Motor Shields, etc via I2C */
 sendI2C = function (channel, command, callback) {
-  console.log('I2C[' + channel + '] Sending Command: ' + command);
+  log('I2C[' + channel + '] Sending Command: ' + command);
   board.io.i2cWrite(channel, command);
   board.wait(ATLAS_DELAY, function () {
     board.i2cReadOnce(channel, ATLAS_BYTES_TO_READ, function (bytes) {
-      console.log('I2C[' + channel + '] Result: ' + decode(bytes));
+      log('I2C[' + channel + '] Result: ' + decode(bytes));
       callback(bytes);
     });
   });
@@ -604,12 +613,12 @@ sendSerial = function (command, pin, val) {
 
 socketEmit = function (namespace, payload) {
   socket.emit(namespace, payload);
-  console.log("EMIT@" + namespace, payload != undefined ? payload : "");
+  log("EMIT@" + namespace, payload != undefined ? payload : "");
 };
 
 // Remote RF 433mhz Receivers
 sendRF = function (code) {
-  console.log('RF[' + code + ']');
+  log('RF[' + code + ']');
   sendSerial(RCT_OUTPUT_DETACH, RCT_OUT_PIN);
   sendSerial(RCT_OUTPUT_ATTACH, RCT_OUT_PIN);
   if (RCT_PULSE_LENGTH) {
@@ -640,4 +649,14 @@ byteArrayToLong = function (byteArray) {
 
 decode = function (bytes) {
   return String.fromCharCode.apply(String, bytes);
+}
+
+function stripNull(bytes) {
+  return bytes.filter(function (el) {
+    return el != null;
+  });
+}
+
+function log(msg, args) {
+  if (config.debug) console.log(msg, args);
 }

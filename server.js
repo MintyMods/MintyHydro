@@ -173,8 +173,5 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PERI:PUMP:STOP:ALL', function(pump) {
     socket.broadcast.emit('PERI:PUMP:STOP:ALL', pump);
   });
-  socket.on('PERI:PUMP:START:ALL', function(pump) {
-    socket.broadcast.emit('PERI:PUMP:START:ALL', pump);
-  });
 
 });

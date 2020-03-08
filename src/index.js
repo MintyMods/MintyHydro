@@ -91,22 +91,25 @@ import { url } from '../config';
       socket.emit("HW:RELAY:TWO:OFF");
     }
     function atlasGetTemp() {
+      getById("atlas_temp_reading").innerHTML = "???.???°C";
       socket.emit("I2C:TEMP:GET");
     }
     socket.on('I2C:TEMP:RESULT', function(bytes) {
-      getById("atlas_temp_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+      getById("atlas_temp_reading").innerHTML = String.fromCharCode.apply(String, bytes)  + "°C";
     });
     function atlasGetPh() {
+      getById("atlas_ph_reading").innerHTML = "?.??? ph";
       socket.emit("I2C:PH:GET");
     }
     socket.on('I2C:PH:RESULT', function(bytes) {
-      getById("atlas_ph_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+      getById("atlas_ph_reading").innerHTML = String.fromCharCode.apply(String, bytes) + " ph";
     });
     function atlasGetEc() {
+      getById("atlas_ec_reading").innerHTML = "?.?? ppm";
       socket.emit("I2C:EC:GET");
     }
     socket.on('I2C:EC:RESULT', function(bytes) {
-      getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes);
+      getById("atlas_ec_reading").innerHTML = String.fromCharCode.apply(String, bytes) + " ppm";
     });
 
     socket.on('WLS:TANK:HIGH:OPEN', function() {
@@ -142,27 +145,25 @@ import { url } from '../config';
       getById("WLS_RES_LOW").classList.add('close');         
     });
     socket.on('HTS:BME280:HUMIDITY:RH', function(bytes) {
-      getById("HTS_BME280_HUMIDITY").innerHTML = bytes + " RH%";
+      getById("HTS_BME280_HUMIDITY").innerHTML = bytes + "% RH";
     });
     socket.on('HTS:BME280:TEMP:CELSIUS', function(bytes) {
       getById("HTS_BME280_TEMP_CELSIUS").innerHTML = bytes + " °C";
     });
     
-    var pumpId = null;
+    var pumpId = "ALL";
 
     function pumpSelect() {
-      socket.emit("PERI:PUMP:STOP:ALL");
       pumpId = getById("PUMP_SELECT").value;
+      pumpStopAll();
     }
     function pumpStart() {
       var pumpSpeed = getById("PUMP_SPEED").value;
-      if (pumpId) socket.emit("PERI:PUMP:START", {pumpId, pumpSpeed});
+      pumpId = getById("PUMP_SELECT").value;
+      socket.emit("PERI:PUMP:START", {pumpId, pumpSpeed});
     }
     function pumpStop() {
-      if (pumpId) socket.emit("PERI:PUMP:STOP", pumpId);
-    }
-    function pumpStartAll() {
-      socket.emit("PERI:PUMP:START:ALL", getById("PUMP_SPEED").value);
+      socket.emit("PERI:PUMP:STOP", getById("PUMP_SELECT").value);
     }
     function pumpStopAll() {
       socket.emit("PERI:PUMP:STOP:ALL");
@@ -215,8 +216,6 @@ import { url } from '../config';
       addEvent("RELAY_TWO_OFF", relayTwoOff, evt);
       addEvent("PUMP_START", pumpStart, evt);
       addEvent("PUMP_STOP", pumpStop, evt);
-      addEvent("PUMP_START_ALL", pumpStartAll, evt);
-      addEvent("PUMP_STOP_ALL", pumpStopAll, evt);
     });
     addEvent("TEST_RF_12V", testRF, "change");
     addEvent("PUMP_SELECT", pumpSelect, "change");

@@ -4,6 +4,7 @@
   "description": "Minty Hydroponic Controller",
   "main": "src/index.js",
   "scripts": {
+    "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "dev": "NODE_ENV=development node mintyWebServer.js",
     "hydro": "concurrently --kill-others \"npm run dev\" \"node --inspect mintyArduino.js\"",
@@ -33,6 +34,7 @@
     "style-loader": "^1.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-middleware": "^3.7.2"
+    "webpack-dev-middleware": "^3.7.2",
+    "rimraf": "^3.0.2"
   }
 }

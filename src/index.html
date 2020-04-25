@@ -5,44 +5,48 @@
     <meta name='viewport' content='width=device-width,initial-scale=2.0'>
     <meta name='theme-color' content='var(--theme-primary)'>
     <title>Minty Hydro Controller</title>
-    
-    <!-- <link rel='manifest' href='fav-icon/manifest.json'>
-    <link rel='stylesheet' href='assets/fontawesome-pro/css/all.min.css'> -->
-    <title>Minty Hydro Server</title>
-    <style>
-    .on, .low {
-        background-color: aquamarine;        
-    }
-    .off {
-        background-color: tomato;
-    }
-    .high {
-        background-color: yellow;
-    }
-    .open {
-        background-color: limegreen;
-        font-weight: bold;
-    }
-    .close {
-        background-color: coral;
-        font-weight: bold;
-    }
-    button {
-        text-transform: capitalize;
-        color: black;
-        cursor: pointer;
-    }
-    .humidity {
-        font-weight: bold;
-        background-color: bisque;
-    }
-    .temperature {
-        font-weight: bold;
-        background-color:blueviolet;
-    }
-    </style>
+    <script type="text/javascript" src="/static/assets/dhtmlx/suite/suite.min.js"></script>
+    <link rel="stylesheet" href="/static/assets/dhtmlx/skins/material/dhtmlx.css">    
+    <link rel="stylesheet" href="/static/assets/dhtmlx/suite/suite.min.css">    
+    <link rel='stylesheet' href='/static/assets/fontawesome-pro/css/all.min.css'> 
+    <css>
+        .icon {
+            
+        }
+
+    </css>
 </head>
 <body>
+
+    <div id="sidebar_container"></div>
+    <div id="body_container">
+
+
+    </div>
+    <script>
+    var data = [
+        { id:'title', type: 'title', value: 'Minty Hydro' },
+        { id:'home',  type:'navItem', html:'<i class="fad fa-house"></i> Home' },
+        { id:'schedule', type:'navItem', html:'<i class="fad fa-calendar-alt"></i> Schedule' },
+        { id:'stats', type:'navItem', html:'<i class="fad fa-analytics"></i> Stats', count:10 },
+        { id:'pumps', type:'navItem', html:'<i class="fad fa-pump-soap"></i> Pumps'},
+        { id:'sensors', type:'navItem', html:'<i class="fad fa-sensor"></i> Sensors'},
+        { id:'controls', type:'navItem', html:'<i class="fad fa-gamepad-alt"></i> Controls'}
+    ];
+    
+    var sidebar = new dhx.Sidebar("sidebar_container", {
+        collapsed:false,
+        css: "",
+        minWidth:69,
+        width:150,
+        header:true
+    });
+
+    sidebar.data.parse(data);
+
+
+    </script>
+
     <label>ATLAS Shield</label>    
     <button class="reading" id="ATLAS_GET_TEMP">Get Temperature</button>
     <span id="atlas_temp_reading">???.???°C</span>

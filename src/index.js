@@ -1,6 +1,6 @@
 import '../style/style.css';
 import io from 'socket.io-client';
-import { url } from '../config';
+import { url } from '../mintyConfig';
 
 (function() {
     // Connect to the socket server
@@ -60,35 +60,18 @@ import { url } from '../config';
     function airIntakeFanHigh() {
       socket.emit("RF:AIR_INTAKE_FAN:HIGH");
     }
-    function airMovementFanSmallOff() {
-      socket.emit("RF:AIR_MOVEMENT_FAN_SMALL:OFF");
+    function airMovementFanOff() {
+      socket.emit("RF:AIR_MOVEMENT_FAN:OFF");
     }
-    function airMovementFanSmallOn() {
-      socket.emit("RF:AIR_MOVEMENT_FAN_SMALL:ON");
+    function airMovementFanOn() {
+      socket.emit("RF:AIR_MOVEMENT_FAN:ON");
     }
-    function airMovementFanLargeOff() {
-      socket.emit("RF:AIR_MOVEMENT_FAN_LARGE:OFF");
-    }
-    function airMovementFanLargeOn() {
-      socket.emit("RF:AIR_MOVEMENT_FAN_LARGE:ON");
-    }
+
     function lightOn() {
       socket.emit("RF:LIGHT:ON");
     }
     function lightOff() {
       socket.emit("RF:LIGHT:OFF");
-    }
-    function relayOneOn() {
-      socket.emit("HW:RELAY:ONE:ON");
-    }
-    function relayOneOff() {
-      socket.emit("HW:RELAY:ONE:OFF");
-    }
-    function relayTwoOn() {
-      socket.emit("HW:RELAY:TWO:ON");
-    }
-    function relayTwoOff() {
-      socket.emit("HW:RELAY:TWO:OFF");
     }
     function atlasGetTemp() {
       getById("atlas_temp_reading").innerHTML = "???.???°C";
@@ -151,20 +134,25 @@ import { url } from '../config';
       getById("HTS_BME280_TEMP_CELSIUS").innerHTML = bytes + " °C";
     });
     
-    var pumpId = "ALL";
+    var id = "";
 
     function pumpSelect() {
-      pumpId = getById("PUMP_SELECT").value;
+      id = getById("PUMP_SELECT").value;
       pumpStopAll();
     }
+
     function pumpStart() {
-      var pumpSpeed = getById("PUMP_SPEED").value;
-      pumpId = getById("PUMP_SELECT").value;
-      socket.emit("PERI:PUMP:START", {pumpId, pumpSpeed});
+      var speed = getById("PUMP_SPEED").value;
+      if (speed) {
+        id = getById("PUMP_SELECT").value;
+        socket.emit("PERI:PUMP:START", {id, speed});
+      }
     }
+    
     function pumpStop() {
       socket.emit("PERI:PUMP:STOP", getById("PUMP_SELECT").value);
     }
+    
     function pumpStopAll() {
       socket.emit("PERI:PUMP:STOP:ALL");
     }
@@ -201,24 +189,25 @@ import { url } from '../config';
       addEvent("AIR_INTAKE_FAN_OFF", airIntakeFanOff, evt);
       addEvent("AIR_INTAKE_FAN_LOW", airIntakeFanLow, evt);
       addEvent("AIR_INTAKE_FAN_HIGH", airIntakeFanHigh, evt);
-      addEvent("AIR_MOVEMENT_FAN_SMALL_OFF", airMovementFanSmallOff, evt);
-      addEvent("AIR_MOVEMENT_FAN_SMALL_ON", airMovementFanSmallOn, evt);
-      addEvent("AIR_MOVEMENT_FAN_LARGE_OFF", airMovementFanLargeOff, evt);
-      addEvent("AIR_MOVEMENT_FAN_LARGE_ON", airMovementFanLargeOn, evt);
+      addEvent("AIR_MOVEMENT_FAN_OFF", airMovementFanOff, evt);
+      addEvent("AIR_MOVEMENT_FAN_ON", airMovementFanOn, evt);
       addEvent("LIGHT_OFF", lightOff, evt);
       addEvent("LIGHT_ON", lightOn, evt);
       addEvent("ATLAS_GET_TEMP", atlasGetTemp, evt);
       addEvent("ATLAS_GET_PH", atlasGetPh, evt);
       addEvent("ATLAS_GET_EC", atlasGetEc, evt);
-      addEvent("RELAY_ONE_ON", relayOneOn, evt);
-      addEvent("RELAY_ONE_OFF", relayOneOff, evt);
-      addEvent("RELAY_TWO_ON", relayTwoOn, evt);
-      addEvent("RELAY_TWO_OFF", relayTwoOff, evt);
       addEvent("PUMP_START", pumpStart, evt);
       addEvent("PUMP_STOP", pumpStop, evt);
     });
     addEvent("TEST_RF_12V", testRF, "change");
     addEvent("PUMP_SELECT", pumpSelect, "change");
+    addEvent("PUMP_SELECT", pumpSelect, "change");
     // addEvent("TEST_RF_12V", testRF, "click");
   }
 )();
+function warn(msg, payload) {
+  console.warn("** ALERT ** [INDEX] " + msg,  payload != undefined ? payload : "");
+}
+function log(msg, payload) {
+  console.log("[INDEX] " + msg, payload != undefined ? payload : "");
+}

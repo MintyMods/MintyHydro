@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
   const webpackConfig = require('./webpack.config.js');
   app.use(webpackMiddleware(webpack(webpackConfig)));
 } else {
-  app.use(express.static('dist')); // Set 'dist' folder as static assets folder
+  app.use(express.static('src')); // Set 'dist' folder as static assets folder
 }
 
 const server = app.listen(process.env.PORT || config.port, function() {

@@ -9,6 +9,7 @@ const VENDOR_LIBS = [
 ];
 
 module.exports = {
+  mode : 'development',
   entry: {
     bundle: './src/index.js',
     vendor: VENDOR_LIBS
@@ -37,9 +38,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest']
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'

@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'development') {
   const webpackMiddleware = require('webpack-dev-middleware');
   const webpack = require('webpack');
   const webpackConfig = require('./webpack.config.js');
-  app.use('/static', express.static('static'))
+  app.use('/static', express.static('static'));
   app.use(webpackMiddleware(webpack(webpackConfig)));
 } else {
   app.use(express.static('src')); // Set 'dist' folder as static assets folder

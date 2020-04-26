@@ -2,51 +2,514 @@
 <html lang="en">
 <head>
     <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width,initial-scale=2.0'>
-    <meta name='theme-color' content='var(--theme-primary)'>
     <title>Minty Hydro Controller</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
     <script type="text/javascript" src="/static/assets/dhtmlx/suite/suite.min.js"></script>
-    <link rel="stylesheet" href="/static/assets/dhtmlx/skins/material/dhtmlx.css">    
+    <script type="text/javascript" src="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.js"></script>
     <link rel="stylesheet" href="/static/assets/dhtmlx/suite/suite.min.css">    
+    <link rel="stylesheet" href="/static/assets/dhtmlx/skins/material/dhtmlx.css">    
+    <link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.css">    
+    <link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css">    
     <link rel='stylesheet' href='/static/assets/fontawesome-pro/css/all.min.css'> 
-    <css>
-        .icon {
-            
-        }
-
-    </css>
 </head>
 <body>
-
-    <div id="sidebar_container"></div>
-    <div id="body_container">
-
-
-    </div>
-    <script>
-    var data = [
-        { id:'title', type: 'title', value: 'Minty Hydro' },
-        { id:'home',  type:'navItem', html:'<i class="fad fa-house"></i> Home' },
-        { id:'schedule', type:'navItem', html:'<i class="fad fa-calendar-alt"></i> Schedule' },
-        { id:'stats', type:'navItem', html:'<i class="fad fa-analytics"></i> Stats', count:10 },
-        { id:'pumps', type:'navItem', html:'<i class="fad fa-pump-soap"></i> Pumps'},
-        { id:'sensors', type:'navItem', html:'<i class="fad fa-sensor"></i> Sensors'},
-        { id:'controls', type:'navItem', html:'<i class="fad fa-gamepad-alt"></i> Controls'}
-    ];
+    <div id="layout_container"></div>
     
-    var sidebar = new dhx.Sidebar("sidebar_container", {
-        collapsed:false,
-        css: "",
-        minWidth:69,
-        width:150,
-        header:true
+    <script>
+    var navSelected = 'environment';    
+    var layout = new dhx.Layout("layout_container", {
+        height:'100vh',
+        width:'100vw',
+        padding: 0,
+    	rows: [
+			{ id: "toolbar_container", gravity:false, padding: 0 },
+            { cols: [ 
+                { id: "sidebar_container", gravity:true, css: "dhx_layout-cell--border_right" }, 
+                { id: "content_container", gravity:true, width:'100%', height:'100%' } 
+            ]}
+        ]
+    });
+    
+    var envLayout = new dhx.Layout(null, {
+        height:'100%',
+        width:'100%',
+    	rows: [
+            { id: "water_ph_container", gravity:true, padding: 0 },
+            { id: "water_ec_container", gravity:true, padding: 0, html:"<div>heellpo</div>" },
+            { id: "water_temp_container", gravity:true, padding: 0, html:"<div>heellpo</div>" },
+            { id: "air_temp_container", gravity:true, padding: 0, html:"<div>heellpo</div>" },
+            { id: "air_humidity_container", gravity:true, padding: 0, html:"<div>heellpo</div>" },
+            { id: "control_container", gravity:true, padding: 0, html:"<div>heellpo</div>" },
+            { cols: [ 
+                { id: "extract_fan_container", gravity:true, css: "dhx_layout-cell--border_right" }, 
+                { id: "intake_fan_container", gravity:true, width:'100%', height:'100%' } 
+            ]}
+        ]
     });
 
-    sidebar.data.parse(data);
+    // Toolbar Configuration 
+	var toolbar = new dhx.Toolbar("toolbar_container", {
+        css: "dhx_widget--border_bottom dhx_widget--bg_white",
+    });
+    toolbar.data.load('/static/json/toolbar.json');
+	toolbar.events.on("click", function(id) {
+        if (id === "toggle-sidebar") {
+            sidebar.toggle();
+		} else if (id === "toggle-sidebar") {
+            showNotifications();
+        }
+	});
+	layout.cell("toolbar_container").attach(toolbar);
 
+    // Scheduler Configuration
+    scheduler.config.header = [ "day","week","month","date","prev","today","next" ];
+    scheduler.config.multi_day = true;
+    scheduler.config.year_x = 2; //2 months in a row
+    scheduler.config.year_y = 3; //3 months in a column    
+    scheduler.locale.labels.year_tab ="Year";
+    scheduler.attachEvent("onSchedulerReady", function () {
+        requestAnimationFrame(function(){
+            scheduler.setCurrentView(new Date(), "month");
+            //scheduler.load("../common/events.json");
+        });
+    });
 
+    const getPumpIcon = function(item) {
+        if (item.active) {
+            return '<i class="fal fa-cog fa-spin pump-running"></i>';
+        } else if (item.state == 'auto') {
+            return '<i class="fal fa-faucet-drip pump-stopped"></i>';
+        } else {
+            return '<i class="fal fa-faucet pump-stopped dhx_form-group--disabled"></i>';
+        }
+    }
+
+    const pumpTemplate = function(item) {
+        var item = '<div class="' + (item.active ? 'pump-running' : 'pump-stopped') + (item.state == 'off' ? ' dhx_form-group--disabled' : '') + '">' +
+            getPumpIcon(item) + '<span class="title">  ' + item.value + '</span></div>';
+        return item;
+    }
+    var pumpsList = new dhx.List(null, {
+        template: pumpTemplate,
+        itemHeight: 52,
+        height: "100%",
+        dragMode: "both"
+    });
+    pumpsList.data.load('/static/json/pumps.json');
+    pumpsList.data.map(function (item, i) {
+        if (item.active) {
+            pumpsList.data.update(item.id, { css: "pump-running" });
+        } else {
+            pumpsList.data.update(item.id, { css: "pump-stopped" });
+        }
+    });
+
+	var controlsForm = new dhx.Form(null, {
+        title:'Manual Control Over Rides',
+        html:'<b>BOLD</b>',
+        padding:2,
+        rows: [{
+            title: "Grow Light:",
+            align: "around",
+            css: "dhx_layout-cell--bordered",
+            rows:[{
+                title: "Grow Light:",
+                    type: "radioGroup",
+                    name: "light",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Light Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Light On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Brightness",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 0,
+                    max: 100,
+                    value:90,
+                    majorTick:5,
+                    tick:5
+                }
+            ]
+        },
+        {
+            title: "Air Pump:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "airpump",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Air Pump Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Air Pump On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+                        ]
+                    }
+                }
+            ]
+        },        
+        {
+            title: "Extract Fan:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "extract",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Extract Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Extract On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Extract Fan Speed",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 20,
+                    max: 100,
+                    value:90,
+                    majorTick:5,
+                    tick:2
+                }
+            ]
+        },
+        {
+            title: "Intake Fan:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "intake",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Intake Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Intake Low",
+                                labelPosition: "left",
+                                value: "low"
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Intake High",
+                                labelPosition: "left",
+                                value: "high"
+                            },
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            title: "Humidifier:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "humidifier",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Humidifier Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Humidifier Low",
+                                labelPosition: "left",
+                                value: "low"
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Humidifier High",
+                                labelPosition: "left",
+                                value: "high"
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Relative Humidity",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 30,
+                    max: 80,
+                    value:65,
+                    majorTick:5,
+                    tick:1                      
+                }    
+            ]
+        },        
+        {
+            title: "De-Humidifier:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "dehumidifier",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "De-Humidifier Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "De-Humidifier On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Relative Humidity",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 30,
+                    max: 80,
+                    value:0,
+                    majorTick:5,
+                    tick:1                      
+                }                
+            ]
+        },        
+        {
+            title: "Air Heater:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "airheater",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Air Heater Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Air Heater On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Air Temp ℃",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 20,
+                    max: 30,
+                    value:24 ,
+                    majorTick:5,
+                    tick:1                          
+                }
+            ]
+        },
+        {
+            title: "Water Heater:",
+            align: "around",
+            css: "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+            rows:[{
+                    type: "radioGroup",
+                    name: "waterheater",
+                    options: {
+                        padding: "10px",
+                        align: "center",
+                        cols:[
+                            {
+                                type: "radioButton",
+                                label: "Scheduled",
+                                labelPosition: "left",
+                                value: "auto",
+                                checked: true,
+                            },                                            
+                            {
+                                type: "radioButton",
+                                label: "Water Heater Off",
+                                labelPosition: "left",
+                                value: "off",
+                            },
+                            {
+                                type: "radioButton",
+                                label: "Water Heater On",
+                                labelPosition: "left",
+                                value: "on"
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: "slider",
+                    label: "Water Temp ℃",
+                    labelInline: true,
+                    labelWidth: "150px",
+                    width:'90%',
+                    min: 18,
+                    max: 26,
+                    value:22,
+                    majorTick:5,
+                    tick:1                        
+                }
+            ]
+        }
+
+    ]
+    });
+    
+    // Side Bar Navigation
+    var sidebar = new dhx.Sidebar("sidebar_container", { width:160, collapsed:true });
+    sidebar.data.load('/static/json/navigation.json');
+    sidebar.events.on("click", function(id){
+        console.log("Sidebar clikced " + id);
+        if (id === "schedule") {
+            layout.cell("content_container").attach(scheduler);
+		} else if (id === "environment") {
+            layout.cell("content_container").attach(envLayout);
+		} else if (id === "pumps") {
+            layout.cell("content_container").attach(pumpsList);
+        } else if (id === "controls") {
+            var html = "<p>Hello world</p>";
+            layout.cell("content_container").attach(controlsForm);
+        } else if (id === "settings") {
+            var html = "<p>Hello world</p>";
+            layout.cell("content_container").attachHTML(html);
+        } else {
+            var html = "<p>Failed</p>";
+            layout.cell("content_container").attachHTML(html);   
+        }       
+
+    });
+    layout.cell("sidebar_container").attach(sidebar);
+
+ 
+    function showNotifications() {
+        console.log("SHow notifications");
+    }
+    
     </script>
-
+<!-- 
     <label>ATLAS Shield</label>    
     <button class="reading" id="ATLAS_GET_TEMP">Get Temperature</button>
     <span id="atlas_temp_reading">???.???°C</span>
@@ -132,6 +595,6 @@
     <br/>
     <i class="fal fa-dewpoint"></i>
     <button class="off" id="DEHUMIDIFIER_OFF">Dehumidifier Off</button>
-    <button class="on" id="DEHUMIDIFIER_ON">Dehumidifier On</button>
+    <button class="on" id="DEHUMIDIFIER_ON">Dehumidifier On</button> -->
 </body>
 </html>

@@ -9,4 +9,18 @@ body {
     background-color:darkmagenta;
     color: black;
 }
-
+.icon::after {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+.pump-running i {
+    /* color:green; */
+    font-size: 25px;
+}
+.pump-stopped i {
+    /* color:grey; */
+    font-size: 20px;
+}

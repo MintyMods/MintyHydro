@@ -1,0 +1,80 @@
+[
+    {
+      "value": "Recirculating",
+      "id": "RES",
+      "active": true,
+      "state": "auto"
+    },
+    {
+      "value": "Fill",
+      "id": "FILL",
+      "active": false,
+      "state": "auto"
+    },
+    {
+      "value": "Drain",
+      "id": "DRAIN",
+      "active": false,
+      "state": "auto"
+    },
+    {
+      "value": "Drip Feed",
+      "id": "DRIP",
+      "active": false,
+      "state": "on"
+    },
+    {
+      "value": "P.H. Up Dosing",
+      "id": "PHUP",
+      "active": true,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "P.H. Down Dosing",
+      "id": "PHDOWN",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "Cal Mag Dosing",
+      "id": "CALMAG",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "HydroGuard Dosing",
+      "id": "HYDROGUARD",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "Flora Micro Dosing",
+      "id": "MICRO",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "Flora Grow Dosing",
+      "id": "GROW",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "Flora Bloom Dosing",
+      "id": "BLOOM",
+      "active": false,
+      "state": "auto",
+      "speed": 127
+    },
+    {
+      "value": "Spare - Currently not used",
+      "id": "SPARE",
+      "state": "off"
+    }
+  ]

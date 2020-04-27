@@ -83,21 +83,21 @@
     scheduler.config.header = [ "day","week","month","timeline","date","prev","today","next" ];
     scheduler.config.multi_day = true;
     var automation = [
-    { key: 1, label: 'Grow Light' },
-    { key: 2, label: 'Extract Fan' },
-    { key: 3, label: 'Intake Fan' },
-    { key: 4, label: 'Oscillating Fan'},
-    { key: 5, label: 'Water Heater'},
-    { key: 6, label: 'Air Heater'},
-    { key: 7, label: 'Humidifier'},
-    { key: 8, label: 'De-Humidifier'},
-    { key: 9, label: 'Air Pump'},
-    { key: 10, label: 'Recirculating Pump'},
-    { key: 11, label: '-- Res Change'},
-    { key: 12, label: '-- Nutrient Dose'}
+    { key: 1, color:'gold', label: 'Grow Light' },
+    { key: 2, color:'DimGrey', label: 'Extract Fan' },
+    { key: 3, color:'deepskyblue', label: 'Intake Fan' },
+    { key: 4, color:'fuchsia', label: 'Oscillating Fan'},
+    { key: 5, color:'coral', label: 'Water Heater'},
+    { key: 6, color:'HotPink', label: 'Air Heater'},
+    { key: 7, color:'indigo', label: 'Humidifier'},
+    { key: 8, color:'MediumSlateBlue', label: 'De-Humidifier'},
+    { key: 9, color:'yellowgreen', label: 'Air Pump'},
+    { key: 10, color:'Sienna', label: 'Recirculating Pump'},
+    { key: 11, color:'darkred', label: '-- Res Change'},
+    { key: 12, color:'Chartreuse', label: '-- Nutrient Dose'}
 ];
 
-scheduler.locale.labels.timeline_tab ="Timeline";
+scheduler.locale.labels.timeline_tab ="Grow";
 scheduler.createTimelineView({
      name:"timeline",
      x_unit:"minute", // measuring unit of the X-Axis.
@@ -112,9 +112,17 @@ scheduler.createTimelineView({
 });
 
     scheduler.config.lightbox.sections=[
-        { type: "select", id: "automation", name: "Control", options: automation },        
+        { type: "select", id: "automation", map_to:"automation", name: "Control", options: automation },        
         {name:"time", height:72, type:"time", map_to:"auto"}
-    ];    
+    ];  
+    scheduler.templates.event_bar_text = function(start,end,event){
+        if (event.automation) {
+            event.color = automation[event.automation -1].color;
+            return automation[event.automation -1].label + " Schedule";
+        } else {
+            return  "New Schedule";
+        }
+    };
     scheduler.attachEvent("onSchedulerReady", function () {
         requestAnimationFrame(function(){
             scheduler.setCurrentView(new Date(), "month");

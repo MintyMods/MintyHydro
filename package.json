@@ -15,6 +15,7 @@
   "author": "Rob Gregory [Minty]",
   "license": "MIT",
   "dependencies": {
+    "copy-webpack-plugin": "^5.1.1",
     "encoder7bit": "^1.0.0",
     "express": "^4.17.1",
     "firmata": "^2.2.0",

@@ -1,0 +1,76 @@
+[
+    {
+       "id":"environment",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-cannabis",
+       "value":"Environment"
+    },
+    {
+       "id":"schedule",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-calendar-alt",
+       "value":"Schedule"
+    },
+    {
+       "id":"controls",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-hand-holding-seedling",
+       "value":"Controls"
+    },
+    {
+       "id":"pumps",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-faucet-drip",
+       "value":"Pumps"
+    },
+    {
+       "id":"sensors",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-sensor",
+       "value":"Sensors"
+    },
+    {
+       "id":"dosing",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-seedling",
+       "value":"Nutrients"
+    },
+    {
+       "id":"stats",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "disabled":true,
+       "readonly":true,
+       "twoState":true,
+       "icon":"fal fa-analytics",
+       "value":"Statistics"
+    },
+    {
+       "id":"settings",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-sliders-h-square",
+       "value":"Settings"
+    }
+ ]

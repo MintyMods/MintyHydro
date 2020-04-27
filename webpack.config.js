@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Separate all the vendor libs into a different js file
 const VENDOR_LIBS = [
@@ -42,6 +43,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
-    new ExtractTextPlugin("styles.css")
+    new ExtractTextPlugin("styles.css"),
+    new CopyWebpackPlugin([
+      { from: 'static' }
+  ])
   ]
 };

@@ -45,6 +45,26 @@
        "value":"Sensors"
     },
     {
+       "id":"dosing",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "twoState":true,
+       "icon":"fal fa-seedling",
+       "value":"Nutrients"
+    },
+    {
+       "id":"stats",
+       "type":"button",
+       "active":false,
+       "group":"nav",
+       "disabled":true,
+       "readonly":true,
+       "twoState":true,
+       "icon":"fal fa-analytics",
+       "value":"Statistics"
+    },
+    {
        "id":"settings",
        "type":"button",
        "active":false,
@@ -52,14 +72,5 @@
        "twoState":true,
        "icon":"fal fa-sliders-h-square",
        "value":"Settings"
-    },
-    {
-       "id":"stats",
-       "type":"button",
-       "active":false,
-       "group":"nav",
-       "twoState":true,
-       "icon":"fal fa-analytics",
-       "value":"Statistics"
     }
  ]

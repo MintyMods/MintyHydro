@@ -1,36 +1,43 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Minty Hydro Controller</title><meta name="viewport" content="width=device-width,initial-scale=1"><script src="/static/assets/dhtmlx/suite/suite.min.js"></script><script src="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.js"></script><link rel="stylesheet" href="/static/assets/dhtmlx/suite/suite.min.css"><link rel="stylesheet" href="/static/assets/dhtmlx/skins/material/dhtmlx.css"><link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.css"><link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css"><link rel="stylesheet" href="/static/assets/fontawesome-pro/css/all.min.css"><link href="/styles.css" rel="stylesheet"></head><body><div id="layout_container"></div><script>var navSelected = 'environment';    
-    var sidebarNavItems = [
-        { id:'environment', type:'button', active:('environment'==navSelected), group:'nav', twoState:true, icon:'fal fa-cannabis', value:'Environment' },
-        { id:'schedule', type:'button', active:('schedule'==navSelected), group:'nav', twoState:true, icon:'fal fa-calendar-alt', value:'Schedule' },
-        { id:'controls', type:'button', active:('controls'==navSelected), group:'nav', twoState:true, icon:'fal fa-hand-holding-seedling', value:'Controls' },
-        { id:'pumps', type:'button', active:('pumps'==navSelected), group:'nav', twoState:true, icon:'fal fa-faucet-drip', value:'Pumps' },
-        { id:'sensors', type:'button', active:('sensors'==navSelected), group:'nav', twoState:true, icon:'fal fa-sensor', value:'Sensors' },
-        { id:'settings', type:'button', active:('settings'==navSelected), group:'nav', twoState:true, icon:'fal fa-sliders-h-square', value:'Settings' },
-        { id:'stats', type:'button', active:('stats'==navSelected), group:'nav', twoState:true, icon:'fal fa-analytics', value:'Statistics' },
-    ];
-    var layout = new dhx.Layout("layout_container", {
-        height:'100vh',
-        width:'100vw',
-        padding: 0,
-    	rows: [
-			{ id: "toolbar_container", gravity:false, padding: 0 },
-            { cols: [ 
-                { id: "sidebar_container", gravity:true, css: "dhx_layout-cell--border_right" }, 
-                { id: "content_container", gravity:true, width:'100%', height:'100%' } 
-            ]}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Minty Hydro Controller</title><meta name="viewport" content="width=device-width,initial-scale=1"><script src="/static/assets/dhtmlx/suite/suite.min.js"></script><script src="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.js"></script><script src="/static/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_timeline.js"></script><script src="/static/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_treetimeline.js"></script><script src="/static/scripts/minty_utility_functions.js"></script><link rel="stylesheet" href="/static/assets/dhtmlx/suite/suite.min.css"><link rel="stylesheet" href="/static/assets/dhtmlx/skins/material/dhtmlx.css"><link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler.css"><link rel="stylesheet" href="/static/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css"><link rel="stylesheet" href="/static/assets/fontawesome-pro/css/all.min.css"><link href="/styles.css" rel="stylesheet"></head><body><div id="layout_container"></div><script>var navSelected = 'controls';    
+
+    var layout= new dhx.Layout("layout_container", {
+        "height":"100vh",
+        "width":"100vw",
+        "padding":0,
+        "rows":[
+        {
+            "id":"toolbar_container",
+            "gravity":false,
+            "padding":0
+        },
+        {
+            "cols":[
+                {
+                    "id":"sidebar_container",
+                    "gravity":true,
+                    "css":"dhx_layout-cell--border_right"
+                },
+                {
+                    "id":"content_container",
+                    "gravity":true,
+                    "width":"100%",
+                    "height":"100%"
+                }
+            ]
+        }
         ]
     });
-    
+        
     var envLayout = new dhx.Layout(null, {
         height:'100%',
         width:'100%',
     	rows: [
             { id: "water_ph_container", gravity:true, padding: 0 },
-            { id: "water_ec_container", gravity:true, padding: 0 },
-            { id: "water_temp_container", gravity:true, padding: 0 },
-            { id: "air_temp_container", gravity:true, padding: 0 },
-            { id: "air_humidity_container", gravity:true, padding: 0 },
-            { id: "control_container", gravity:true, padding: 0 },
+            { id: "water_ec_container", gravity:true, padding: 0, html:"<div>@todo Current pH & chart showing history will go here!</div>" },
+            { id: "water_temp_container", gravity:true, padding: 0, html:"<div>@todo Current EC & chart showing history will go here!</div>" },
+            { id: "air_temp_container", gravity:true, padding: 0, html:"<div>@todo Current TEMP & chart showing history will go here!</div>" },
+            { id: "air_humidity_container", gravity:true, padding: 0, html:"<div>@todo Current Humidity & chart showing history will go here!</div>" },
+            { id: "control_container", gravity:true, padding: 0, html:"<div>@todo Show Running Status of all Controls Here as Icons</div>" },
             { cols: [ 
                 { id: "extract_fan_container", gravity:true, css: "dhx_layout-cell--border_right" }, 
                 { id: "intake_fan_container", gravity:true, width:'100%', height:'100%' } 
@@ -38,74 +45,11 @@
         ]
     });
 
-
-var html = "<p>Hello world</p>";
-envLayout.cell("water_ec_container").attachHTML(html);
-
-    var phChart = new dhx.Chart("chart", {
-                type: "line",
-                scales: {
-                    "bottom" : {
-                        text: "P.H."
-                    },
-                    "left" : {
-                        maxTicks: 10,
-                        max: 100,
-                        min: 0
-                    }
-                },
-                series: [
-                    {
-                        id: "ph",
-                        value: "ph",
-                        color: "#5E83BA",                       
-                        fill: "#5E83BA"                     
-                    }
-                ]
-            });
-
-    var dataset = [
-    { "month": "`02", "ph": 5.0},
-    { "month": "`03", "ph": 6.0},
-    { "month": "`04", "ph": 5.1},
-    { "month": "`05", "ph": 5.2},
-    { "month": "`06", "ph": 5.3},
-    { "month": "`07", "ph": 5.5},
-    { "month": "`08", "ph": 5.4},
-    { "month": "`09", "ph": 5.3}
-    ];
-    phChart.data.parse(dataset);            
-    envLayout.cell("water_ph_container").attach(phChart);
-
     // Toolbar Configuration 
 	var toolbar = new dhx.Toolbar("toolbar_container", {
         css: "dhx_widget--border_bottom dhx_widget--bg_white",
-		data: [
-			{
-				type: "button",
-				color: "secondary",
-				view: "link",
-				circle: true,
-				id: "toggle-sidebar",
-				icon: "far fa-bars",
-			},
-			{
-				type: "title",
-				value: "Minty Hydro"
-			},
-            { type: "spacer" },
-            {
-				type: "button",
-				color: "secondary",
-				view: "link",
-				circle: true,
-				id: "notifications",
-				icon: "fal fa-bell-on",
-                count:2,
-                countColor:'primary'
-            }
-		]
-	});
+    });
+    toolbar.data.load('/static/json/toolbar.json');
 	toolbar.events.on("click", function(id) {
         if (id === "toggle-sidebar") {
             sidebar.toggle();
@@ -116,67 +60,92 @@ envLayout.cell("water_ec_container").attachHTML(html);
 	layout.cell("toolbar_container").attach(toolbar);
 
     // Scheduler Configuration
-    scheduler.config.header = [ "day","week","month","date","prev","today","next" ];
+    scheduler.config.header = [ "day","week","month","timeline","date","prev","today","next" ];
     scheduler.config.multi_day = true;
-    scheduler.config.year_x = 2; //2 months in a row
-    scheduler.config.year_y = 3; //3 months in a column    
-    scheduler.locale.labels.year_tab ="Year";
+    var automation = [
+    { key: 1, label: 'Grow Light' },
+    { key: 2, label: 'Extract Fan' },
+    { key: 3, label: 'Intake Fan' },
+    { key: 4, label: 'Oscillating Fan'},
+    { key: 5, label: 'Water Heater'},
+    { key: 6, label: 'Air Heater'},
+    { key: 7, label: 'Humidifier'},
+    { key: 8, label: 'De-Humidifier'},
+    { key: 9, label: 'Air Pump'},
+    { key: 10, label: 'Recirculating Pump'},
+    { key: 11, label: '-- Res Change'},
+    { key: 12, label: '-- Nutrient Dose'}
+];
+
+scheduler.locale.labels.timeline_tab ="Timeline";
+scheduler.createTimelineView({
+     name:"timeline",
+     x_unit:"minute", // measuring unit of the X-Axis.
+     x_date:"%H:%i",  // date format of the X-Axis
+     x_step:30,       // X-Axis step in 'x_unit's
+     x_size:24,       // X-Axis length specified as the total number of 'x_step's
+     x_start:16,      // X-Axis offset in 'x_unit's
+     x_length:48,     // number of 'x_step's that will be scrolled at a time
+     y_unit: automation,
+     y_property:"section_id", // mapped data property
+     render:"days"             // view mode
+});
+
+    scheduler.config.lightbox.sections=[
+        { type: "select", id: "automation", name: "Control", options: automation },        
+        {name:"time", height:72, type:"time", map_to:"auto"}
+    ];    
     scheduler.attachEvent("onSchedulerReady", function () {
         requestAnimationFrame(function(){
             scheduler.setCurrentView(new Date(), "month");
-            //scheduler.load("../common/events.json");
+            //scheduler.load('/static/json/scheduler.json');
         });
     });
 
-    const getPumpIcon = function(item) {
-        if (item.active) {
-            return '<i class="fal fa-cog fa-spin pump-running"></i>';
-        } else if (item.state == 'auto') {
-            return '<i class="fal fa-faucet-drip pump-stopped"></i>';
-        } else {
-            return '<i class="fal fa-faucet pump-stopped dhx_form-group--disabled"></i>';
-        }
-    }
+    var pumpsForm;
+    loadJSON('/static/json/pumps.json', function(response) {
+        pumpsForm = new dhx.Form(null, JSON.parse(response));
+    });
 
-    const pumpTemplate = function(item) {
-        var item = '<div class="' + (item.active ? 'pump-running' : 'pump-stopped') + (item.state == 'off' ? ' dhx_form-group--disabled' : '') + '">' +
-            getPumpIcon(item) + '<span class="title">  ' + item.value + '</span></div>';
-        return item;
-    }
-    var pumpsList = new dhx.List(null, {
-        template: pumpTemplate,
-        itemHeight: 52,
-        height: "100%",
-        dragMode: "both"
+    var controlsForm;
+    loadJSON('/static/json/controls.json', function(response) {
+        controlsForm = new dhx.Form(null, JSON.parse(response));
     });
-    var pumpData = [ /* State=off|on|auto */
-        { value:"Recirculating", id:"RES", active:true, state:'auto' },
-        { value:"Fill", id:"FILL", active:false, state:'auto' },
-        { value:"Drain", id:"DRAIN", active:false, state:'auto' },
-        { value:"Drip Feed", id:"DRIP", active:false, state:'on' },
-        { value:"P.H. Up Dosing", id:"PHUP", active:true, state:'auto', speed:127},
-        { value:"P.H. Down Dosing", id:"PHDOWN", active:false, state:'auto', speed:127},
-        { value:"Cal Mag Dosing", id:"CALMAG", active:false, state:'auto', speed:127},
-        { value:"HydroGuard Dosing", id:"HYDROGUARD", active:false, state:'auto', speed:127},
-        { value:"Flora Micro Dosing", id:"MICRO", active:false, state:'auto', speed:127},
-        { value:"Flora Grow Dosing", id:"GROW", active:false, state:'auto', speed:127},
-        { value:"Flora Bloom Dosing", id:"BLOOM", active:false, state:'auto', speed:127},
-        { value:"Spare - Currently not used", id:"SPARE", state:'off'}
-    ]
-    pumpsList.data.parse(pumpData);
-    pumpsList.data.map(function (item, i) {
-        if (item.active) {
-            pumpsList.data.update(item.id, { css: "pump-running" });
-        } else {
-            pumpsList.data.update(item.id, { css: "pump-stopped" });
-        }
+    
+    var sensorsForm;
+    loadJSON('/static/json/sensors.json', function(response) {
+        sensorsForm = new dhx.Form(null, JSON.parse(response));
     });
+
+    var configForm;
+    loadJSON('/static/json/config.json', function(response) {
+        configForm = new dhx.Form(null, JSON.parse(response));
+    });
+
+    var dosingGrid = new dhx.Grid(null, {
+        columns: [
+            { id: "0", width:120, type:'string', header: [{ text: "Stage:" }], footer: [{ text: "Total:" }] },
+            { id: "1", width:120, type:'number', header: [{ text:"Seedling" }], footer: [{ content: "sum" }] },
+            { id: "2", width:120, type:'number', header: [{ text: "Early Growth" }], footer: [{ content: "sum" }] },
+            { id: "3", width:120, type:'number', header: [{ text: "Late Growth" }], footer: [{ content: "sum" }] },
+            { id: "4", width:120, type:'number', header: [{ text: "Transition" }], footer: [{ content: "sum" }] },
+            { id: "5", width:120, type:'number', header: [{ text: "Early Bloom" }], footer: [{ content: "sum" }] },
+            { id: "6", width:120, type:'number', header: [{ text: "Mid Bloom" }], footer: [{ content: "sum" }] },
+            { id: "7", width:120, type:'number', header: [{ text: "Late Bloom" }], footer: [{ content: "sum" }] },
+            { id: "8", width:120, type:'number', header: [{ text: "Ripen" }], footer: [{ content: "sum" }] },
+            { id: "9", width:120, type:'number', header: [{ text: "Flush" }], footer: [{ content: "sum" }] }
+        ],
+        autoWidth:false,
+        editable:true,
+        sortable:true,
+        resizable: true,
+        splitAt:1, 
+    });
+    dosingGrid.data.load('/static/json/dosing.json');
 
     // Side Bar Navigation
     var sidebar = new dhx.Sidebar("sidebar_container", { width:160, collapsed:true });
-    // sidebar.data.parse(sidebarNavItems);
-    debugger
-    sidebar.data.load('/static/assets/json/navigation.json');
+    sidebar.data.load('/static/json/sidebar.json');
     sidebar.events.on("click", function(id){
         console.log("Sidebar clikced " + id);
         if (id === "schedule") {
@@ -184,19 +153,16 @@ envLayout.cell("water_ec_container").attachHTML(html);
 		} else if (id === "environment") {
             layout.cell("content_container").attach(envLayout);
 		} else if (id === "pumps") {
-            layout.cell("content_container").attach(pumpsList);
+            layout.cell("content_container").attach(pumpsForm);
         } else if (id === "controls") {
-            var html = "<p>Hello world</p>";
-            layout.cell("content_container").attachHTML(html);
+            layout.cell("content_container").attach(controlsForm);
+        } else if (id === "sensors") {
+            layout.cell("content_container").attach(sensorsForm);
+        } else if (id === "dosing") {
+            layout.cell("content_container").attach(dosingGrid);
+        } else if (id === "settings") {
+            layout.cell("content_container").attach(configForm);
         } else {
-            var html = "<p>Failed</p>";
-            layout.cell("content_container").attachHTML(html);   
         }       
-
     });
-    layout.cell("sidebar_container").attach(sidebar);
-
- 
-    function showNotifications() {
-        console.log("SHow notifications");
-    }</script><script src="/bundle.ea1be58a28296e4a9123.js"></script><script src="/vendor.e31330bb46f372560e62.js"></script></body></html>
+    layout.cell("sidebar_container").attach(sidebar);</script><script src="/bundle.ea1be58a28296e4a9123.js"></script><script src="/vendor.e31330bb46f372560e62.js"></script></body></html>

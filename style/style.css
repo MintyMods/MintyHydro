@@ -16,10 +16,15 @@ body {
     -webkit-font-smoothing: antialiased;
   }
 .pump-running i {
-    /* color:green; */
     font-size: 25px;
 }
 .pump-stopped i {
-    /* color:grey; */
     font-size: 20px;
+}
+
+.dhx_layout-cell-header--row  {
+    background-color:#f7f7f7;
+}
+.dhx_layout-cell-header__title {
+    color: black !important;   
 }

@@ -6,8 +6,7 @@ body {
     margin: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    background-color:darkmagenta;
-    color: black;
+    background-color: white;
 }
 .icon::after {
     display: inline-block;
@@ -17,10 +16,15 @@ body {
     -webkit-font-smoothing: antialiased;
   }
 .pump-running i {
-    /* color:green; */
     font-size: 25px;
 }
 .pump-stopped i {
-    /* color:grey; */
     font-size: 20px;
+}
+
+.dhx_layout-cell-header--row  {
+    background-color:#f7f7f7;
+}
+.dhx_layout-cell-header__title {
+    color: black !important;   
 }

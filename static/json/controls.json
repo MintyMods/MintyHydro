@@ -1,0 +1,415 @@
+{
+    "title":"Manual Control Over Rides",
+    "padding":10,
+    "rows":[
+       {
+          "title":"Grow Light:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered",
+          "rows":[
+             {
+                "title":"Grow Light:",
+                "type":"radioGroup",
+                "name":"light",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Light Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Light On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Brightness %",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":0,
+                "max":100,
+                "value":90,
+                "majorTick":5,
+                "tick":5
+             }
+          ]
+       },
+       {
+          "title":"Air Pump:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"airpump",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Air Pump Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Air Pump On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             }
+          ]
+       },
+       {
+          "title":"Extract Fan:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"extract",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Extract Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Extract On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Extract Fan Speed",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":20,
+                "max":100,
+                "value":90,
+                "majorTick":5,
+                "tick":2
+             }
+          ]
+       },
+       {
+          "title":"Intake Fan:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"intake",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Intake Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Intake Low",
+                         "labelPosition":"left",
+                         "value":"low"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Intake High",
+                         "labelPosition":"left",
+                         "value":"high"
+                      }
+                   ]
+                }
+             }
+          ]
+       },
+       {
+          "title":"Oscillating Fan:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"movementfan",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Oscillating Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Oscillating On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             }
+          ]
+       },
+       {
+          "title":"Humidifier:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"humidifier",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Humidifier Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Humidifier Low",
+                         "labelPosition":"left",
+                         "value":"low"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Humidifier High",
+                         "labelPosition":"left",
+                         "value":"high"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Relative Humidity",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":30,
+                "max":80,
+                "value":65,
+                "majorTick":5,
+                "tick":1
+             }
+          ]
+       },
+       {
+          "title":"De-Humidifier:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"dehumidifier",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"De-Humidifier Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"De-Humidifier On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Relative Humidity",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":30,
+                "max":80,
+                "value":0,
+                "majorTick":5,
+                "tick":1
+             }
+          ]
+       },
+       {
+          "title":"Air Heater:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"airheater",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Air Heater Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Air Heater On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Air Temp ℃",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":20,
+                "max":30,
+                "value":24,
+                "majorTick":5,
+                "tick":1
+             }
+          ]
+       },
+       {
+          "title":"Water Heater:",
+          "align":"around",
+          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows":[
+             {
+                "type":"radioGroup",
+                "name":"waterheater",
+                "options":{
+                   "padding":"10px",
+                   "align":"center",
+                   "cols":[
+                      {
+                         "type":"radioButton",
+                         "label":"Scheduled",
+                         "labelPosition":"left",
+                         "value":"auto",
+                         "checked":true
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Water Heater Off",
+                         "labelPosition":"left",
+                         "value":"off"
+                      },
+                      {
+                         "type":"radioButton",
+                         "label":"Water Heater On",
+                         "labelPosition":"left",
+                         "value":"on"
+                      }
+                   ]
+                }
+             },
+             {
+                "type":"slider",
+                "label":"Water Temp ℃",
+                "labelInline":true,
+                "labelWidth":"150px",
+                "width":"90%",
+                "min":18,
+                "max":26,
+                "value":22,
+                "majorTick":5,
+                "tick":1
+             }
+          ]
+       }
+    ]
+ }

@@ -1,198 +1,265 @@
 {
-    "title":"Sensors / Probes",
-    "padding":10,
-    "rows":[
-       {
-          "title":"Water pH (potential of Hydrogen) - Atlas pH Probe",
-          "align":"around",
-          "css":"dhx_layout-cell--bordered dhx_layout-cell",
-          "rows":[
-             {
+  "title":"Sensors / Probes",
+  "padding":10,
+  "rows":[
+     {
+        "title":"Water Level Sensors",
+        "align":"around",
+        "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+        "padding":0,
+        "rows":[
+           {
+              "padding":0,
+              "cols":[
+                 {
+                    "css":"dhx_widget--border_right",
+                    "type":"button",
+                    "value":"Reservoir High Water Level",
+                    "icon":"fal fa-water-rise",
+                    "disabled":"true",
+                    "color":"danger",
+                    "full":true
+                 },
+                 {
+                    "css":"dhx_widget--border_right",
+                    "type":"button",
+                    "icon":"fal fa-water-rise",
+                    "value":"Tank High Water Level",
+                    "disabled":"true",
+                    "color":"success",
+                    "full":true
+                 },
+                 {
+                    "type":"button",
+                    "icon":"fal fa-water-rise",
+                    "value":"Humidifier High Water Level",
+                    "disabled":"true",
+                    "color":"success",
+                    "full":true
+                 }
+              ]
+           },
+           {
+              "padding":0,
+              "cols":[
+                 {
+                    "css":"dhx_widget--border_right",
+                    "type":"button",
+                    "value":"Reservoir Low Water Level",
+                    "icon":"fal fa-water-lower",
+                    "disabled":"true",
+                    "color":"success",
+                    "full":true
+                 },
+                 {
+                    "css":"dhx_widget--border_right",
+                    "type":"button",
+                    "icon":"fal fa-water-lower",
+                    "value":"Tank Low Water Level",
+                    "disabled":"true",
+                    "color":"success",
+                    "full":true
+                 },
+                 {
+                    "type":"button",
+                    "value":"Humdifier Low Water Level",
+                    "icon":"fal fa-water-lower",
+                    "disabled":"true",
+                    "color":"success",
+                    "full":true
+                 }
+              ]
+           }
+        ]
+     },
+     {
+        "title":"Water pH (potential of Hydrogen) - Atlas pH Probe",
+        "align":"around",
+        "css":"dhx_layout-cell--bordered dhx_layout-cell",
+        "rows":[
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "pH :",
-                  "icon":"fal fa-dewpoint",
-                  "placeholder": "pH",
-                  "labelPosition":"left",
-                  "labelWidth":"200px",
-                  "value":"6.4",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value": "Calibrate",
-                  "icon":"fal fa-ballot-check",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "primary"
-                }
-              ]     
-             }
-          ]
-       },
-       {
-          "title":"Water ppm (parts per million) - Atlas Conductivity Probe",
-          "align":"around",
-          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-          "rows":[
-             {
+                 {
+                    "type":"input",
+                    "label":"pH :",
+                    "icon":"fal fa-dewpoint",
+                    "placeholder":"pH",
+                    "labelPosition":"left",
+                    "labelWidth":"200px",
+                    "value":"6.4",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"Calibrate",
+                    "icon":"fal fa-ballot-check",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"primary"
+                 }
+              ]
+           }
+        ]
+     },
+     {
+        "title":"Water ppm (parts per million) - Atlas Conductivity Probe",
+        "align":"around",
+        "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+        "rows":[
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "E.C. (ppm) :",
-                  "icon":"fal fa-heart-rate",
-                  "placeholder": "E.C.",
-                  "labelPosition":"left",
-                  "labelWidth":"200px",
-                  "value":"825.23",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value": "Calibrate",
-                  "icon":"fal fa-ballot-check",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "primary"
-                }
-              ]     
-             }
-          ]
-       },
-       {
-          "title":"Water Temperature : Atlas Temperature Probe",
-          "align":"around",
-          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-          "rows":[
-             {
+                 {
+                    "type":"input",
+                    "label":"E.C. (ppm) :",
+                    "icon":"fal fa-heart-rate",
+                    "placeholder":"E.C.",
+                    "labelPosition":"left",
+                    "labelWidth":"200px",
+                    "value":"825.23",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"Calibrate",
+                    "icon":"fal fa-ballot-check",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"primary"
+                 }
+              ]
+           }
+        ]
+     },
+     {
+        "title":"Water Temperature : Atlas Temperature Probe",
+        "align":"around",
+        "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+        "rows":[
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "Water Temp (℃) :",
-                  "icon":"fal fa-oil-temp",
-                  "placeholder": "Water Temp ℃",
-                  "labelPosition":"left",
-                  "labelWidth":"200px",
-                  "value":"22.0",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value": "Calibrate",
-                  "icon":"fal fa-ballot-check",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "primary"
-                }
-              ]     
-             }
-          ]
-       },
-       {
-          "title":"Environment : Bosch BME280 Sensor",
-          "align":"around",
-          "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-          "rows":[
-             {
+                 {
+                    "type":"input",
+                    "label":"Water Temp (℃) :",
+                    "icon":"fal fa-oil-temp",
+                    "placeholder":"Water Temp ℃",
+                    "labelPosition":"left",
+                    "labelWidth":"200px",
+                    "value":"22.0",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"Calibrate",
+                    "icon":"fal fa-ballot-check",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"primary"
+                 }
+              ]
+           }
+        ]
+     },
+     {
+        "title":"Environment : Bosch BME280 Sensor",
+        "align":"around",
+        "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+        "rows":[
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "Temperature (℃) :",
-                  "icon":"fal fa-heat",
-                  "placeholder": "Air Temp ℃",
-                  "labelPosition":"left",
-                  "labelWidth":"250px",
-                  "value":"23.0",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value":"Read",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "secondary",
-                  "icon":"fal fa-sync-alt"
-                }
-              ]     
-             },
-             {
+                 {
+                    "type":"input",
+                    "label":"Temperature (℃) :",
+                    "icon":"fal fa-heat",
+                    "placeholder":"Air Temp ℃",
+                    "labelPosition":"left",
+                    "labelWidth":"250px",
+                    "value":"23.0",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"secondary",
+                    "icon":"fal fa-redo"
+                 }
+              ]
+           },
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "Relative Humidity (%) :",
-                  "icon":"fal fa-humidity",
-                  "placeholder": "rh %",
-                  "labelPosition":"left",
-                  "labelWidth":"250px",
-                  "value":"42.0",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value":"Read",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "secondary",
-                  "icon":"fal fa-sync-alt"
-                }
-              ]     
-             },
-             {
+                 {
+                    "type":"input",
+                    "label":"Relative Humidity (%) :",
+                    "icon":"fal fa-humidity",
+                    "placeholder":"rh %",
+                    "labelPosition":"left",
+                    "labelWidth":"250px",
+                    "value":"42.0",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"secondary",
+                    "icon":"fal fa-redo"
+                 }
+              ]
+           },
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "Barometer (pressure) :",
-                  "icon":"fal fa-wind",
-                  "placeholder": "Air Pressure",
-                  "labelPosition":"left",
-                  "labelWidth":"250px",
-                  "value":"222.0",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value":"Read",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "secondary",
-                  "icon":"fal fa-sync-alt"
-                }
-              ]     
-             },
-             {
+                 {
+                    "type":"input",
+                    "label":"Barometer (pressure) :",
+                    "icon":"fal fa-wind",
+                    "placeholder":"Air Pressure",
+                    "labelPosition":"left",
+                    "labelWidth":"250px",
+                    "value":"222.0",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"secondary",
+                    "icon":"fal fa-redo"
+                 }
+              ]
+           },
+           {
               "padding":10,
               "cols":[
-                {
-                  "type": "input",
-                  "label": "Altimeter (meters) :",
-                  "icon":"fal fa-mountain",
-                  "placeholder": "Altitude",
-                  "labelPosition":"left",
-                  "labelWidth":"250px",
-                  "value":"21322.0",
-                  "readOnly":"false"
-                },
-                {
-                  "type": "button",
-                  "value":"Read",
-                  "size": "medium",
-                  "view": "flat",
-                  "color": "secondary",
-                  "icon":"fal fa-sync-alt"
-                }
-              ]     
-             }
-          ]
-       }
-  
-    ]
-  }
-  
-  
+                 {
+                    "type":"input",
+                    "label":"Altimeter (meters) :",
+                    "icon":"fal fa-mountain",
+                    "placeholder":"Altitude",
+                    "labelPosition":"left",
+                    "labelWidth":"250px",
+                    "value":"21322.0",
+                    "readOnly":"false"
+                 },
+                 {
+                    "type":"button",
+                    "value":"",
+                    "size":"medium",
+                    "view":"flat",
+                    "color":"secondary",
+                    "icon":"fal fa-redo"
+                 }
+              ]
+           }
+        ]
+     }
+  ]
+}

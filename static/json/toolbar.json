@@ -1,29 +1,29 @@
 [
-    {
-      "type": "button",
-      "color": "secondary",
-      "view": "link",
-      "circle": true,
-      "id": "toggle-sidebar",
-      "icon": "far fa-bars"
-    },
-    {
-      "type": "title",
-      "value": "Minty Hydro",
-      "id": "u1587923897624"
-    },
-    {
-      "type": "spacer",
-      "id": "u1587923897625"
-    },
-    {
-      "type": "button",
-      "color": "secondary",
-      "view": "link",
-      "circle": true,
-      "id": "notifications",
-      "icon": "fal fa-bell-on",
-      "count": 2,
-      "countColor": "primary"
-    }
-  ]
+  {
+     "type":"button",
+     "color":"secondary",
+     "view":"link",
+     "circle":true,
+     "id":"toggle-sidebar",
+     "icon":"far fa-bars"
+  },
+  {
+     "type":"title",
+     "value":"Minty Hydro",
+     "id":"u1587923897624"
+  },
+  {
+     "type":"spacer",
+     "id":"u1587923897625"
+  },
+  {
+     "type":"button",
+     "color":"secondary",
+     "view":"link",
+     "circle":true,
+     "id":"notifications",
+     "icon":"fal fa-bell-on",
+     "count":2,
+     "countColor":"primary"
+  }
+]

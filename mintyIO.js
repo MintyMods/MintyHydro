@@ -149,13 +149,13 @@ function lookupRfCode(code) {
     } else if (code == config.RF_CODE_Q2_OFF) {
         return " Off";
     } else if (code == config.MINTY_FDD.RES) {
-        return "Drain Res";
+        return "Drain Reservoir";
     } else if (code == config.MINTY_FDD.POTS) {
         return "Drain Pots";
     } else if (code == config.MINTY_FDD.DRAIN) {
-        return "Drain Res & Pots";
+        return "Drain Reservoir & Pots";
     } else if (code == config.MINTY_FDD.FILL) {
-        return "Fill Res from Tank";
+        return "Fill Reservoir from Tank";
     } else if (code == config.MINTY_FDD.DRIP) {
         return "Drip Feed";
     } else if (code == config.MINTY_FDD.OFF) {

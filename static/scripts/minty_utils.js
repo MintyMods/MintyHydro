@@ -20,14 +20,30 @@ function showNotifications() {
     console.log("SHow notifications");
 }
 
-function loadJSON(url, callback) {   
+function loadJSONAsync(url, callback) {   
+    console.log("Loading JSON ASync");
     var request = new XMLHttpRequest();
     request.overrideMimeType("application/json");
     request.open('GET', url, true);
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == "200") {
-            callback(request.responseText);
+            callback(JSON.parse(request.responseText));
         }
     };
     request.send(null);  
+}
+
+function loadJSON(url) {
+    console.log("Loading JSON Sync");
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.open("GET", url, false);
+  if (xmlhttp.overrideMimeType) {
+    xmlhttp.overrideMimeType("application/json"); 
+  }
+  xmlhttp.send();
+  if (xmlhttp.status==200) {
+    return JSON.parse(xmlhttp.responseText);
+  } else {
+    throw "Failed to load " + url;
+  }
 }

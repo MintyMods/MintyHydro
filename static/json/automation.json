@@ -1,0 +1,71 @@
+[
+    {
+       "key":0,
+       "color":"darkpink",
+       "label":"** Custom Event ** "
+    },
+    {
+       "key":1,
+       "color":"gold",
+       "textColor":"black",
+       "label":"Grow Light"
+    },
+    {
+       "key":2,
+       "color":"DimGrey",
+       "label":"Extract Fan"
+    },
+    {
+       "key":3,
+       "color":"deepskyblue",
+       "label":"Intake Fan"
+    },
+    {
+       "key":4,
+       "color":"fuchsia",
+       "label":"Oscillating Fan"
+    },
+    {
+       "key":5,
+       "color":"coral",
+       "label":"Water Heater"
+    },
+    {
+       "key":6,
+       "color":"HotPink",
+       "label":"Air Heater"
+    },
+    {
+       "key":7,
+       "color":"indigo",
+       "label":"Humidifier"
+    },
+    {
+       "key":8,
+       "color":"MediumSlateBlue",
+       "label":"De-Humidifier"
+    },
+    {
+       "key":9,
+       "color":"yellowgreen",
+       "label":"Air Pump"
+    },
+    {
+       "key":10,
+       "color":"#85B79D",
+       "textColor":"black",
+       "label":"Recirculating Pump"
+    },
+    {
+       "key":11,
+       "color":"red",
+       "textColor":"yellow",
+       "label":"-- Reservoir Change"
+    },
+    {
+       "key":12,
+       "color":"Chartreuse",
+       "textColor":"black",
+       "label":"-- Nutrient Dose"
+    }
+ ]

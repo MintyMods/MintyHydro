@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
 
     // Side Bar Navigation
-    var sidebar = new dhx.Sidebar("sidebar_container", { width: 160, collapsed: false });
+    var sidebar = new dhx.Sidebar("sidebar_container", { width: 160, collapsed: true });
     sidebar.data.load('/json/sidebar.json');
     sidebar.events.on("click", function (id) {
         console.log("Sidebar clikced " + id);

@@ -1,0 +1,21 @@
+{
+   "rows":[
+      {
+         "cols":[
+            "today",
+            "prev",
+            "date",
+            "next"
+         ]
+      },
+      {
+         "cols":[
+            "day",
+            "week",
+            "month",
+            "spacer",
+            "week_agenda"
+         ]
+      }
+   ]
+}

@@ -15,20 +15,26 @@
                      "type": "button",
                      "value": "Reservoir High Water Level",
                      "icon": "fal fa-water-rise",
-                     "color": "secondary",
                      "disabled": "true",
-                     "full": true,
-                     "id": "WLS:RES:HIGH"
+                     "color": "danger",
+                     "full": true
                   },
                   {
                      "css": "dhx_widget--border_right",
                      "type": "button",
                      "icon": "fal fa-water-rise",
                      "value": "Tank High Water Level",
-                     "color": "secondary",
                      "disabled": "true",
-                     "full": true,
-                     "id": "WLS:TANK:HIGH"
+                     "color": "success",
+                     "full": true
+                  },
+                  {
+                     "type": "button",
+                     "icon": "fal fa-water-rise",
+                     "value": "Humidifier High Water Level",
+                     "disabled": "true",
+                     "color": "success",
+                     "full": true
                   }
                ]
             },
@@ -41,9 +47,8 @@
                      "value": "Reservoir Low Water Level",
                      "icon": "fal fa-water-lower",
                      "disabled": "true",
-                     "color": "secondary",
-                     "full": true,
-                     "id": "WLS:RES:LOW"
+                     "color": "success",
+                     "full": true
                   },
                   {
                      "css": "dhx_widget--border_right",
@@ -51,9 +56,16 @@
                      "icon": "fal fa-water-lower",
                      "value": "Tank Low Water Level",
                      "disabled": "true",
-                     "color": "secondary",
-                     "full": true,
-                     "id": "WLS:TANK:LOW"
+                     "color": "success",
+                     "full": true
+                  },
+                  {
+                     "type": "button",
+                     "value": "Humdifier Low Water Level",
+                     "icon": "fal fa-water-lower",
+                     "disabled": "true",
+                     "color": "success",
+                     "full": true
                   }
                ]
             }
@@ -73,9 +85,8 @@
                      "placeholder": "pH",
                      "labelPosition": "left",
                      "labelWidth": "200px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "I2C:PH:RESULT"
+                     "value": "6.4",
+                     "readOnly": "false"
                   },
                   {
                      "type": "button",
@@ -83,8 +94,7 @@
                      "icon": "fal fa-ballot-check",
                      "size": "medium",
                      "view": "flat",
-                     "color": "primary",
-                     "id": "CALIBRATE:PH"
+                     "color": "primary"
                   }
                ]
             }
@@ -104,9 +114,8 @@
                      "placeholder": "E.C.",
                      "labelPosition": "left",
                      "labelWidth": "200px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "I2C:EC:RESULT"
+                     "value": "825.23",
+                     "readOnly": "false"
                   },
                   {
                      "type": "button",
@@ -114,8 +123,7 @@
                      "icon": "fal fa-ballot-check",
                      "size": "medium",
                      "view": "flat",
-                     "color": "primary",
-                     "id": "CALIBRATE:EC"
+                     "color": "primary"
                   }
                ]
             }
@@ -135,9 +143,8 @@
                      "placeholder": "Water Temp ℃",
                      "labelPosition": "left",
                      "labelWidth": "200px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "I2C:TEMP:RESULT"
+                     "value": "22.0",
+                     "readOnly": "false"
                   }
                ]
             }
@@ -157,9 +164,8 @@
                      "placeholder": "Air Temp ℃",
                      "labelPosition": "left",
                      "labelWidth": "250px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:TEMP:CELSIUS"
+                     "value": "23.0",
+                     "readOnly": "false"
                   }
                ]
             },
@@ -173,9 +179,8 @@
                      "placeholder": "rh %",
                      "labelPosition": "left",
                      "labelWidth": "250px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:HUMIDITY:RH"
+                     "value": "42.0",
+                     "readOnly": "false"
                   }
                ]
             },
@@ -189,9 +194,23 @@
                      "placeholder": "Air Pressure",
                      "labelPosition": "left",
                      "labelWidth": "250px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:PRESSURE"
+                     "value": "222.0",
+                     "readOnly": "false"
+                  }
+               ]
+            },
+            {
+               "padding": 10,
+               "cols": [
+                  {
+                     "type": "input",
+                     "label": "Altimeter (meters) :",
+                     "icon": "fal fa-mountain",
+                     "placeholder": "Altitude",
+                     "labelPosition": "left",
+                     "labelWidth": "250px",
+                     "value": "21322.0",
+                     "readOnly": "false"
                   }
                ]
             }

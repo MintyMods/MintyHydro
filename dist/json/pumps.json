@@ -1,37 +1,37 @@
 {
-   "title":"Pump Controls",
-   "padding":10,
-   "rows":[
+   "title": "Pump Controls",
+   "padding": 10,
+   "rows": [
       {
-         "title":"Recirculating Pump: (res<->pots)",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered",
-         "rows":[
+         "title": "Recirculating Pump: (res<->pots)",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered",
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"respump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "RF:WATER_PUMP",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto"
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "AUTO"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Pump Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Pump On",
-                        "labelPosition":"left",
-                        "value":"on",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Pump On",
+                        "labelPosition": "left",
+                        "value": "ON",
+                        "checked": true
                      }
                   ]
                }
@@ -39,986 +39,1111 @@
          ]
       },
       {
-         "title":"Fill Transfer Pump: (tank->res)",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows":[
+         "title": "Fill Transfer Pump: (tank->res)",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"fillpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:FILL",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto"
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "AUTO"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Fill Pump Off",
-                        "labelPosition":"left",
-                        "value":"off",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Fill Pump Off",
+                        "labelPosition": "left",
+                        "value": "OFF",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Fill Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Fill Pump On",
+                        "labelPosition": "left",
+                        "value": "ON"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Run Time (seconds)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Run Time (seconds)",
-                     "labelPosition":"left",
-                     "labelWidth":"150",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"5",
-                     "value":"300"
+                     "type": "input",
+                     "id":"PUMP:FILL:TIME",
+                     "label": "Run Time (seconds)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Run Time (seconds)",
+                     "labelPosition": "left",
+                     "labelWidth": "150",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "5",
+                     "value": "300"
                   },
                   {
-                     "gravity":"false",
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "gravity": "false",
+                     "id":"PUMP:FILL:CALIBRATE",
+                     "type": "button",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   },
                   {
-                     "gravity":"false",
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "gravity": "false",
+                     "id":"PUMP:FILL:TEST",
+                     "type": "button",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Drain Transfer Pump: (res/pots->drain)",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows":[
+         "title": "Drain Transfer Pump: (res/pots->drain)",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"drainpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:DRAIN",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto"
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Drain Pump Off",
-                        "labelPosition":"left",
-                        "value":"off",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Drain Pump Off",
+                        "labelPosition": "left",
+                        "value": "off",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Drain Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Drain Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Run Time (seconds)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Run Time (seconds)",
-                     "labelPosition":"left",
-                     "labelWidth":"150",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"5",
-                     "value":"200"
+                     "type": "input",
+                     "id":"PUMP:DRAIN:TIME",
+                     "label": "Run Time (seconds)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Run Time (seconds)",
+                     "labelPosition": "left",
+                     "labelWidth": "150",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "5",
+                     "value": "200"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:DRAIN:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:DRAIN:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Drip Pump: (pots->netpots)",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows":[
+         "title": "Drip Pump: (pots->netpots)",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"drippump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:DRIP",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Fill Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Fill Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Fill Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Fill Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Run Time (seconds)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Run Time (seconds)",
-                     "labelPosition":"left",
-                     "labelWidth":"150",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"5",
-                     "value":"30"
+                     "type": "input",
+                     "id":"PUMP:DRIP:TIME",
+                     "label": "Run Time (seconds)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Run Time (seconds)",
+                     "labelPosition": "left",
+                     "labelWidth": "150",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "5",
+                     "value": "30"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:DRIP:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:DRIP:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"P.H. UP : Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "P.H. UP : Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"phuppump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:PH_UP",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"P.H. Up Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "P.H. Up Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"P.H. Up Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "P.H. Up Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:PH_UP:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:PH_UP:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:PH_UP:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:PH_UP:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:PH_UP:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"P.H. Down : Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "P.H. Down : Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"phdownpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:PH_DOWN",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"P.H. Down Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "P.H. Down Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"P.H. Down Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "P.H. Down Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:PH_DOWN:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:PH_DOWN:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:PH_DOWN:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:PH_DOWN:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:PH_DOWN:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Calcium / Magnesium : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Calcium / Magnesium : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"calmagpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:CALMAG",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Cal Mag Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Cal Mag Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Cal Mag Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Cal Mag Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:CALMAG:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:CALMAG:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:CALMAG:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:CALMAG:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:CALMAG:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Hydro Guard : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Hydro Guard : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"hydroguardpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:HYDROGUARD",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Hydro Guard Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Hydro Guard Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Hydro Guard Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Hydro Guard Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:HYDROGUARD:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:HYDROGUARD:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "value": "Calibrate",
+                     "id":"PUMP:HYDROGUARD:CALIBRATE",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:HYDROGUARD:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:HYDROGUARD:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Flora Micro : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Flora Micro : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"floramicropump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:FLORA_MICRO",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Micro Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Flora Micro Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Micro Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Flora Micro Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_MICRO:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_MICRO:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:FLORA_MICRO:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:FLORA_MICRO:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:FLORA_MICRO:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Flora Grow : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Flora Grow : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"floragrowpump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:FLORA_GROW",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Grow Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Flora Grow Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Grow Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Flora Grow Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_GROW:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_GROW:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:FLORA_GROW:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:FLORA_GROW:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:FLORA_GROW:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Flora Bloom : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Flora Bloom : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"florabloompump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:FLORA_BLOOM",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Bloom Pump Off",
-                        "labelPosition":"left",
-                        "value":"off"
+                        "type": "radioButton",
+                        "label": "Flora Bloom Pump Off",
+                        "labelPosition": "left",
+                        "value": "off"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Flora Bloom Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Flora Bloom Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_BLOOM:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:FLORA_BLOOM:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "type": "button",
+                     "id":"PUMP:FLORA_BLOOM:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:FLORA_BLOOM:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:FLORA_BLOOM:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
       },
       {
-         "title":"Spare Currently Unused : Nutrient Dosing Pump ",
-         "align":"around",
-         "css":"dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding":10,
-         "rows":[
+         "title": "Spare Currently Unused : Nutrient Dosing Pump ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
             {
-               "type":"radioGroup",
-               "name":"sparepump",
-               "options":{
-                  "padding":"10px",
-                  "align":"center",
-                  "cols":[
+               "type": "radioGroup",
+               "name": "PUMP:SPARE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
                      {
-                        "type":"radioButton",
-                        "label":"Scheduled",
-                        "labelPosition":"left",
-                        "value":"auto"
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto"
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Spare Pump Off",
-                        "labelPosition":"left",
-                        "value":"off",
-                        "checked":true
+                        "type": "radioButton",
+                        "label": "Spare Pump Off",
+                        "labelPosition": "left",
+                        "value": "off",
+                        "checked": true
                      },
                      {
-                        "type":"radioButton",
-                        "label":"Spare Pump On",
-                        "labelPosition":"left",
-                        "value":"on"
+                        "type": "radioButton",
+                        "label": "Spare Pump On",
+                        "labelPosition": "left",
+                        "value": "on"
                      }
                   ]
                }
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Speed",
-                     "icon":"fal fa-tachometer-alt-slow",
-                     "placeholder":"Speed",
-                     "required":"true",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:SPARE:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "type":"input",
-                     "label":"Time (ms)",
-                     "icon":"fal fa-clock",
-                     "placeholder":"Time (ms)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"125"
+                     "type": "input",
+                     "id":"PUMP:SPARE:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
                   },
                   {
-                     "gravity":"false",
-                     "type":"button",
-                     "value":"Calibrate",
-                     "icon":"fal fa-ballot-check",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"primary"
+                     "gravity": "false",
+                     "type": "button",
+                     "id":"PUMP:SPARE:CALIBRATE",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "primary"
                   }
                ]
             },
             {
-               "cols":[
+               "cols": [
                   {
-                     "type":"input",
-                     "label":"Amount (ml)",
-                     "icon":"fal fa-tint",
-                     "placeholder":"Amount (ml)",
-                     "labelPosition":"left",
-                     "labelWidth":"100",
-                     "required":"true",
-                     "validation":"integer",
-                     "maxlength":"3",
-                     "value":"1"
+                     "type": "input",
+                     "id":"PUMP:SPARE:AMOUNT",
+                     "label": "Amount (ml)",
+                     "icon": "fal fa-tint",
+                     "placeholder": "Amount (ml)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "1"
                   },
                   {
-                     "type":"button",
-                     "value":"Test",
-                     "size":"medium",
-                     "view":"flat",
-                     "color":"secondary",
-                     "icon":"fal fa-vial"
+                     "type": "button",
+                     "id":"PUMP:SPARE:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
                   }
                ]
             }
          ]
-      }
+      },
+      {
+         "title": "Magnetic Stirrers ",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "PUMP:MAGMIX",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Scheduled",
+                        "labelPosition": "left",
+                        "value": "auto"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Mag Mix Off",
+                        "labelPosition": "left",
+                        "value": "off",
+                        "checked": true
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Mag Mix On",
+                        "labelPosition": "left",
+                        "value": "on"
+                     }
+                  ]
+               }
+            },
+            {
+               "cols": [
+                  {
+                     "type": "input",
+                     "id":"PUMP:MAGMIX:SPEED",
+                     "label": "Speed",
+                     "icon": "fal fa-tachometer-alt-slow",
+                     "placeholder": "Speed",
+                     "required": "true",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
+                  },
+                  {
+                     "type": "input",
+                     "id":"PUMP:MAGMIX:TIME",
+                     "label": "Time (ms)",
+                     "icon": "fal fa-clock",
+                     "placeholder": "Time (ms)",
+                     "labelPosition": "left",
+                     "labelWidth": "100",
+                     "required": "true",
+                     "validation": "integer",
+                     "maxlength": "3",
+                     "value": "125"
+                  },
+                  {
+                     "type": "button",
+                     "id":"PUMP:MAGMIX:TEST",
+                     "value": "Test",
+                     "size": "medium",
+                     "view": "flat",
+                     "color": "secondary",
+                     "icon": "fal fa-vial"
+                  }
+               ]
+            }
+         ]
+      }      
    ]
 }

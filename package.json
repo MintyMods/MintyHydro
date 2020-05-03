@@ -22,7 +22,8 @@
     "johnny-five": "^1.4.0",
     "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "socketio-wildcard": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

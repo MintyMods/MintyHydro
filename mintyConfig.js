@@ -12,20 +12,21 @@ const development = {
 const production = {
   host: 'http://' + IP_ADDRESS,
   namespace: SOCKET_IO_NAMESPACE,
-  port: 4000  
+  port: 4000
 };
 
 const config = process.env.NODE_ENV === 'development' ? development : production;
 const port = config.port ? ':' + config.port : '';
 const namespace = config.namespace ? config.namespace : '';
 const url = config.host + port + '/' + namespace;
+
 config.url = url;
 config.serialPort = SERIAL_PORT;
 config.debug = DEBUGGING;
 
 config.tick = {
-  bme280:4000,
-  mintyhydro: 10000, 
+  bme280: 4000,
+  mintyhydro: 10000,
 }
 
 /* RF433 Transmitter Support */
@@ -45,10 +46,10 @@ config.ATLAS_DELAY = 1400;
 
 /* Arduino Digital Pin Assignment */
 config.RESERVED_PIN = 2;
-config.SPARE_PIN = 3; 
+config.SPARE_PIN = 3;
 
 /* HWR = Hardware Relays 240v */
-config.HWR_RELAY_ONE_PIN = 4; 
+config.HWR_RELAY_ONE_PIN = 4;
 config.HWR_RELAY_TWO_PIN = 5;
 
 /* WLS = Water Level Switches */
@@ -69,7 +70,7 @@ config.I2C_BME280_SENSOR_ADDR = (0x76);
 
 config.ATLAS_READ_CHARCODE = ['r'.charCodeAt(0)];
 
-/* Air Intake Fan */ 
+/* Air Intake Fan */
 const RF_CODE_INTAKE_LOW = "7446194";
 const RF_CODE_INTAKE_HIGH = "7446193";
 const RF_CODE_INTAKE_OFF = "7446196";
@@ -86,7 +87,6 @@ const RF_CODE_HUMID_OFF_HIGH = "12562577";
  * e.g. to open Relays 2&4 and close Realys 1&3 we send 2775141
  * RELAY_CHANNEL_1234 Where 0=CLOSED 1=OPEN
  */
-
 const RF_CODE_12V = {
   RF_0000: "2775136",
   RF_0001: "2775137",
@@ -107,11 +107,10 @@ const RF_CODE_12V = {
 }
 
 config.MINTY_FDD = {
-  RES: RF_CODE_12V.RF_0001,
-  POTS: RF_CODE_12V.RF_0010,
-  DRAIN: RF_CODE_12V.RF_0011,
-  FILL: RF_CODE_12V.RF_0100,
-  DRIP: RF_CODE_12V.RF_1000,
+  FILL: RF_CODE_12V.RF_1000,
+  DRAIN: RF_CODE_12V.RF_0110,
+  DRIP: RF_CODE_12V.RF_0010,
+  MAGMIX: RF_CODE_12V.RF_0001,
   OFF: RF_CODE_12V.RF_0000,
 }
 

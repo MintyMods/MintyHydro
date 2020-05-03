@@ -1,76 +1,76 @@
 [
    {
-      "id":"environment",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-cannabis",
-      "value":"Environment"
+      "id": "environment",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-cannabis",
+      "value": "Environment"
    },
    {
-      "id":"schedule",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-calendar-alt",
-      "value":"Schedule"
+      "id": "schedule",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-calendar-alt",
+      "value": "Schedule"
    },
    {
-      "id":"sensors",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-sensor",
-      "value":"Sensors"
-   },   
-   {
-      "id":"controls",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-hand-holding-seedling",
-      "value":"Controls"
+      "id": "sensors",
+      "type": "button",
+      "active": true,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-sensor",
+      "value": "Sensors"
    },
    {
-      "id":"pumps",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-faucet-drip",
-      "value":"Pumps"
+      "id": "controls",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-hand-holding-seedling",
+      "value": "Controls"
    },
    {
-      "id":"dosing",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-seedling",
-      "value":"Nutrients"
+      "id": "pumps",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-faucet-drip",
+      "value": "Pumps"
    },
    {
-      "id":"stats",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "disabled":true,
-      "readonly":true,
-      "twoState":true,
-      "icon":"fal fa-analytics",
-      "value":"Statistics"
+      "id": "dosing",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-seedling",
+      "value": "Nutrients"
    },
    {
-      "id":"settings",
-      "type":"button",
-      "active":false,
-      "group":"nav",
-      "twoState":true,
-      "icon":"fal fa-sliders-h-square",
-      "value":"Settings"
+      "id": "stats",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "disabled": true,
+      "readonly": true,
+      "twoState": true,
+      "icon": "fal fa-analytics",
+      "value": "Statistics"
+   },
+   {
+      "id": "settings",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-sliders-h-square",
+      "value": "Settings"
    }
 ]

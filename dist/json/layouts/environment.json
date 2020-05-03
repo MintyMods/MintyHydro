@@ -1,0 +1,62 @@
+{
+    "height":"100%",
+    "width":"100%",
+    "rows":[
+       {
+          "id":"water_ph_container",
+          "gravity":true,
+          "padding":0
+       },
+       {
+          "id":"water_ec_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Current pH & chart showing history will go here!</div>"
+       },
+       {
+          "id":"water_temp_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Current EC & chart showing history will go here!</div>"
+       },
+       {
+          "id":"air_temp_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Current TEMP & chart showing history will go here!</div>"
+       },
+       {
+          "id":"air_humidity_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Current Humidity & chart showing history will go here!</div>"
+       },
+       {
+          "id":"air_humidity_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Current Wattage & chart showing usage will go here!</div>"
+       },
+       {
+          "id":"control_container",
+          "gravity":true,
+          "padding":0,
+          "html":"<div>@todo Show Running Status of all Controls Here as Icons</div>"
+       },
+       {
+          "cols":[
+             {
+                "id":"extract_fan_container",
+                "gravity":true,
+                "css":"dhx_layout-cell--border_right"
+             },
+             {
+                "id":"intake_fan_container",
+                "gravity":true,
+                "width":"100%",
+                "height":"100%"
+             }
+          ]
+       }
+    ]
+ }

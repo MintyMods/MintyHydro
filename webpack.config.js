@@ -10,7 +10,7 @@ const VENDOR_LIBS = [
 ];
 
 module.exports = {
-  mode : 'development',
+  mode: 'development',
   entry: {
     bundle: './src/index.js',
     vendor: VENDOR_LIBS
@@ -46,6 +46,6 @@ module.exports = {
     new ExtractTextPlugin("styles.css"),
     new CopyWebpackPlugin([
       { from: 'static' }
-  ])
+    ])
   ]
 };

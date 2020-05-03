@@ -1,80 +1,80 @@
 [
-    {
-       "key":0,
-       "color":"#1de9b6",
-       "textColor":"#000000",
-       "label":"** Custom Event ** "
-    },
-    {
-       "key":1,
-       "color":"#FDFFB8",
-       "textColor":"#000000",
-       "label":"Grow Light"
-    },
-    {
-       "key":2,
-       "color":"#5085FF",
-       "textColor":"#FFFFFF",
-       "label":"Extract Fan"
-    },
-    {
-       "key":3,
-       "color":"#BACCF8",
-       "textColor":"#000000",
-       "label":"Intake Fan"
-    },
-    {
-       "key":4,
-       "color":"#3ADBE3",
-       "textColor":"#FFFFFF",
-       "label":"Oscillating Fan"
-    },
-    {
-       "key":5,
-       "color":"#FCBBC4",
-       "textColor":"#000000",
-       "label":"Water Heater"
-    },
-    {
-       "key":6,
-       "color":"#FA0132",
-       "textColor":"#FFFFFF",
-       "label":"Air Heater"
-    },
-    {
-       "key":7,
-       "color":"#C501FA",
-       "textColor":"#FFFFFF",
-       "label":"Humidifier"
-    },
-    {
-       "key":8,
-       "color":"#FA01AB",
-       "textColor":"#000000",
-       "label":"De-Humidifier"
-    },
-    {
-       "key":9,
-       "color":"#C1F6FC",
-       "textColor":"#000000",
-       "label":"Air Pump"
-    },
-    {
-       "key":10,
-       "color":"#85B79D",
-       "textColor":"#000000",
-       "label":"Recirculating Pump"
-    },
-    {
-       "key":11,
-       "color":"#0404FF",
-       "textColor":"#FFF704",
-       "label":"Reservoir Change"
-    },
-    {
-       "key":12,
-       "color":"#1BFF04",
-       "textColor":"#0000FF",
-       "label":"Nutrient Dose"
-    }
- ]
+   {
+      "key": 0,
+      "color": "#1de9b6",
+      "textColor": "#000000",
+      "label": "** Custom Event ** "
+   },
+   {
+      "key": 1,
+      "color": "#FDFFB8",
+      "textColor": "#000000",
+      "label": "Grow Light"
+   },
+   {
+      "key": 2,
+      "color": "#5085FF",
+      "textColor": "#FFFFFF",
+      "label": "Extract Fan"
+   },
+   {
+      "key": 3,
+      "color": "#BACCF8",
+      "textColor": "#000000",
+      "label": "Intake Fan"
+   },
+   {
+      "key": 4,
+      "color": "#3ADBE3",
+      "textColor": "#FFFFFF",
+      "label": "Oscillating Fan"
+   },
+   {
+      "key": 5,
+      "color": "#FCBBC4",
+      "textColor": "#000000",
+      "label": "Water Heater"
+   },
+   {
+      "key": 6,
+      "color": "#FA0132",
+      "textColor": "#FFFFFF",
+      "label": "Air Heater"
+   },
+   {
+      "key": 7,
+      "color": "#C501FA",
+      "textColor": "#FFFFFF",
+      "label": "Humidifier"
+   },
+   {
+      "key": 8,
+      "color": "#FA01AB",
+      "textColor": "#000000",
+      "label": "De-Humidifier"
+   },
+   {
+      "key": 9,
+      "color": "#C1F6FC",
+      "textColor": "#000000",
+      "label": "Air Pump"
+   },
+   {
+      "key": 10,
+      "color": "#85B79D",
+      "textColor": "#000000",
+      "label": "Recirculating Pump"
+   },
+   {
+      "key": 11,
+      "color": "#0404FF",
+      "textColor": "#FFF704",
+      "label": "Reservoir Change"
+   },
+   {
+      "key": 12,
+      "color": "#1BFF04",
+      "textColor": "#0000FF",
+      "label": "Nutrient Dose"
+   }
+]

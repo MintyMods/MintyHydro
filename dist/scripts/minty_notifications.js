@@ -88,6 +88,11 @@ function showMsg(type, title, text, icon) {
     }
 }
 
+function hideMissingMintyHydroHubError() {
+    if (window.permanotice) {
+        window.permanotice.closerHover();
+    }
+}
 
 function showMissingMintyHydroHubError(reason) {
     if (window.permanotice) {
@@ -95,7 +100,7 @@ function showMissingMintyHydroHubError(reason) {
     } else {
         window.permanotice = PNotify.error({
             title: 'Offline Mode',
-            text: 'Minty Hydro Hub Not Connected : ' + reason,
+            text: 'Minty Hydro Hub Not Connected',
             hide: false,
             icon: 'fad fa-wifi-slash fa-2x',
             width: '400px',

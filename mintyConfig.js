@@ -1,7 +1,7 @@
 const SERIAL_PORT = "COM6";
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = '192.168.0.12';
-const DEBUGGING = false;
+const DEBUGGING = true;
 
 const development = {
   host: 'http://' + IP_ADDRESS,
@@ -26,6 +26,7 @@ config.debug = DEBUGGING;
 
 config.tick = {
   bme280: 4000,
+  calibrationPolling: 1000,
   mintyhydro: 10000,
 }
 

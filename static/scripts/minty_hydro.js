@@ -36,12 +36,13 @@ function initSocket() {
     socket = io.connect('/arduino');
     socket.on('connect', function (data) {
         console.info("Client Connected to Socket Server");
+        hideMissingMintyHydroHubError();
     });
     socket.on("ARDUINO:CONFIM", function(msg) {
         showServerConfirmation(msg);
     });
     socket.on('disconnect', function(e){
-        showMissingMintyHydroHubError('disconnect');
+        showMissingMintyHydroHubError();
     });
 }
 
@@ -50,10 +51,8 @@ function handleResize() {
 }
 
 function initComponents() {
-
-    loadJSONAsync('/json/automation.json', function (json) {
-        automation = json;
-    });
+    
+    automation = loadJSON('/json/automation.json');
     loadJSONAsync('/json/layouts/main.json', function (json) {
         layout = new dhx.Layout("layout_container", json);
         initSideBar();
@@ -106,6 +105,10 @@ function calibrateECProbeWizard() {
     });
     wizard.events.on("beforeHide", function() {
         socket.emit('CALIBRATE:EC:STOP');
+        return true;
+    }); 
+    wizard.events.on("beforeShow", function() {
+        socket.emit('CALIBRATE:EC:START');
         return true;
     }); 
 
@@ -163,6 +166,10 @@ function calibratePHProbeWizard() {
         socket.emit('CALIBRATE:PH:STOP');
         return true;
     }); 
+    wizard.events.on("beforeShow", function() {
+        socket.emit('CALIBRATE:PH:START');
+        return true;
+    }); 
 
     let mid = new dhx.Form(null,  loadJSON('/json/calibrate/ph/mid.json'));
     let low = new dhx.Form(null,  loadJSON('/json/calibrate/ph/low.json'));
@@ -192,7 +199,6 @@ function calibratePHProbeWizard() {
     tabs.getCell("low_calibrate").attach(low);
     tabs.getCell("high_calibrate").attach(high);
     wizard.attach(tabs);
-    socket.emit('CALIBRATE:PH:START');
     wizard.show();
 }
 
@@ -330,6 +336,13 @@ function showContent(id) {
     }
 }
 
+const getSetting = function (which) {
+    if (settingsForm) {
+        return settingsForm.getValue()[which];
+    }
+    return null;
+};
+
 const getResCapacity = function () {
     if (settingsForm) {
         return settingsForm.getValue()['CONFIG:GROW_AREA:RES_CAPACITY'];
@@ -464,22 +477,6 @@ function buildScheduler() {
             }
         }
     };
-
-    // function show_minical(){
-    //     if (scheduler.isCalendarVisible()){
-    //         scheduler.destroyCalendar();
-    //     } else {
-    //         scheduler.renderCalendar({
-    //             position:"dhx_minical_icon",
-    //             date:scheduler._date,
-    //             navigation:true,
-    //             handler:function(date,calendar){
-    //                 scheduler.setCurrentView(date);
-    //                 scheduler.destroyCalendar()
-    //             }
-    //         });
-    //     }
-    // }
 
     scheduler.templates.week_agenda_event_text = function (start_date, end_date, event, date, position) {
         switch (position) {

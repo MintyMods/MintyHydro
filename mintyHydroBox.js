@@ -1,6 +1,7 @@
 
 const config = require('./mintyConfig');
 const hydroTarget = require('./mintyHydroTargets');
+let pollAllSensors = true;
 
 const MintyHydroBox = {
   io: null,
@@ -26,11 +27,34 @@ const MintyHydroBox = {
     if (!this.defaultsLoaded) {
       this.loadDefaults();
     }
+    if (pollAllSensors) {
+      this.pollAtlasSensors();
+      this.runAfterTimeout();
+    }
+  },
 
-    //this.ecDown();
-    this.pollAtlasSensors();
+  setPollAllSensors: function (poll) {
+    pollAllSensors = poll;
+  },
 
-    this.runAfterTimeout();
+  pollEC: function() {
+    if (!pollAllSensors) {
+      this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ec) {
+        this.io.socketEmit('I2C:EC:RESULT', ec);
+        log("*** CALIBRATE:EC:" + ec);
+        setTimeout(function () { this.pollEC() }.bind(this), config.tick.calibrationPolling);
+      }.bind(this));
+    }
+  },
+
+  pollPH: function() {
+    if (!pollAllSensors) {
+      this.io.sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ph) {
+        this.io.socketEmit('I2C:PH:RESULT', ph);
+        log("*** CALIBRATE:PH:" + ph);
+        setTimeout(function () { this.pollPH() }.bind(this), config.tick.calibrationPolling);
+      }.bind(this));
+    }
   },
 
   loadDefaults: function () {

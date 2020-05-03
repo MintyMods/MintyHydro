@@ -142,6 +142,23 @@ board.on('ready', function () {
   }
 
   /* ATLAS Calibration Routines */ 
+  socket.on('CALIBRATE:EC:START', function () {
+    mintyHydro.setPollAllSensors(false);
+    mintyHydro.pollEC();
+  });
+  socket.on('CALIBRATE:EC:STOP', function () {
+    mintyHydro.setPollAllSensors(true);
+    mintyHydro.poll();
+  });
+  socket.on('CALIBRATE:PH:START', function () {
+    mintyHydro.setPollAllSensors(false);
+    mintyHydro.pollPH();
+  });
+  socket.on('CALIBRATE:PH:STOP', function () {
+    mintyHydro.setPollAllSensors(true);
+    mintyHydro.poll();
+  });
+
   socket.on('CALIBRATE:EC:DRY', function () {
     let command = "cal,dry";
     // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {

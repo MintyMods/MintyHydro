@@ -27,9 +27,6 @@ io.of('/arduino').on('connection', (socket) => {
     socket.broadcast.emit('ARDUINO:CONFIM', msg);
   });
 
-  socket.on('CALIBRATE:EC:EXPORT', function () {
-    socket.broadcast.emit('CALIBRATE:EC:EXPORT', );
-  });
   socket.on('CALIBRATE:EC:START', function () {
     socket.broadcast.emit('CALIBRATE:EC:START', );
   });
@@ -44,9 +41,6 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('CALIBRATE:EC:HIGH', function () {
     socket.broadcast.emit('CALIBRATE:EC:HIGH', );
-  });
-  socket.on('CALIBRATE:PH:EXPORT', function () {
-    socket.broadcast.emit('CALIBRATE:PH:EXPORT', );
   });
   socket.on('CALIBRATE:PH:START', function () {
     socket.broadcast.emit('CALIBRATE:PH:START', );

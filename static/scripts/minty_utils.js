@@ -1,8 +1,4 @@
 
-function isMobile() {
-
-}
-
 function showUnderDevelopmentAlt() {
     PNotify.success({
         title: '<span style="color:white">Project Status :</span>     <span style="color:yellow">ALPHA</span>',

@@ -25,7 +25,8 @@ function initMintyHydro() {
     initSocket();
     registerEventHandlers();
     initComponents();
-    showUnderDevelopmentAlt();
+    
+    // showUnderDevelopmentAlt();
 }
 
 function registerEventHandlers() {
@@ -66,6 +67,7 @@ function initComponents() {
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
         initPumpFormEvents(pumpsForm);
+        
     });
     loadJSONAsync('/json/controls.json', function (json) {
         controlsForm = new dhx.Form(null, json);
@@ -86,7 +88,8 @@ function initComponents() {
 
 function calibrateECProbeWizard() {
     let tabs = new dhx.Tabbar(null, {
-        mode:"right",
+        mode: (isCompact ? 'top' : 'right'),
+        tabWidth: (isCompact ? 180 : 200),  
         views:[ 
             { disabled:true, header:"Step One - Dry Calibration", id: "dry_calibrate", tab: "Dry Calibration", css:"panel flex"},
             { disabled:true, header:"Step Two - Low Calibration", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
@@ -100,8 +103,8 @@ function calibrateECProbeWizard() {
         title:"Atlas E.C. Probe Calibration Wizard",
         resizable: true,
         movable: true,
-        width:600,
-        height:300
+        width: (isCompact ? 400 : 600),
+        height: (isCompact ? 370 : 300)
     });
     wizard.events.on("beforeHide", function() {
         socket.emit('CALIBRATE:EC:STOP');
@@ -120,6 +123,7 @@ function calibrateECProbeWizard() {
         tabs.enableTab("low_calibrate");
         tabs.setActive("low_calibrate");
         socket.emit('CALIBRATE:EC:DRY');
+        getById("tab-content-high_calibrate").scrollIntoView();
     });
     low.events.on("ButtonClick", function (name) {
         tabs.enableTab("high_calibrate");
@@ -145,7 +149,8 @@ function calibrateECProbeWizard() {
 
 function calibratePHProbeWizard() {
     let tabs = new dhx.Tabbar(null, {
-        mode:"right",
+        mode: (isCompact ? 'top' : 'right'),
+        tabWidth: (isCompact ? 180 : 200),        
         views:[ 
             { disabled:true, header:"Step One - Mid Calibration (7.00pH)", id: "mid_calibrate", tab: "Mid Calibration", css:"panel flex"},
             { disabled:true, header:"Step Two - Low Calibration (4.00pH)", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
@@ -159,8 +164,8 @@ function calibratePHProbeWizard() {
         title:"Atlas P.H. Probe Calibration Wizard",
         resizable: true,
         movable: true,
-        width:600,
-        height:300
+        width: (isCompact ? 400 : 600),
+        height: (isCompact ? 350 : 300)
     });
     wizard.events.on("beforeHide", function() {
         socket.emit('CALIBRATE:PH:STOP');
@@ -179,6 +184,7 @@ function calibratePHProbeWizard() {
         tabs.enableTab("low_calibrate");
         tabs.setActive("low_calibrate");
         socket.emit('CALIBRATE:PH:MID');
+        getById("tab-content-high_calibrate").scrollIntoView();
     });
     low.events.on("ButtonClick", function (name) {
         tabs.enableTab("high_calibrate");
@@ -202,14 +208,20 @@ function calibratePHProbeWizard() {
     wizard.show();
 }
 
-function calibratePump(name) {
+function getById(id) {
+    return document.getElementById(id);
+}
+
+function calibrateDosingPump(name) {
     showMsg('warn', "Calibrate: " + name, 'Currently not implemented');
 }
 
 function initPumpFormEvents(pumpsForm) {
     pumpsForm.events.on("ButtonClick", function (name) {
         if (name.indexOf(':CALIBRATE') > 0) {
-            calibratePump(name);
+            calibrateDosingPump(name);
+        } else if (name.indexOf(':DOSE') > 0) {
+            showMsg('info', "Dose: " + name, 'Currently not implemented');
         } else {
             socket.emit(name);
         }
@@ -353,7 +365,7 @@ const getResCapacity = function () {
 function initNutrientSection() {
     nutrientLayout = new dhx.Layout(null, {
         rows: [
-            { height: "300px", gravity: true, padding: 10, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : (Base Nutrients) x (Capacity " + getResCapacity() + " litres)" },
+            { height: "300px", gravity: true, padding: 10, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : Base Nutrients x " + getResCapacity() + " litres Capacity" },
             { height: "300px", gravity: true, padding: 10, headerIcon: "fal fa-balance-scale", id: "base_nutrients_container", header: "Base Nutrients : amounts per milliliter - (double click cells to edit)" }]
     });
 
@@ -364,7 +376,7 @@ function initNutrientSection() {
         editable: true,
         sortable: true,
         resizable: true,
-        splitAt: 1
+        splitAt: (isCompact ? 0 : 1),
     });
     const dosingGrid = new dhx.Grid(null, {
         columns: gridColumns,
@@ -372,8 +384,7 @@ function initNutrientSection() {
         editable: false,
         sortable: false,
         resizable: true,
-        splitAt: 1,
-        htmlEnable: true
+        splitAt:  (isCompact ? 0 : 1)
     });
 
     const updateDosingGrid = function () {

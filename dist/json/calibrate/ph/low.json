@@ -14,7 +14,7 @@
                        "label": "",
                        "labelInline": true,
                        "labelWidth": "0px",
-                       "value": "Clean the probe and submerge in pH 4.00 calibration solution. Let readings stabilise before continuing.",
+                       "value": "Clean the probe and submerge in pH 4.00 calibration solution. Let the following pH reading stabilise before continuing.",
                        "id":"CALIBRATE:PH:LOW",
                        "width":420,
                        "height":200

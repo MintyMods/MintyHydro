@@ -13,8 +13,8 @@
                        "type": "textarea",
                        "label": "",
                        "labelInline": true,
-                       "labelWidth": "0px",
-                       "value": "Ensure the E.C. probe is submerged in 12,880µS calibration solution before continuing.",
+                       "labelWidth": "0px",                       
+                       "value": "Clean the probe and submerge in 12,880µS calibration solution. Let the following EH reading stabilise before continuing.",                       
                        "id":"CALIBRATE:EC:LOW",
                        "width":420
                    }

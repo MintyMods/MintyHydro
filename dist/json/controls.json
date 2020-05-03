@@ -18,20 +18,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Light Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Light On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -55,20 +55,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Recirculating Pump Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Recirculating Pump On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -92,20 +92,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Air Pump Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Air Pump On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -129,20 +129,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Extract Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Extract On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -166,26 +166,26 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Intake Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Intake Low",
+                        "label": "Low",
                         "labelPosition": "left",
                         "value": "LOW"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Intake High",
+                        "label": "High",
                         "labelPosition": "left",
                         "value": "HIGH"
                      }
@@ -209,20 +209,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Oscillating Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Oscillating On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -246,26 +246,26 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Humidifier Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Humidifier Low",
+                        "label": "Low",
                         "labelPosition": "left",
                         "value": "LOW"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Humidifier High",
+                        "label": "High",
                         "labelPosition": "left",
                         "value": "HIGH"
                      }
@@ -302,20 +302,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "De-Humidifier Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "De-Humidifier On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -339,20 +339,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Air Heater Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Air Heater On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -389,20 +389,20 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Scheduled",
+                        "label": "Auto",
                         "labelPosition": "left",
                         "value": "AUTO",
                         "checked": true
                      },
                      {
                         "type": "radioButton",
-                        "label": "Water Heater Off",
+                        "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Water Heater On",
+                        "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
                      }

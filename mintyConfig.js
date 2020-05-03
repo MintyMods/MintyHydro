@@ -1,7 +1,7 @@
 const SERIAL_PORT = "COM6";
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = '192.168.0.12';
-const DEBUGGING = true;
+const DEBUGGING = false;
 
 const development = {
   host: 'http://' + IP_ADDRESS,

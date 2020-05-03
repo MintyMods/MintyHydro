@@ -119,10 +119,10 @@ board.on('ready', function () {
       log("Dosing Pump ");
       let config = getPumpConfig(pump.id);
       pump.start(config.speed);
-      sendConfirmation(pump.name + 'Pump Dosing Started', 'The ' + pump.name + ' pump has started dosing.', 'fal fa-cog fa-spin');
+      sendConfirmation(pump.name + ' Dosing Started', 'The ' + pump.name + ' pump has started dosing.', 'fal fa-cog fa-spin');
       setTimeout(function () {
         pump.stop();
-        sendConfirmation(pump.name + 'Pump Dosing Stopped', 'The ' + pump.name + ' pump has stopped dosing.', 'fal fa-cog');
+        sendConfirmation(pump.name + ' Dosing Stopped', 'The ' + pump.name + ' pump has stopped dosing.', 'fal fa-cog');
       }, config.time);
   }
 
@@ -130,16 +130,58 @@ board.on('ready', function () {
       log("Starting Pump");
       var config = getPumpConfig(pump.id);
       pump.start(config.speed);
-      sendConfirmation(pump.name + 'Pump Started', 'The ' + pump.name + ' pump has been started.','fal fa-cog fa-spin');
+      sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.','fal fa-cog fa-spin');
   }
 
   function pumpStop(pump) {
       pump.stop();
-      sendConfirmation(pump.name + 'Pump Stopped', 'The ' + pump.name + ' pump has been stopped.','fal fa-cog');
+      sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.','fal fa-cog');
   }
   function sendConfirmation(title, text, icon) {
     socketEmit('ARDUINO:CONFIM', { 'title':title, 'text':text, icon:icon });
   }
+
+  /* ATLAS Calibration Routines */ 
+  socket.on('CALIBRATE:EC:DRY', function () {
+    let command = "cal,dry";
+    // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });    
+  });
+  socket.on('CALIBRATE:EC:LOW', function () {
+    let command = "cal,low,12880";
+    // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });    
+  });
+  socket.on('CALIBRATE:EC:HIGH', function () {
+    // Cal,high,800000
+    let command = "cal,low,12880";
+    // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });       
+  });
+  socket.on('CALIBRATE:PH:MID', function () {
+    let command = "cal,mid,7";
+    // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });       
+  });
+  socket.on('CALIBRATE:PH:LOW', function () {
+    let command = "cal,low,4";
+    // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });       
+  });
+  socket.on('CALIBRATE:PH:HIGH', function () {
+    let command = "cal,high,10";
+    // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
+      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+    // });       
+  });
+
+
+
   socket.on('PUMP:PH_UP:OFF', function (id) {
     pumpStop(pumpPhUp);
   });

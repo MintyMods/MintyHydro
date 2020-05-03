@@ -33,7 +33,7 @@ function showMsg(type, title, text, icon) {
         icon: icon,
         addClass: "nonblock translucent minty-notification " + className,
         shadow: shadow,
-        delay: 2000,
+        delay: 3000,
         hide: hide
     };
 
@@ -46,6 +46,9 @@ function showMsg(type, title, text, icon) {
             modules: {
                 Desktop: {
                     desktop: desktop
+                },
+                Mobile: {
+                    swipeDismiss: true
                 }
             }
         };
@@ -82,5 +85,35 @@ function showMsg(type, title, text, icon) {
             wrapper.addClass += " minty-notice";
             wrapper.icon = icon || "fas fa-question-circle fa-2x";
             PNotify.notice(wrapper);
+    }
+}
+
+
+function showMissingMintyHydroHubError(reason) {
+    if (window.permanotice) {
+        window.permanotice.open();
+    } else {
+        window.permanotice = PNotify.error({
+            title: 'Offline Mode',
+            text: 'Minty Hydro Hub Not Connected : ' + reason,
+            hide: false,
+            icon: 'fad fa-wifi-slash fa-2x',
+            width: '400px',
+            textTrusted: true,
+            modules: {
+                Buttons: {
+                    closer: true,
+                    sticker: false,
+                    classes: {
+                        closer: 'fas fa-bomb',
+                        pinUp: 'fas fa-anchor',
+                        pinDown: 'fas fa-hourglass'
+                    }
+                },
+                Mobile: {
+                    swipeDismiss: true
+                }
+            }
+        });
     }
 }

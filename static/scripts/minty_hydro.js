@@ -13,6 +13,7 @@ let envLayout = null;
 let schedulerHeader = null;
 let schedulerHeaderCompact = null;
 let nutrientLayout = null;
+let calibrateLayout = null;
 let socket = null;
 
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -20,9 +21,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 });
 
 function initMintyHydro() {
-    PNotify.defaults.styling = 'material';
-    PNotify.defaults.width = "400px";
-    PNotify.defaults.icons = 'fontawesome5';
     isCompact = window.innerWidth < 1000;
     initSocket();
     registerEventHandlers();
@@ -41,6 +39,9 @@ function initSocket() {
     });
     socket.on("ARDUINO:CONFIM", function(msg) {
         showServerConfirmation(msg);
+    });
+    socket.on('disconnect', function(e){
+        showMissingMintyHydroHubError('disconnect');
     });
 }
 
@@ -84,12 +85,115 @@ function initComponents() {
 
 }
 
-function calibrateECProbe() {
-    showMsg('info', "E.C. Calibration", 'Currently not implemented');
+function calibrateECProbeWizard() {
+    let tabs = new dhx.Tabbar(null, {
+        mode:"right",
+        views:[ 
+            { disabled:true, header:"Step One - Dry Calibration", id: "dry_calibrate", tab: "Dry Calibration", css:"panel flex"},
+            { disabled:true, header:"Step Two - Low Calibration", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
+            { disabled:true, header:"Step Three - High Calibration", id: "high_calibrate", tab: "High Calibration", css:"panel flex"}
+        ],
+        closable:false,
+        disabled: [ "low_calibrate", "high_calibrate"]
+    });
+    let wizard = new dhx.Window({
+        modal: true,
+        title:"Atlas E.C. Probe Calibration Wizard",
+        resizable: true,
+        movable: true,
+        width:600,
+        height:300
+    });
+    wizard.events.on("beforeHide", function() {
+        socket.emit('CALIBRATE:EC:STOP');
+        return true;
+    }); 
+
+    let dry = new dhx.Form(null,  loadJSON('/json/calibrate/ec/dry.json'));
+    let low = new dhx.Form(null,  loadJSON('/json/calibrate/ec/low.json'));
+    let high = new dhx.Form(null,  loadJSON('/json/calibrate/ec/high.json'));
+   
+    dry.events.on("ButtonClick", function (name) {
+        tabs.enableTab("low_calibrate");
+        tabs.setActive("low_calibrate");
+        socket.emit('CALIBRATE:EC:DRY');
+    });
+    low.events.on("ButtonClick", function (name) {
+        tabs.enableTab("high_calibrate");
+        tabs.setActive("high_calibrate");
+        socket.emit('CALIBRATE:EC:LOW');
+    });
+    high.events.on("ButtonClick", function (name) {
+        socket.emit('CALIBRATE:EC:HIGH');
+        wizard.hide();
+    });
+    socket.on("I2C:EC:RESULT", function(ec){
+        dry.getItem('CALIBRATE:EC:READING').setValue(ec);
+        low.getItem('CALIBRATE:EC:READING').setValue(ec);
+        high.getItem('CALIBRATE:EC:READING').setValue(ec);
+    });
+
+    tabs.getCell("dry_calibrate").attach(dry);
+    tabs.getCell("low_calibrate").attach(low);
+    tabs.getCell("high_calibrate").attach(high);
+    wizard.attach(tabs);
+    wizard.show();
 }
 
-function calibratePHProbe() {
-    showMsg('info', "P.H. Calibration", 'Currently not implemented');
+function calibratePHProbeWizard() {
+    let tabs = new dhx.Tabbar(null, {
+        mode:"right",
+        views:[ 
+            { disabled:true, header:"Step One - Mid Calibration (7.00pH)", id: "mid_calibrate", tab: "Mid Calibration", css:"panel flex"},
+            { disabled:true, header:"Step Two - Low Calibration (4.00pH)", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
+            { disabled:true, header:"Step Three - High Calibration (10.00pH)", id: "high_calibrate", tab: "High Calibration", css:"panel flex"}
+        ],
+        closable:false,
+        disabled: [ "low_calibrate", "high_calibrate"]
+    });
+    let wizard = new dhx.Window({
+        modal: true,
+        title:"Atlas P.H. Probe Calibration Wizard",
+        resizable: true,
+        movable: true,
+        width:600,
+        height:300
+    });
+    wizard.events.on("beforeHide", function() {
+        socket.emit('CALIBRATE:PH:STOP');
+        return true;
+    }); 
+
+    let mid = new dhx.Form(null,  loadJSON('/json/calibrate/ph/mid.json'));
+    let low = new dhx.Form(null,  loadJSON('/json/calibrate/ph/low.json'));
+    let high = new dhx.Form(null,  loadJSON('/json/calibrate/ph/high.json'));
+   
+    mid.events.on("ButtonClick", function (name) {
+        tabs.enableTab("low_calibrate");
+        tabs.setActive("low_calibrate");
+        socket.emit('CALIBRATE:PH:MID');
+    });
+    low.events.on("ButtonClick", function (name) {
+        tabs.enableTab("high_calibrate");
+        tabs.setActive("high_calibrate");
+        socket.emit('CALIBRATE:PH:LOW');
+    });
+    high.events.on("ButtonClick", function (name) {
+        socket.emit('CALIBRATE:PH:HIGH');
+        wizard.hide();
+    });
+    socket.on("I2C:PH:RESULT", function(ph){
+        mid.getItem('CALIBRATE:PH:READING').setValue(ph);
+        low.getItem('CALIBRATE:PH:READING').setValue(ph);
+        high.getItem('CALIBRATE:PH:READING').setValue(ph);
+    });
+
+    tabs.getCell("mid_calibrate").attach(mid);
+    tabs.getCell("low_calibrate").attach(low);
+    tabs.getCell("high_calibrate").attach(high);
+    wizard.attach(tabs);
+    socket.emit('CALIBRATE:PH:START');
+    wizard.show();
 }
 
 function calibratePump(name) {
@@ -112,9 +216,9 @@ function initPumpFormEvents(pumpsForm) {
 function initSensorFormEvents(sensorsForm) {
     sensorsForm.events.on("ButtonClick", function (name) {
         if (name == 'CALIBRATE:EC') {
-            calibrateECProbe();
+            calibrateECProbeWizard();
         } else if (name == 'CALIBRATE:PH') {
-            calibratePHProbe();
+            calibratePHProbeWizard();
         }
     });
     socket.on('WLS:TANK:HIGH:OPEN', function (data) {

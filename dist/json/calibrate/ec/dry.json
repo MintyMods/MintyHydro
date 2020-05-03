@@ -1,0 +1,46 @@
+{
+    "padding": 0,
+    "title": "",
+    "rows": [
+       {
+          "title": "",
+          "align": "around",
+          "padding": 10,
+          "rows": [
+             {
+                "cols": [
+                    {
+                        "type": "textarea",
+                        "label": "",
+                        "labelInline": true,
+                        "labelWidth": "0px",
+                        "value": "Ensure the E.C. probe is clean, dry and correctly connected before continuing.",
+                        "id":"CALIBRATE:EC:LOW",
+                        "width":420
+                    }
+                ]
+             },
+             {
+                "cols": [
+                    {
+                        "type": "text",
+                        "id":"CALIBRATE:EC:READING",
+                        "label": "EC:",
+                        "labelInline": true,
+                        "value": "0.00"
+                    },                      
+                   {
+                      "type": "button",
+                      "id":"CALIBRATE:EC:LOW:NEXT",
+                      "value": "Continue",
+                      "size": "small",
+                      "view": "flat",
+                      "color": "primary",
+                      "icon": "fal fa-arrow-circle-right"
+                   }
+                ]
+             }
+          ]
+       }      
+    ]
+ }

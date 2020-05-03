@@ -5,9 +5,10 @@
        {
           "title": "",
           "align": "around",
-          "padding": 10,
+          "padding": 0,
           "rows": [
              {
+               "padding": 5,
                 "cols": [
                     {
                         "type": "textarea",
@@ -17,11 +18,13 @@
                         "value": "Clean the probe and submerge in pH 7.00 calibration solution. Let the following pH reading stabilise before continuing.",
                         "id":"CALIBRATE:PH:MID",
                         "width":420,
-                        "height":200
+                        "height":400,
+                        "gravity":true
                     }
                 ]
              },
              {
+               "padding": 10,
                 "cols": [
                     {
                         "type": "text",

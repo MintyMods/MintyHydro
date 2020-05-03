@@ -410,11 +410,12 @@
                }
             },
             {
+               "gravity":true,
                "type": "slider",
                "id":"RF:WATER_HEATER:SLIDER",
                "label": "Water Temp ℃",
                "labelInline": true,
-               "labelWidth": "150px",
+               "labelWidth": "140px",
                "width": "90%",
                "min": 18,
                "max": 26,

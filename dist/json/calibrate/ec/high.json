@@ -5,22 +5,26 @@
       {
          "title": "",
          "align": "around",
-         "padding": 10,
+         "padding": 0,
          "rows": [
             {
+               "padding": 5,
                "cols": [
                    {
                        "type": "textarea",
                        "label": "",
                        "labelInline": true,
-                       "labelWidth": "0px",
-                       "value": "Ensure the E.C. probe is submerged in 80,000µS calibration solution before continuing.",
+                       "labelWidth": "0px",                       
+                       "value": "Clean the probe and submerge in 80,000µS calibration solution. Let the following EH reading stabilise before continuing.",
                        "id":"CALIBRATE:EC:HIGH",
-                       "width":420
+                       "width":420,
+                       "height":400,
+                       "gravity":true
                    }
                ]
             },
             {
+               "padding": 10,
                "cols": [
                    {
                        "type": "text",

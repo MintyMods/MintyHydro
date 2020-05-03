@@ -145,38 +145,39 @@ board.on('ready', function () {
   socket.on('CALIBRATE:EC:DRY', function () {
     let command = "cal,dry";
     // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'E.C. Dry Calibration Completed.','fal fa-code-branch');
     // });    
   });
   socket.on('CALIBRATE:EC:LOW', function () {
     let command = "cal,low,12880";
     // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'E.C. Low Calibration Completed.','fal fa-code-branch');
     // });    
   });
   socket.on('CALIBRATE:EC:HIGH', function () {
-    // Cal,high,800000
-    let command = "cal,low,12880";
+    let command = "cal,high,800000";
     // sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'E.C. High Calibration Completed.','fal fa-code-branch');
+      sendConfirmation("E.C. Calibration Complete", 'The EC probe has been successfully calibrated.','fas fa-check-circle');
     // });       
   });
   socket.on('CALIBRATE:PH:MID', function () {
     let command = "cal,mid,7";
     // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'P.H. Mid Calibration Completed.','fal fa-code-branch');
     // });       
   });
   socket.on('CALIBRATE:PH:LOW', function () {
     let command = "cal,low,4";
     // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'P.H. Low Calibration Completed.','fal fa-code-branch');
     // });       
   });
   socket.on('CALIBRATE:PH:HIGH', function () {
     let command = "cal,high,10";
     // sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation('Calibration Command', 'Atlas "' + command + '" initiated...','fal fa-code-branch');
+      sendConfirmation(command, 'P.H. High Calibration Completed.','fal fa-code-branch');
+      sendConfirmation("P.H. Calibration Complete", 'The pH probe has been successfully calibrated.','fas fa-check-circle');
     // });       
   });
 

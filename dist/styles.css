@@ -166,6 +166,9 @@ body {
   opacity: 0.8;
 }
 
+.dhx_window__overlay {
+z-index: 99999;
+}
 .minty-notification {
   display: flex;
   justify-content: center;

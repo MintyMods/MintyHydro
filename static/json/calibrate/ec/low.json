@@ -14,7 +14,7 @@
                        "label": "",
                        "labelInline": true,
                        "labelWidth": "0px",
-                       "value": "Ensure the E.C. probe is submerged in 'LOW' (12,880µS) calibration solution before continuing.",
+                       "value": "Ensure the E.C. probe is submerged in 12,880µS calibration solution before continuing.",
                        "id":"CALIBRATE:EC:LOW",
                        "width":420
                    }

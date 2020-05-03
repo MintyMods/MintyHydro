@@ -23,6 +23,10 @@ app.use(webpackMiddleware(webpack(webpackConfig)));
 io.of('/arduino').on('connection', (socket) => {
   log('New connection to ArduinoServer@' + socket.id);
 
+  socket.on('ARDUINO:CONFIM', function (msg) {
+    socket.broadcast.emit('ARDUINO:CONFIM', msg);
+  });
+
   socket.on('BASE_NUTRIENTS:UPDATE', function (row) {
     socket.broadcast.emit('BASE_NUTRIENTS:UPDATE', row);
   });

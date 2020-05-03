@@ -27,7 +27,7 @@ function initMintyHydro() {
     initSocket();
     registerEventHandlers();
     initComponents();
-    // showUnderDevelopmentAlt();
+    showUnderDevelopmentAlt();
 }
 
 function registerEventHandlers() {
@@ -38,6 +38,9 @@ function initSocket() {
     socket = io.connect('/arduino');
     socket.on('connect', function (data) {
         console.info("Client Connected to Socket Server");
+    });
+    socket.on("ARDUINO:CONFIM", function(msg) {
+        showServerConfirmation(msg);
     });
 }
 

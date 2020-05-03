@@ -47,7 +47,7 @@ const MintyHydroBox = {
         this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ec) {
           this.reading.ec = ec;
           this.io.socketEmit('I2C:EC:RESULT', ec);
-          this.processSensors();
+          // this.processSensors();
         }.bind(this));
       }.bind(this));
     }.bind(this));
@@ -91,9 +91,9 @@ const MintyHydroBox = {
     let current = this.reading.temp.air;
     if (isValidTemperatureReading(current)) {
       if (current < hydroTarget.getMinAirTemp()) {
-        this.io.socketEmit('RF:HEATER:OFF'); // 'TODO ON 
+        // this.io.socketEmit('RF:HEATER:OFF'); // 'TODO ON 
       } else if (current > hydroTarget.getMinAirTemp()) {
-        this.io.socketEmit('RF:HEATER:OFF');
+        // this.io.socketEmit('RF:HEATER:OFF');
       }
     }
   },
@@ -124,9 +124,9 @@ const MintyHydroBox = {
     let current = this.reading.temp.water;
     if (isValidTemperatureReading(current)) {
       if (current < hydroTarget.getMinWaterTemp()) {
-        this.io.socketEmit('RF:WATER_HEATER:ON');
+        // this.io.socketEmit('RF:WATER_HEATER:ON');
       } else {
-        this.io.socketEmit('RF:WATER_HEATER:OFF');
+        // this.io.socketEmit('RF:WATER_HEATER:OFF');
       }
     }
   },

@@ -97,6 +97,12 @@ body {
 
 
 /* Minty Notifications */
+.minty-confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+}
 .minty-notification {
   display: flex;
   justify-content: center;

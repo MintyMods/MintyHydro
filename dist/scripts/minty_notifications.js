@@ -19,7 +19,11 @@ var buttons = {
     }
 };
 
-function showMsg(type, title, text) {
+function showServerConfirmation(msg) {
+    showMsg('confirmation', msg.title, msg.text, msg.icon + ' fa-3x'); 
+}
+
+function showMsg(type, title, text, icon) {
     let core = {
         text: text,
         title: title,
@@ -67,6 +71,11 @@ function showMsg(type, title, text) {
         case "error":
             wrapper.icon = icon || "fad fa-engine-warning fa-2x";
             PNotify.error(wrapper);
+            break;
+        case "confirmation":
+            wrapper.addClass += " minty-confirmation";
+            wrapper.icon = icon || "fas raspberry-pi fa-2x fa-spin";
+            PNotify.notice(wrapper);
             break;
         case "notice":
         default:

@@ -81,9 +81,11 @@ const MintyIO = function (board, serial) {
     };
 
 }
+
 function warn(msg, payload) {
     console.warn("** ALERT ** [IO] " + msg, payload != undefined ? payload : "");
 }
+
 function log(msg, payload) {
     if (config.debug) console.log("[IO] " + msg, payload != undefined ? payload : "");
 }
@@ -108,7 +110,5 @@ function lookupAtlasCommand(command) {
             return "FAILED:" + command;
     }
 }
-
-
 
 module.exports = MintyIO;

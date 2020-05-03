@@ -28,34 +28,34 @@ io.of('/arduino').on('connection', (socket) => {
   });
 
   socket.on('CALIBRATE:EC:START', function () {
-    socket.broadcast.emit('CALIBRATE:EC:START', );
+    socket.broadcast.emit('CALIBRATE:EC:START');
   });
   socket.on('CALIBRATE:EC:STOP', function () {
-    socket.broadcast.emit('CALIBRATE:EC:STOP', );
+    socket.broadcast.emit('CALIBRATE:EC:STOP');
   });
   socket.on('CALIBRATE:EC:DRY', function () {
-    socket.broadcast.emit('CALIBRATE:EC:DRY', );
+    socket.broadcast.emit('CALIBRATE:EC:DRY');
   });
   socket.on('CALIBRATE:EC:LOW', function () {
-    socket.broadcast.emit('CALIBRATE:EC:LOW', );
+    socket.broadcast.emit('CALIBRATE:EC:LOW');
   });
   socket.on('CALIBRATE:EC:HIGH', function () {
-    socket.broadcast.emit('CALIBRATE:EC:HIGH', );
+    socket.broadcast.emit('CALIBRATE:EC:HIGH');
   });
   socket.on('CALIBRATE:PH:START', function () {
-    socket.broadcast.emit('CALIBRATE:PH:START', );
+    socket.broadcast.emit('CALIBRATE:PH:START');
   });
   socket.on('CALIBRATE:PH:STOP', function () {
-    socket.broadcast.emit('CALIBRATE:PH:STOP', );
+    socket.broadcast.emit('CALIBRATE:PH:STOP');
   });
   socket.on('CALIBRATE:PH:MID', function () {
-    socket.broadcast.emit('CALIBRATE:PH:MID', );
+    socket.broadcast.emit('CALIBRATE:PH:MID');
   });
   socket.on('CALIBRATE:PH:LOW', function () {
-    socket.broadcast.emit('CALIBRATE:PH:LOW', );
+    socket.broadcast.emit('CALIBRATE:PH:LOW');
   });
   socket.on('CALIBRATE:PH:HIGH', function () {
-    socket.broadcast.emit('CALIBRATE:PH:HIGH', );
+    socket.broadcast.emit('CALIBRATE:PH:HIGH');
   });
   socket.on('BASE_NUTRIENTS:UPDATE', function (row) {
     socket.broadcast.emit('BASE_NUTRIENTS:UPDATE', row);

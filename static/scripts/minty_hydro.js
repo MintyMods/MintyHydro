@@ -74,11 +74,16 @@ function initComponents() {
         controlsForm.events.on("Change", function (name, value) {
             socket.emit((name + ":" + value.toString()).toUpperCase());
         });
+        if (navSelected == 'controls') {
+            layout.cell("content_container").attach(sensorsForm);
+        }
     });
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
-        layout.cell("content_container").attach(sensorsForm);
+        if (navSelected == 'sensors') {
+            layout.cell("content_container").attach(sensorsForm);
+        }
     });
 
     schedulerHeader = loadJSON('/json/scheduler/header.json');
@@ -100,7 +105,7 @@ function calibrateECProbeWizard() {
     });
     let wizard = new dhx.Window({
         modal: true,
-        title:"Atlas E.C. Probe Calibration Wizard",
+        title:"EC Probe Calibration Wizard",
         resizable: true,
         movable: true,
         width: (isCompact ? 400 : 600),
@@ -161,7 +166,7 @@ function calibratePHProbeWizard() {
     });
     let wizard = new dhx.Window({
         modal: true,
-        title:"Atlas P.H. Probe Calibration Wizard",
+        title:"EC Probe Calibration Wizard",
         resizable: true,
         movable: true,
         width: (isCompact ? 400 : 600),

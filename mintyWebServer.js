@@ -207,6 +207,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:PH_UP:AUTO', function () {
     socket.broadcast.emit('PUMP:PH_UP:AUTO');
   });
+  socket.on('PUMP:PH_UP:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:PH_UP:DOSE', config);
+  });
   socket.on('PUMP:PH_DOWN:ON', function () {
     socket.broadcast.emit('PUMP:PH_DOWN:ON');
   });
@@ -215,6 +218,9 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('PUMP:PH_DOWN:AUTO', function () {
     socket.broadcast.emit('PUMP:PH_DOWN:AUTO');
+  });
+  socket.on('PUMP:PH_DOWN:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:PH_DOWN:DOSE', config);
   });
   socket.on('PUMP:CALMAG:ON', function () {
     socket.broadcast.emit('PUMP:CALMAG:ON');
@@ -225,6 +231,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:CALMAG:AUTO', function () {
     socket.broadcast.emit('PUMP:CALMAG:AUTO');
   });
+  socket.on('PUMP:CALMAG:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:CALMAG:DOSE', config);
+  });
   socket.on('PUMP:HYDROGUARD:ON', function () {
     socket.broadcast.emit('PUMP:HYDROGUARD:ON');
   });
@@ -234,6 +243,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:HYDROGUARD:AUTO', function () {
     socket.broadcast.emit('PUMP:HYDROGUARD:AUTO');
   });
+  socket.on('PUMP:HYDROGUARD:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:HYDROGUARD:DOSE', config);
+  });  
   socket.on('PUMP:FLORA_MICRO:ON', function () {
     socket.broadcast.emit('PUMP:FLORA_MICRO:ON');
   });
@@ -242,6 +254,9 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('PUMP:FLORA_MICRO:AUTO', function () {
     socket.broadcast.emit('PUMP:FLORA_MICRO:AUTO');
+  });
+  socket.on('PUMP:FLORA_MICRO:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:FLORA_MICRO:DOSE', config);
   });
   socket.on('PUMP:FLORA_GROW:ON', function () {
     socket.broadcast.emit('PUMP:FLORA_GROW:ON');
@@ -252,6 +267,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:FLORA_GROW:AUTO', function () {
     socket.broadcast.emit('PUMP:FLORA_GROW:AUTO');
   });
+  socket.on('PUMP:FLORA_GROW:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:FLORA_GROW:DOSE', config);
+  });  
   socket.on('PUMP:FLORA_BLOOM:ON', function () {
     socket.broadcast.emit('PUMP:FLORA_BLOOM:ON');
   });
@@ -261,6 +279,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:FLORA_BLOOM:AUTO', function () {
     socket.broadcast.emit('PUMP:FLORA_BLOOM:AUTO');
   });
+  socket.on('PUMP:FLORA_BLOOM:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:FLORA_BLOOM:DOSE', config);
+  });  
   socket.on('PUMP:SPARE:ON', function () {
     socket.broadcast.emit('PUMP:SPARE:ON');
   });
@@ -270,6 +291,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:SPARE:AUTO', function () {
     socket.broadcast.emit('PUMP:SPARE:AUTO');
   });
+  socket.on('PUMP:SPARE:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:SPARE:DOSE', config);
+  });    
   socket.on('PUMP:FILL:ON', function () {
     socket.broadcast.emit('PUMP:FILL:ON');
   });
@@ -279,6 +303,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:FILL:AUTO', function () {
     socket.broadcast.emit('PUMP:FILL:AUTO');
   });
+  socket.on('PUMP:FILL:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:FILL:DOSE', config);
+  });   
   socket.on('PUMP:DRAIN:ON', function () {
     socket.broadcast.emit('PUMP:DRAIN:ON');
   });
@@ -288,6 +315,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:DRAIN:AUTO', function () {
     socket.broadcast.emit('PUMP:DRAIN:AUTO');
   });
+  socket.on('PUMP:DRAIN:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:DRAIN:DOSE', config);
+  });     
   socket.on('PUMP:DRIP:ON', function () {
     socket.broadcast.emit('PUMP:DRIP:ON');
   });
@@ -297,6 +327,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:DRIP:AUTO', function () {
     socket.broadcast.emit('PUMP:DRIP:AUTO');
   });
+  socket.on('PUMP:DRIP:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:DRIP:DOSE', config);
+  });     
   socket.on('PUMP:MAGMIX:ON', function () {
     socket.broadcast.emit('PUMP:MAGMIX:ON');
   });
@@ -306,7 +339,9 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('PUMP:MAGMIX:AUTO', function () {
     socket.broadcast.emit('PUMP:MAGMIX:AUTO');
   });
-
+  socket.on('PUMP:MAGMIX:DOSE', function (config) {
+    socket.broadcast.emit('PUMP:MAGMIX:DOSE', config);
+  }); 
 });
 
 function log(msg, payload) {

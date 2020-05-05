@@ -89,8 +89,8 @@ function showMsg(type, title, text, icon) {
 }
 
 function hideMissingMintyHydroHubError() {
-    if (window.permanotice) {
-        window.permanotice.closerHover();
+    if (window.permanotice != null) {
+        window.permanotice.close();
     }
 }
 

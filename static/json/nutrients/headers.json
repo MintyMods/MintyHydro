@@ -5,7 +5,6 @@
       "type": "string",
       "header": [
          {
-            
             "text": "Week:"
          }
       ]      
@@ -14,21 +13,21 @@
       "id": "1",
       "width": 60,
       "type": "number",
+      "tooltip":"Seedling",
       "header": [
          {
-            "text": "1",
-            "tooltip":"Seedling"
+            "text": "1"
          }
       ]
    },
    {
       "id": "2",
       "width": 60,
+      "tooltip": "Early Growth",
       "type": "number",
       "header": [
          {
-            "text":"2",
-            "tooltip": "Early Growth"
+            "text":"2"
          }
       ]
    },

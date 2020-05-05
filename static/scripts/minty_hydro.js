@@ -1,5 +1,6 @@
 
 let isCompact = false; //window.innerWidth < 1000;
+let debug = true;
 let navSelected = 'settings';
 let layout = null;
 let sidebar = null;
@@ -122,7 +123,7 @@ function initNutrientSection() {
         autoWidth: false,
         editable: true,
         sortable: true,
-        resizable: true,
+        resizable: false,
         splitAt: (isCompact ? 0 : 1),
     });
     const dosingGrid = new dhx.Grid(null, {
@@ -130,7 +131,7 @@ function initNutrientSection() {
         autoWidth: false,
         editable: false,
         sortable: false,
-        resizable: true,
+        resizable: false,
         splitAt:  (isCompact ? 0 : 1)
     });
 
@@ -304,13 +305,29 @@ function getById(id) {
 function calibrateDosingPump(name) {
     showMsg('warn', "Calibrate: " + name, 'Currently not implemented');
 }
-
+function runDosingPump(form, command) {
+    var name = command.split(":")[1];
+    var time = form.getItem('PUMP:' + name + ':TIME');
+    var speed = form.getItem('PUMP:' + name + ':SPEED');
+    var amount = form.getItem('PUMP:' + name + ':AMOUNT');
+    var config = { 
+        "time": (time ? time.getValue() : null),
+        "speed": (speed ? speed.getValue() : null),
+        "amount": (amount ? amount.getValue() : null)
+    };
+    var button = form.getItem(command);
+    button.loading = true;
+    button.config.color="success"
+    form.paint();
+    log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(config));
+    socket.emit(command, config);
+}
 function initPumpFormEvents(pumpsForm) {
     pumpsForm.events.on("ButtonClick", function (name) {
         if (name.indexOf(':CALIBRATE') > 0) {
             calibrateDosingPump(name);
         } else if (name.indexOf(':DOSE') > 0) {
-            showMsg('info', "Dose: " + name, 'Currently not implemented');
+            runDosingPump(pumpsForm, name);
         } else {
             socket.emit(name);
         }
@@ -546,7 +563,7 @@ function buildScheduler() {
     scheduler.templates.event_bar_text = getEventText;
     scheduler.templates.event_text = getEventText;
     // scheduler.attachEvent("onLightboxButton", function(id,event){
-    //     console.log("button " + id);
+    //     log("button " + id);
     // });
     scheduler.attachEvent("onEventAdded", getEventColor);
     scheduler.attachEvent("onEventChanged", getEventColor);
@@ -558,5 +575,12 @@ function buildScheduler() {
             scheduler.load('/json/events.json');
         });
     });
+}
 
+function warn(msg, payload) {
+    console.warn("** ALERT ** [ARDUINO] " + msg, payload != undefined ? payload : "");
+}
+
+function log(msg, payload) {
+    if (debug) console.log("[HYDRO] " + msg, payload != undefined ? payload : "");
 }

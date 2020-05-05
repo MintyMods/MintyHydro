@@ -54,6 +54,17 @@
       "value": "Nutrients"
    },
    {
+      "id": "camera",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "disabled": true,
+      "readonly": true,
+      "twoState": true,
+      "icon": "fal fa-camera-home",
+      "value": "camera"
+   },
+   {
       "id": "stats",
       "type": "button",
       "active": false,

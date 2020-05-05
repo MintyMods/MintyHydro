@@ -4,26 +4,40 @@
    "rows": [
       {
          "title": "Grow Cycle:",
-         "align": "around",
          "css": "dhx_layout-cell--bordered",
-         "gravity": true,
-         "padding": 10,
+         "padding": 5,
          "rows": [
             {
-               "cols": [
-                  {
                      "type": "datepicker",
                      "id": "CONFIG:GROW:START_DATE",
                      "labelInline": true,
-                     "label": "Start date"
-                  },
-                  {
+                     "placeholder": "Start Date",
+                     "label": "Start date",
+                     "width": "300",
+                     "labelWidth": "120"
+            },
+            {
                      "type": "datepicker",
                      "id": "CONFIG:GROW:END_DATE",
+                     "placeholder": "End Date",
                      "labelInline": true,
-                     "label": "End date"
-                  }
-               ]
+                     "label": "End date",
+                     "width": "300",
+                     "labelWidth": "120"
+            },
+            {
+               "type": "input",
+               "id": "CONFIG:GROW:TOTAL_HARVEST",
+               "labelInline": true,
+               "label": "Total Harvest",
+               "icon": "fal fa-cannabis",
+               "placeholder": "grams",
+               "labelPosition": "left",
+               "validation": "integer",
+               "maxlength": "10",
+               "value": "",
+               "width": "300",
+               "labelWidth": "120"
             },
             {
                "type": "textarea",
@@ -33,21 +47,10 @@
                "icon": "fal fa-sticky-note",
                "placeholder": "Notes: Strain etc.",
                "labelPosition": "left",
-               "labelWidth": "150",
-               "value": ""
-            },
-            {
-               "type": "input",
-               "id": "CONFIG:GROW:TOTAL_HARVEST",
-               "labelInline": true,
-               "label": "Total Harvest (grams)",
-               "icon": "fal fa-cannabis",
-               "placeholder": "grams",
-               "labelPosition": "left",
-               "labelWidth": "200",
-               "validation": "integer",
-               "maxlength": "10",
-               "value": ""
+               "labelWidth": "50",
+               "value": "",
+               "gravity": true,
+               "width": "330"
             }
          ]
       },
@@ -55,196 +58,263 @@
          "title": "Grow Area:",
          "align": "around",
          "css": "dhx_layout-cell--bordered",
-         "gravity": true,
-         "padding": 10,
+         "gravity": false,
+         "padding": 5,
          "rows": [
+
             {
-               "cols": [
-                  {
-                     "type": "input",
-                     "id": "CONFIG:GROW_AREA:HEIGHT",
-                     "labelInline": true,
-                     "label": "Height (mm)",
-                     "icon": "fal fa-arrow-from-bottom",
-                     "placeholder": "ltrs",
-                     "labelPosition": "left",
-                     "labelWidth": "100",
-                     "validation": "integer",
-                     "maxlength": "10",
-                     "value": "2000"
-                  },
-                  {
-                     "type": "input",
-                     "id": "CONFIG:GROW_AREA:WIDTH",
-                     "labelInline": true,
-                     "label": "Width (mm)",
-                     "icon": "fal fa-arrow-square-right",
-                     "placeholder": "ltrs",
-                     "labelPosition": "left",
-                     "labelWidth": "100",
-                     "validation": "integer",
-                     "maxlength": "10",
-                     "value": "1200"
-                  },
-                  {
-                     "type": "input",
-                     "id": "CONFIG:GROW_AREA:LENGTH",
-                     "labelInline": true,
-                     "label": "Length (mm)",
-                     "icon": "fal fa-arrow-square-up",
-                     "placeholder": "ltrs",
-                     "labelPosition": "left",
-                     "labelWidth": "100",
-                     "validation": "integer",
-                     "maxlength": "10",
-                     "value": "1200"
-                  }
-               ]
+               "type": "input",
+               "id": "CONFIG:GROW_AREA:HEIGHT",
+               "labelInline": true,
+               "label": "Height",
+               "icon": "fal fa-arrow-from-bottom",
+               "placeholder": "mm",
+               "labelPosition": "left",
+               "labelWidth": "120",
+               "validation": "integer",
+               "maxlength": "10",
+               "value": "",
+               "gravity": false,
+               "width": "300"
+            },
+            {
+               "type": "input",
+               "id": "CONFIG:GROW_AREA:WIDTH",
+               "labelInline": true,
+               "label": "Width",
+               "icon": "fal fa-arrow-square-right",
+               "placeholder": "mm",
+               "labelPosition": "left",
+               "validation": "integer",
+               "maxlength": "10",
+               "labelWidth": "120",
+               "value": "",
+               "gravity": false,
+               "width": "300"
+            },
+            {
+               "type": "input",
+               "id": "CONFIG:GROW_AREA:LENGTH",
+               "labelInline": true,
+               "label": "Length",
+               "icon": "fal fa-arrow-square-up",
+               "placeholder": "mm",
+               "labelPosition": "left",
+               "labelWidth": "120",
+               "validation": "integer",
+               "maxlength": "10",
+               "value": "",
+               "gravity": false,
+               "width": "300"
             },
             {
                "type": "input",
                "id": "CONFIG:GROW_AREA:LIGHT:WATTS",
                "labelInline": true,
-               "label": "Light (watts)",
+               "label": "Light",
                "icon": "fal fa-lightbulb-on",
                "placeholder": "watts",
                "labelPosition": "left",
-               "labelWidth": "150",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "5",
-               "value": "480"
+               "value": "",
+               "gravity": false,
+               "width": "300"
             },
             {
                "name": "CONFIG:GROW_AREA:RES_CAPACITY",
                "id": "CONFIG:GROW_AREA:RES_CAPACITY",
                "type": "input",
                "labelInline": true,
-               "label": "Resovoir Size (litres)",
+               "label": "Resovoir Size",
                "icon": "fal fa-trash-restore",
-               "placeholder": "ltrs",
+               "placeholder": "litres",
                "labelPosition": "left",
-               "labelWidth": "150",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "5",
-               "value": "50"
+               "value": "50",
+               "gravity": false,
+               "width": "300"
             },
             {
-               "cols": [
+               "css": "dhx_widget--border_top",
+               "padding": 5,
+               "rows": [
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:RECIRCULATING_PUMP:LITRES",
                      "labelInline": true,
-                     "label": "Recirculating Pump (litres per hour)",
-                     "icon": "fal fa-sync",
+                     "label": "Pump",
+                     "icon": "fal fa-recycle",
                      "placeholder": "litres per hour",
                      "labelPosition": "left",
-                     "labelWidth": "250",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "1700"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   },
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:RECIRCULATING_PUMP:WATTS",
                      "labelInline": true,
-                     "label": "Recirculating Pump (watts)",
-                     "icon": "fal fa-sync",
+                     "label": "Pump",
+                     "icon": "fal fa-bolt",
                      "placeholder": "watts",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "10",
-                     "value": "33"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   }
                ]
             },
             {
-               "cols": [
+               "css": "dhx_widget--border_top",
+               "padding": 5,
+               "rows": [
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:AIR_PUMP:LITRES",
                      "labelInline": true,
-                     "label": "Air Pump (litres per hour)",
-                     "icon": "fal fa-wind",
+                     "label": "Air Pump",
+                     "icon": "fal fa-recycle",
                      "placeholder": "litres per hour",
                      "labelPosition": "left",
-                     "labelWidth": "250",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "960"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   },
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:AIR_PUMP:WATTS",
                      "labelInline": true,
-                     "label": "Air Pump (watts)",
-                     "icon": "fal fa-wind",
+                     "label": "Air Pump",
+                     "icon": "fal fa-bolt",
                      "placeholder": "watts",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "10",
-                     "value": "7"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   }
                ]
             },
             {
-               "cols": [
+               "padding": 5,
+               "css": "dhx_widget--border_top",
+               "rows": [
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:EXTRACT_FAN:M2",
                      "labelInline": true,
-                     "label": "Extract Fan (m² per hour)",
-                     "icon": "fal fa-fan",
+                     "label": "Extract Fan",
+                     "icon": "fal fa-recycle",
                      "placeholder": "m² per hour",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "535"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   },
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:EXTRACT_FAN:WATTS",
                      "labelInline": true,
-                     "label": "Extract Fan (watts)",
-                     "icon": "fal fa-fan",
+                     "label": "Extract Fan",
+                     "icon": "fal fa-bolt",
                      "placeholder": "watts",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "10",
-                     "value": "42"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   }
                ]
             },
-            {
-               "cols": [
+            { 
+               "padding": 5,
+               "css": "dhx_widget--border_top",
+               "rows": [
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:INTAKE_FAN:M2",
                      "labelInline": true,
-                     "label": "Intake Fan (m² per hour)",
-                     "icon": "fal fa-hurricane",
+                     "label": "Intake Fan",
+                     "icon": "fal fa-recycle",
                      "placeholder": "m² per hour",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "198"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   },
                   {
                      "type": "input",
                      "id": "CONFIG:GROW_AREA:INTAKE_FAN:WATTS",
                      "labelInline": true,
-                     "label": "Intake Fan (watts)",
-                     "icon": "fal fa-hurricane",
+                     "label": "Intake Fan",
+                     "icon": "fal fa-bolt",
                      "placeholder": "watts",
                      "labelPosition": "left",
-                     "labelWidth": "200",
+                     "labelWidth": "120",
                      "validation": "integer",
                      "maxlength": "10",
-                     "value": "26"
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
+                  }
+               ]
+            },
+            {
+               "padding": 5,
+               "css": "dhx_widget--border_top dhx_widget--border_bottom",               
+               "rows": [
+                  {
+                     "type": "input",
+                     "id": "CONFIG:GROW_AREA:DE_HUMIDIFIER:LITRES",
+                     "labelInline": true,
+                     "label": "De-Humidifier",
+                     "icon": "fal fa-recycle",
+                     "placeholder": "litres per day",
+                     "labelPosition": "left",
+                     "labelWidth": "120",
+                     "validation": "integer",
+                     "maxlength": "10",
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
+                  },
+                  {
+                     "type": "input",
+                     "id": "CONFIG:GROW_AREA:DE_HUMIDIFIER:WATTS",
+                     "labelInline": true,
+                     "label": "De-Humidifier",
+                     "icon": "fal fa-bolt",
+                     "placeholder": "watts",
+                     "labelPosition": "left",
+                     "labelWidth": "120",
+                     "validation": "integer",
+                     "maxlength": "10",
+                     "value": "",
+                     "gravity": false,
+                     "width": "300"
                   }
                ]
             },
@@ -252,84 +322,63 @@
                "type": "input",
                "id": "CONFIG:GROW_AREA:OSCILLATING_FAN:WATTS",
                "labelInline": true,
-               "label": "Oscillating Fan (watts)",
-               "icon": "fal fa-fan-table",
+               "label": "Oscillating Fan",
+               "icon": "fal fa-bolt",
                "placeholder": "watts",
                "labelPosition": "left",
-               "labelWidth": "200",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "10",
-               "value": "40"
+               "value": "",
+               "gravity": false,
+               "width": "300"
             },
             {
                "type": "input",
                "id": "CONFIG:GROW_AREA:WATER_HEATER:WATTS",
                "labelInline": true,
-               "label": "Water Heater (watts)",
-               "icon": "fal fa-water",
+               "label": "Water Heater",
+               "icon": "fal fa-bolt",
                "placeholder": "watts",
                "labelPosition": "left",
-               "labelWidth": "200",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "10",
-               "value": "300"
+               "value": "",
+               "gravity": false,
+               "width": "300"
             },
             {
                "type": "input",
                "id": "CONFIG:GROW_AREA:SPACE_HEATER:WATTS",
                "labelInline": true,
-               "label": "Space Heater (watts)",
-               "icon": "fal fa-heat",
+               "label": "Space Heater",
+               "icon": "fal fa-bolt",
                "placeholder": "watts",
                "labelPosition": "left",
-               "labelWidth": "200",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "10",
-               "value": "180"
+               "value": "",
+               "gravity": false,
+               "width": "300"
             },
             {
                "type": "input",
                "id": "CONFIG:GROW_AREA:HUMIDIFIER:WATTS",
                "labelInline": true,
-               "label": "Humidifier (watts)",
-               "icon": "fal fa-tint",
+               "label": "Humidifier",
+               "icon": "fal fa-bolt",
                "placeholder": "watts",
                "labelPosition": "left",
-               "labelWidth": "200",
+               "labelWidth": "120",
                "validation": "integer",
                "maxlength": "10",
-               "value": "30"
-            },
-            {
-               "cols": [
-                  {
-                     "type": "input",
-                     "id": "CONFIG:GROW_AREA:DE_HUMIDIFIER:LITRES",
-                     "labelInline": true,
-                     "label": "De-Humidifier Capacity (litres per day)",
-                     "icon": "fal fa-tint-slash",
-                     "placeholder": "litres",
-                     "labelPosition": "left",
-                     "labelWidth": "300",
-                     "validation": "integer",
-                     "maxlength": "10",
-                     "value": "8"
-                  },
-                  {
-                     "type": "input",
-                     "id": "CONFIG:GROW_AREA:DE_HUMIDIFIER:WATTS",
-                     "labelInline": true,
-                     "label": "De-Humidifier (watts)",
-                     "icon": "fal fa-tint-slash",
-                     "placeholder": "watts",
-                     "labelPosition": "left",
-                     "labelWidth": "200",
-                     "validation": "integer",
-                     "maxlength": "10",
-                     "value": "650"
-                  }
-               ]
+               "value": "",
+               "gravity": false,
+               "width": "300"
             }
+            
          ]
       },
       {

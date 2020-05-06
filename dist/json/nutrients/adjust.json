@@ -1,0 +1,30 @@
+{
+    "gravity": false,
+    "padding": 0,
+    "rows": [
+       {
+          "gravity": false,
+          "padding": 10,
+          "rows": [
+            {
+                "name": "CONFIG:NUTRIENTS:RES_CAPACITY",
+                "id": "CONFIG:NUTRIENTS:RES_CAPACITY",
+                "type": "input",
+                "labelInline": true,
+                "label": "Total Capacity (litres)",
+                "icon": "fal fa-trash-restore",
+                "placeholder": "ltrs",
+                "labelPosition": "left",
+                "gravity": false,
+                "labelWidth": "150",
+                "validation": "integer",
+                "maxlength": "5",
+                "value": ".8",
+                "width":300
+             }
+            ]
+
+    
+        }
+    ]
+}

@@ -310,17 +310,13 @@ function runDosingPump(form, command) {
     var time = form.getItem('PUMP:' + name + ':TIME');
     var speed = form.getItem('PUMP:' + name + ':SPEED');
     var amount = form.getItem('PUMP:' + name + ':AMOUNT');
-    var config = { 
+    var opts = { 
         "time": (time ? time.getValue() : null),
         "speed": (speed ? speed.getValue() : null),
         "amount": (amount ? amount.getValue() : null)
     };
-    var button = form.getItem(command);
-    button.loading = true;
-    button.config.color="success"
-    form.paint();
-    log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(config));
-    socket.emit(command, config);
+    log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
+    socket.emit(command, opts);
 }
 function initPumpFormEvents(pumpsForm) {
     pumpsForm.events.on("ButtonClick", function (name) {

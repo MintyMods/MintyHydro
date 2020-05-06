@@ -115,21 +115,19 @@ board.on('ready', function () {
   pumpPhDown.name = "pH Down";
 
   /** floraMicro MUST be added first!! */
-  function pumpDose(pump) {
-      log("Dosing Pump ");
-      let config = getPumpConfig(pump.id);
-      pump.start(config.speed);
-      sendConfirmation(pump.name + ' Dosing Started', 'The ' + pump.name + ' pump has started dosing.', 'fal fa-cog fa-spin');
+  function pumpDose(pump, opts) {
+      log("Dosing Pump " + pump, opts);
+      pump.start(opts.speed);
+      sendConfirmation(pump.name + ' Dosing Started', 'The ' + pump.name + ' pump has started dosing (' + opts.time + ' seconds).', 'fal fa-cog fa-spin');
       setTimeout(function () {
         pump.stop();
         sendConfirmation(pump.name + ' Dosing Stopped', 'The ' + pump.name + ' pump has stopped dosing.', 'fal fa-cog');
-      }, config.time);
+      }, opts.time);
   }
 
-  function pumpStart(pump) {
+  function pumpStart(pump, opts) {
       log("Starting Pump");
-      var config = getPumpConfig(pump.id);
-      pump.start(config.speed);
+      pump.start(opts.speed);
       sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.','fal fa-cog fa-spin');
   }
 
@@ -137,6 +135,16 @@ board.on('ready', function () {
       pump.stop();
       sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.','fal fa-cog');
   }
+
+  function sendAutoOffRfCommand(code, opts) {
+    sendRF(code);
+    sendConfirmation((opts.name ? opts.name : code) + ' Pump Auto Running', 'Pump auto running for (' + opts.time + ' seconds)', 'fal fa-cog fa-spin');
+    setTimeout(function () {
+      sendRF(config.MINTY_FDD.OFF);
+      sendConfirmation((opts.name ? opts.name : code) + ' Pump Stopped', 'The auto running pump has been stopped.', 'fal fa-cog');
+    }, opts.time);
+  }
+
   function sendConfirmation(title, text, icon) {
     socketEmit('ARDUINO:CONFIM', { 'title':title, 'text':text, icon:icon });
   }
@@ -201,118 +209,118 @@ board.on('ready', function () {
   socket.on('PUMP:PH_UP:OFF', function (id) {
     pumpStop(pumpPhUp);
   });
-  socket.on('PUMP:PH_UP:ON', function () {
-    pumpStart(pumpPhUp);
+  socket.on('PUMP:PH_UP:ON', function (opts) {
+    pumpStart(pumpPhUp, opts);
   });
-  socket.on('PUMP:PH_UP:DOSE', function (config) {
-    pumpDose(pumpPhU, config);
+  socket.on('PUMP:PH_UP:DOSE', function (opts) {
+    pumpDose(pumpPhUp, opts);
   });
-  socket.on('PUMP:PH_DOWN:ON', function () {
-    pumpStart(pumpPhDown);
+  socket.on('PUMP:PH_DOWN:ON', function (opts) {
+    pumpStart(pumpPhDown, opts);
   });
   socket.on('PUMP:PH_DOWN:OFF', function () {
     pumpStop(pumpPhDown);
   });
-  socket.on('PUMP:PH_DOWN:DOSE', function (config) {
-    pumpDose(pumpPhDown, config);
+  socket.on('PUMP:PH_DOWN:DOSE', function (opts) {
+    pumpDose(pumpPhDown, opts);
   });
-  socket.on('PUMP:CALMAG:ON', function () {
-    pumpStart(pumpCalMag);
+  socket.on('PUMP:CALMAG:ON', function (opts) {
+    pumpStart(pumpCalMag, opts);
   });
   socket.on('PUMP:CALMAG:OFF', function () {
     pumpStop(pumpCalMag);
   });
-  socket.on('PUMP:CALMAG:DOSE', function (config) {
-    pumpDose(pumpCalMag, config);
+  socket.on('PUMP:CALMAG:DOSE', function (opts) {
+    pumpDose(pumpCalMag, opts);
   });
-  socket.on('PUMP:HYDROGUARD:ON', function () {
-    pumpStart(pumpHydroGuard);
+  socket.on('PUMP:HYDROGUARD:ON', function (opts) {
+    pumpStart(pumpHydroGuard, opts);
   });
   socket.on('PUMP:HYDROGUARD:OFF', function () {
     pumpStop(pumpHydroGuard);
   });
-  socket.on('PUMP:HYDROGUARD:DOSE', function (config) {
-    pumpDose(pumpHydroGuard, config);
+  socket.on('PUMP:HYDROGUARD:DOSE', function (opts) {
+    pumpDose(pumpHydroGuard, opts);
   });
-  socket.on('PUMP:FLORA_MICRO:ON', function () {
-    pumpStart(pumpFloraMicro);
+  socket.on('PUMP:FLORA_MICRO:ON', function (opts) {
+    pumpStart(pumpFloraMicr, opts);
   });
   socket.on('PUMP:FLORA_MICRO:OFF', function () {
     pumpStop(pumpFloraMicro);
   });
-  socket.on('PUMP:FLORA_MICRO:DOSE', function (config) {
-    pumpDose(pumpFloraMicro, config);
+  socket.on('PUMP:FLORA_MICRO:DOSE', function (opts) {
+    pumpDose(pumpFloraMicro, opts);
   });
-  socket.on('PUMP:FLORA_GROW:ON', function () {
-    pumpStart(pumpFloraGrow);
+  socket.on('PUMP:FLORA_GROW:ON', function (opts) {
+    pumpStart(pumpFloraGrow, opts);
   });
   socket.on('PUMP:FLORA_GROW:OFF', function () {
     pumpStop(pumpFloraGrow);
   });
-  socket.on('PUMP:FLORA_GROW:DOSE', function (config) {
-    pumpDose(pumpFloraGrow, config);
+  socket.on('PUMP:FLORA_GROW:DOSE', function (opts) {
+    pumpDose(pumpFloraGrow, opts);
   });
-  socket.on('PUMP:FLORA_BLOOM:ON', function () {
-    pumpStart(pumpFloraBloom);
+  socket.on('PUMP:FLORA_BLOOM:ON', function (opts) {
+    pumpStart(pumpFloraBloom, opts);
   });
   socket.on('PUMP:FLORA_BLOOM:OFF', function () {
     pumpStop(pumpFloraBloom);
   });
-  socket.on('PUMP:FLORA_BLOOM:DOSE', function (config) {
-    pumpDose(pumpFloraBloom, config);
+  socket.on('PUMP:FLORA_BLOOM:DOSE', function (opts) {
+    pumpDose(pumpFloraBloom, opts);
   });
-  socket.on('PUMP:SPARE:ON', function () {
-    pumpStart(pumpSpare);
+  socket.on('PUMP:SPARE:ON', function (opts) {
+    pumpStart(pumpSpare, opts);
   });
   socket.on('PUMP:SPARE:OFF', function () {
     pumpStop(pumpSpare);
   });
-  socket.on('PUMP:SPARE:DOSE', function (config) {
-    pumpDose(pumpSpare, config);
+  socket.on('PUMP:SPARE:DOSE', function (opts) {
+    pumpDose(pumpSpare, opts);
   });
-  socket.on('PUMP:DRAIN:ON', function () {
+  socket.on('PUMP:DRAIN:ON', function (opts) {
     sendRF(config.MINTY_FDD.DRAIN);
     sendConfirmation('Drain Pumps On', 'The drain pumps have been turned on.','fal fa-cog fa-spin');
   });
-  socket.on('PUMP:DRAIN:DOSE', function (config) {
-    sendRF(config.MINTY_FDD.DRAIN);
-    sendConfirmation('Drain Pumps Dose', 'The drain pump is dosing.','fal fa-cog fa-spin');
+  socket.on('PUMP:DRAIN:DOSE', function (opts) {
+    sendAutoOffRfCommand(config.MINTY_FDD.DRAIN, opts);
   });
   socket.on('PUMP:DRAIN:OFF', function () {
     sendRF(config.MINTY_FDD.OFF);
     sendConfirmation('Drain Pumps Off', 'The drain pumps have been turned off.','fal fa-cog');
   });
-  socket.on('PUMP:FILL:ON', function () {
+  socket.on('PUMP:FILL:ON', function (opts) {
     sendRF(config.MINTY_FDD.FILL);
     sendConfirmation('Fill Pump On', 'The fill pump has been turned on.','fal fa-cog fa-spin');
   });
-  socket.on('PUMP:FILL:DOSE', function (config) {
-    // sendRF(config.MINTY_FDD.FILL);
-    sendConfirmation('Fill Pump Dose', 'The fill pump is dosing.','fal fa-cog fa-spin');
+  socket.on('PUMP:FILL:DOSE', function (opts) {
+    sendAutoOffRfCommand(config.MINTY_FDD.FILL, opts);
   });
   socket.on('PUMP:FILL:OFF', function () {
     sendRF(config.MINTY_FDD.OFF);
     sendConfirmation('Fill Pump Off', 'The fill pump has been turned off.','fal fa-cog ');
   });
-  socket.on('PUMP:MAGMIX:ON', function () {
+  socket.on('PUMP:MAGMIX:ON', function (opts) {
     sendRF(config.MINTY_FDD.MAGMIX);
     sendConfirmation('Mag Mix Fans On', 'The magnetic mixing fans have been turned on.','fal fa-magic fa-spin');
   });
-  socket.on('PUMP:MAGMIX:DOSE', function (config) {
-    sendRF(config.MINTY_FDD.MAGMIX);
-    sendConfirmation('Mag Mix Fans Dose', 'The magnetic mixing fans are dosing.','fal fa-magic fa-spin');
+  socket.on('PUMP:MAGMIX:DOSE', function (opts) {
+    sendAutoOffRfCommand(config.MINTY_FDD.MAGMIX, opts);
   });
   socket.on('PUMP:MAGMIX:OFF', function () {
     sendRF(config.MINTY_FDD.OFF);
     sendConfirmation('Mag Mix Fans Off', 'The magnetic mixing fans have been turned off.','fal fa-magic');
   });
-  socket.on('PUMP:DRIP:ON', function () {
+  socket.on('PUMP:DRIP:ON', function (opts) {
     sendRF(config.MINTY_FDD.DRIP);
     sendConfirmation('Drip Pumps On', 'The drip pumps have been turned on.','fal fa-cog fa-spin');
   });
+  socket.on('PUMP:DRIP:DOSE', function (opts) {
+    sendAutoOffRfCommand(config.MINTY_FDD.DRIP, opts);
+  });
   socket.on('PUMP:DRIP:OFF', function () {
     sendRF(config.MINTY_FDD.OFF);
-    sendConfirmation('Drip Pumps Off', 'The drip pumps have been turned off.','fal fa-cog ');
+    sendConfirmation('Mag Mix Fans Dose', 'The magnetic mixing fans are dosing.','fal fa-magic fa-spin');
   });
   
   waterLevelTankHigh.on("open", function () {
@@ -341,7 +349,6 @@ board.on('ready', function () {
   });
 
   socket.on('BASE_NUTRIENTS:UPDATE', function (row) {
-
     sendConfirmation('Base Nutrients Updated', 'Base nutrients data has been update. Dosing amounts recalculated.','fal balance-scale');
   });
 
@@ -460,11 +467,6 @@ board.on('ready', function () {
   });
 
 });
-
-
-function getPumpConfig(id) {
-  return { "time":1, "speed":125}; // @todo determine from database
-}
 
 function sendRF(code) {
   mintyIO.sendRF(code);

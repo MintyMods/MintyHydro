@@ -1,6 +1,7 @@
 
-let isCompact = window.innerWidth < 1000;
-let navSelected = 'sensors';
+let isCompact = false; //window.innerWidth < 1000;
+let debug = true;
+let navSelected = 'settings';
 let layout = null;
 let sidebar = null;
 let toolbar = null;
@@ -13,6 +14,7 @@ let envLayout = null;
 let schedulerHeader = null;
 let schedulerHeaderCompact = null;
 let nutrientLayout = null;
+let nutrientAdjustForm = null;
 let calibrateLayout = null;
 let socket = null;
 
@@ -59,15 +61,17 @@ function initComponents() {
         initSideBar();
         initToolBar();
     });
-
+    
     envLayout = new dhx.Layout(null, loadJSON('/json/layouts/environment.json'));
-    settingsForm = new dhx.Form(null, loadJSON('/json/settings.json'));
-    initNutrientSection();
-
+    
+    loadJSONAsync('/json/settings.json', function (json) {
+        settingsForm = new dhx.Form(null, json);
+        initSettingsFormEvents(settingsForm);
+        initNutrientSection();
+    });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
         initPumpFormEvents(pumpsForm);
-        
     });
     loadJSONAsync('/json/controls.json', function (json) {
         controlsForm = new dhx.Form(null, json);
@@ -91,6 +95,87 @@ function initComponents() {
 
 }
 
+function initSettingsFormEvents(settingsForm) {
+    settingsForm.events.on("ButtonClick", function (name) {
+        
+    });
+    settingsForm.events.on("Change", function (name, value) {
+        // socket.emit((name + ":" + value.toString()).toUpperCase());
+    });  
+    if (navSelected == 'settings') {
+        layout.cell("content_container").attach(settingsForm);
+    }      
+}
+
+
+function initNutrientSection() {
+    nutrientLayout = new dhx.Layout(null, {
+        rows: [
+            { height: "300px", gravity: false, padding: 5, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : Base Nutrients x Total Capacity" },
+            { height: "300px", gravity: false, padding: 5, headerIcon: "fal fa-balance-scale", id: "base_nutrients_container", header: "Base Nutrients @ ml amount per litre" },
+            { height: "100px", gravity: false, padding: 5, id: "dosing_adjust_container" }
+        ]
+    });
+
+    const gridColumns = loadJSON('/json/nutrients/headers.json');
+    const baseNutrientsGrid = new dhx.Grid(null, {
+        columns: gridColumns,
+        autoWidth: false,
+        editable: true,
+        sortable: true,
+        resizable: false,
+        splitAt: (isCompact ? 0 : 1),
+    });
+    const dosingGrid = new dhx.Grid(null, {
+        columns: gridColumns,
+        autoWidth: false,
+        editable: false,
+        sortable: false,
+        resizable: false,
+        splitAt:  (isCompact ? 0 : 1)
+    });
+
+    nutrientAdjustForm = new dhx.Form(null,  loadJSON('/json/nutrients/adjust.json'));
+    nutrientAdjustForm.getItem("CONFIG:NUTRIENTS:RES_CAPACITY").setValue(getResCapacity());
+    nutrientAdjustForm.events.on("Change", function (name, value) {
+        updateDosingGrid();
+    });    
+    nutrientLayout.cell("dosing_adjust_container").attach(nutrientAdjustForm);
+
+    const updateDosingGrid = function () {
+        let base = baseNutrientsGrid.data.serialize();
+        dosingGrid.data.removeAll();
+        for (let i = 0; i < base.length; i++) {
+            let keys = Object.keys(base[i]);
+            for (let j = 0; j < keys.length; j++) {
+                let key = keys[j];
+                let cell = base[i][key];
+                if (j > 0) {
+                    base[i][j] = ((parseFloat(base[i][j]) * parseFloat(getOverRideResCapacity()))).toFixed(2);
+                }
+            }
+            dosingGrid.data.add(base[i]);
+        }
+    };
+    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
+    baseNutrientsGrid.data.events.on("Change", function (id, status, row) {
+        if (status) {
+            socket.emit(('BASE_NUTRIENTS:' + status).toUpperCase(), row);
+        }
+        updateDosingGrid();
+    });
+    baseNutrientsGrid.data.load('/json/nutrients/dosing.json').then(function () {
+        updateDosingGrid();
+    });
+
+    nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
+    
+    if (navSelected == 'dosing') {
+        layout.cell("content_container").attach(nutrientLayout);
+    }
+}
+
+
 function calibrateECProbeWizard() {
     let tabs = new dhx.Tabbar(null, {
         mode: (isCompact ? 'top' : 'right'),
@@ -108,7 +193,7 @@ function calibrateECProbeWizard() {
         title:"EC Probe Calibration Wizard",
         resizable: true,
         movable: true,
-        width: (isCompact ? 400 : 600),
+        width: (isCompact ? 400 : 640),
         height: (isCompact ? 370 : 300)
     });
     wizard.events.on("beforeHide", function() {
@@ -169,7 +254,7 @@ function calibratePHProbeWizard() {
         title:"EC Probe Calibration Wizard",
         resizable: true,
         movable: true,
-        width: (isCompact ? 400 : 600),
+        width: (isCompact ? 400 : 640),
         height: (isCompact ? 350 : 300)
     });
     wizard.events.on("beforeHide", function() {
@@ -220,13 +305,29 @@ function getById(id) {
 function calibrateDosingPump(name) {
     showMsg('warn', "Calibrate: " + name, 'Currently not implemented');
 }
-
+function runDosingPump(form, command) {
+    var name = command.split(":")[1];
+    var time = form.getItem('PUMP:' + name + ':TIME');
+    var speed = form.getItem('PUMP:' + name + ':SPEED');
+    var amount = form.getItem('PUMP:' + name + ':AMOUNT');
+    var config = { 
+        "time": (time ? time.getValue() : null),
+        "speed": (speed ? speed.getValue() : null),
+        "amount": (amount ? amount.getValue() : null)
+    };
+    var button = form.getItem(command);
+    button.loading = true;
+    button.config.color="success"
+    form.paint();
+    log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(config));
+    socket.emit(command, config);
+}
 function initPumpFormEvents(pumpsForm) {
     pumpsForm.events.on("ButtonClick", function (name) {
         if (name.indexOf(':CALIBRATE') > 0) {
             calibrateDosingPump(name);
         } else if (name.indexOf(':DOSE') > 0) {
-            showMsg('info', "Dose: " + name, 'Currently not implemented');
+            runDosingPump(pumpsForm, name);
         } else {
             socket.emit(name);
         }
@@ -362,64 +463,16 @@ const getSetting = function (which) {
 
 const getResCapacity = function () {
     if (settingsForm) {
-        return settingsForm.getValue()['CONFIG:GROW_AREA:RES_CAPACITY'];
+        return settingsForm.getItem('CONFIG:GROW_AREA:RES_CAPACITY').getValue();
     }
     return 0;
 };
-
-function initNutrientSection() {
-    nutrientLayout = new dhx.Layout(null, {
-        rows: [
-            { height: "300px", gravity: true, padding: 10, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : Base Nutrients x " + getResCapacity() + " litres Capacity" },
-            { height: "300px", gravity: true, padding: 10, headerIcon: "fal fa-balance-scale", id: "base_nutrients_container", header: "Base Nutrients : amounts per milliliter - (double click cells to edit)" }]
-    });
-
-    const gridColumns = loadJSON('/json/headers.json');
-    const baseNutrientsGrid = new dhx.Grid(null, {
-        columns: gridColumns,
-        autoWidth: false,
-        editable: true,
-        sortable: true,
-        resizable: true,
-        splitAt: (isCompact ? 0 : 1),
-    });
-    const dosingGrid = new dhx.Grid(null, {
-        columns: gridColumns,
-        autoWidth: false,
-        editable: false,
-        sortable: false,
-        resizable: true,
-        splitAt:  (isCompact ? 0 : 1)
-    });
-
-    const updateDosingGrid = function () {
-        let base = baseNutrientsGrid.data.serialize();
-        dosingGrid.data.removeAll();
-        for (let i = 0; i < base.length; i++) {
-            let keys = Object.keys(base[i]);
-            for (let j = 0; j < keys.length; j++) {
-                let key = keys[j];
-                let cell = base[i][key];
-                if (j > 0) {
-                    base[i][j] = ((parseFloat(base[i][j]) * parseFloat(getResCapacity()))).toFixed(2);
-                }
-            }
-            dosingGrid.data.add(base[i]);
-        }
-    };
-    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
-    baseNutrientsGrid.data.events.on("Change", function (id, status, row) {
-        if (status) {
-            socket.emit(('BASE_NUTRIENTS:' + status).toUpperCase(), row);
-        }
-        updateDosingGrid();
-    });
-    baseNutrientsGrid.data.load('/json/dosing.json').then(function () {
-        updateDosingGrid();
-    });
-
-    nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
-}
+const getOverRideResCapacity = function () {
+    if (nutrientAdjustForm) {
+        return nutrientAdjustForm.getItem('CONFIG:NUTRIENTS:RES_CAPACITY').getValue();
+    }
+    return getResCapacity();
+};
 
 function resetSchedulerLayoutConfig() {
     scheduler.config.header = isCompact ? schedulerHeaderCompact : schedulerHeader;
@@ -510,7 +563,7 @@ function buildScheduler() {
     scheduler.templates.event_bar_text = getEventText;
     scheduler.templates.event_text = getEventText;
     // scheduler.attachEvent("onLightboxButton", function(id,event){
-    //     console.log("button " + id);
+    //     log("button " + id);
     // });
     scheduler.attachEvent("onEventAdded", getEventColor);
     scheduler.attachEvent("onEventChanged", getEventColor);
@@ -522,5 +575,12 @@ function buildScheduler() {
             scheduler.load('/json/events.json');
         });
     });
+}
 
+function warn(msg, payload) {
+    console.warn("** ALERT ** [ARDUINO] " + msg, payload != undefined ? payload : "");
+}
+
+function log(msg, payload) {
+    if (debug) console.log("[HYDRO] " + msg, payload != undefined ? payload : "");
 }

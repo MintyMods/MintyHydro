@@ -1,0 +1,111 @@
+[
+   {
+      "id": "0",
+      "width": 70,
+      "type": "string",
+      "header": [
+         {
+            "text": "Week:"
+         }
+      ]      
+   },
+   {
+      "id": "1",
+      "width": 60,
+      "type": "number",
+      "tooltip":"Seedling",
+      "header": [
+         {
+            "text": "1"
+         }
+      ]
+   },
+   {
+      "id": "2",
+      "width": 60,
+      "tooltip": "Early Growth",
+      "type": "number",
+      "header": [
+         {
+            "text":"2"
+         }
+      ]
+   },
+   {
+      "id": "3",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"3",
+            "tooltip": "Late Growth"
+         }
+      ]
+   },
+   {
+      "id": "4",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"4",
+            "tooltip": "Transition"
+         }
+      ]
+   },
+   {
+      "id": "5",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"5",
+            "tooltip": "Early Bloom"
+         }
+      ]
+   },
+   {
+      "id": "6",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"6",
+            "tooltip": "Mid Bloom"
+         }
+      ]
+   },
+   {
+      "id": "7",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"7",
+            "tooltip": "Late Bloom"
+         }
+      ]
+   },
+   {
+      "id": "8",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"8",
+            "tooltip": "Ripen"
+         }
+      ]
+   },
+   {
+      "id": "9",
+      "width": 60,
+      "type": "number",
+      "header": [
+         {
+            "text":"9",
+            "tooltip": "Flush"
+         }
+      ]
+   }
+]

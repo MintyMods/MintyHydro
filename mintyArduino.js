@@ -147,7 +147,7 @@ board.on('ready', function () {
       sendConfirmation(pump.name + ' Dosing Started', 'Pumping ' + (opts.amount ? opts.amount : 1)  + 'ml @ ' + desc + '.', 'fal fa-cog fa-spin');
       setTimeout(function () {
           pumpStop(pump);
-      }, time);
+      }.bind(this), time);
     } catch (e) {
       pump.stop();
     }
@@ -186,7 +186,7 @@ board.on('ready', function () {
       setTimeout(function () {
         sendRF(config.MINTY_FDD.OFF);
         sendConfirmation((opts.name ? opts.name : code) + ' Pump Stopped', 'The auto running pump has been stopped.', 'fal fa-cog');
-      }, opts.time);
+      }.bind(this), opts.time);
     } catch (e) {
       sendRF(config.MINTY_FDD.OFF);
     }
@@ -435,21 +435,21 @@ board.on('ready', function () {
     sendRF(config.RF.Humidifier.low);
     setTimeout(function () {
       sendRF(config.RF.Humidifier.off_high);
-    }, 500);
+    }.bind(this), 500);
     sendConfirmation('Humidifier Low', 'Humidifier been has been turned on low.', 'fal fa-tint fa-spin');
   });
   socket.on('RF:HUMIDIFIER:HIGH', function () {
     sendRF(config.RF.Humidifier.high);
     setTimeout(function () {
       sendRF(config.RF.Humidifier.low);
-    }, 500);
+    }.bind(this), 500);
     sendConfirmation('Humidifier High', 'Humidifier been has been turned on high.', 'fal fa-tint fa-pulse');
   });
   socket.on('RF:HUMIDIFIER:OFF', function () {
     sendRF(config.RF.Humidifier.off_low);
     setTimeout(function () {
       sendRF(config.RF.Humidifier.off_high);
-    }, 500);
+    }.bind(this), 500);
     sendConfirmation('Humidifier Off', 'Humidifier been has been turned off.', 'fal fa-tint');
   });
   socket.on('RF:HEATER:OFF', function () {

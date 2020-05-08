@@ -23,11 +23,11 @@ function calibrateDosingPumpWizard(pumpsForm, pumpName) {
     });
     
     wizard.events.on("beforeShow", function() {
+        stopSchedule();
         let finish = calibrate.getItem('CALIBRATE:DOSE:FINISH');
         let amount = calibrate.getItem('CALIBRATE:DOSE:AMOUNT');
-        stopSchedule();
-        finish.disable();
-        amount.config.validation = function (value) {
+        if (finish) finish.disable();
+        if (amount) amount.config.validation = function (value) {
             return (!isNaN(parseFloat(value).toFixed(2)));
         };  
         return true;

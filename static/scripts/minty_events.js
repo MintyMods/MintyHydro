@@ -6,7 +6,6 @@ function initPumpFormEvents(pumpsForm) {
             if (runningPump != null) {
                 stopDosingPump(pumpsForm, command)
             } else {
-
                 runDosingPump(pumpsForm, command);
             }
         } else {
@@ -28,8 +27,6 @@ function initPumpFormEvents(pumpsForm) {
             // pumpsForm.getItem('PUMP:' +  pump + ':SPEED').setValue(speed); 
             // pumpsForm.getItem('PUMP:' +  pump + ':AMOUNT').setValue(1);             
         }
-
-
         socket.emit((name + ":" + value.toString()).toUpperCase());
     });    
 }

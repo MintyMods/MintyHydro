@@ -144,7 +144,7 @@ function runDosingPump(form, command) {
         "pump": name,
         "command": command
     };
-    showPumpStoppedFeedBack(opts);
+    showPumpStartedFeedBack(opts);
     log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
     runningPump = command;    
     socket.emit(command, opts);
@@ -156,17 +156,18 @@ function stopDosingPump(form, command) {
     socket.emit("PUMP:" + name + ":OFF");
 }
 
+let options = null;
 function showPumpStartedFeedBack(opts) {
-    setTimeout(function (opts) {
-        showPumpStoppedFeedBack(opts);
-    }, opts.time);
-    let control = pumpsForm.getItem(command);
+    // options = opts;
+    setTimeout(showPumpStoppedFeedBack(opts), opts.time);
+    let control = pumpsForm.getItem(opts.command);
     control.config.color='success';
     control.config.loading = true;
     control.paint();    
 }
 
 function showPumpStoppedFeedBack(opts) {
+    // opts = options;
     runningPump = null;
     log("Pump " + opts.pump + " Stopped");
     let control = pumpsForm.getItem(opts.command);

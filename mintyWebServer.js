@@ -27,8 +27,8 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('ARDUINO:CONFIM', function (msg) {
     socket.broadcast.emit('ARDUINO:CONFIM', msg);
   });
-  socket.on('PUMP:DOSING:STOPPED', function (msg) {
-    socket.broadcast.emit('PUMP:DOSING:STOPPED', msg);
+  socket.on('PUMP:DOSING:STOPPED', function (opts) {
+    socket.broadcast.emit('PUMP:DOSING:STOPPED', opts);
   });
 
   /* ATLAS CALIBRATION MESSAGES */

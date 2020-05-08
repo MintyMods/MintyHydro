@@ -2,6 +2,14 @@ function isCompact() {
     return window.innerWidth < 1000   
 }
 
+function warn(msg, payload) {
+    console.warn("** ALERT ** [HYDRO] " + msg, payload != undefined ? payload : "");
+}
+
+function log(msg, payload) {
+    if (config.debug) console.log("[HYDRO] " + msg, payload != undefined ? payload : "");
+}
+
 function getAvg(amounts) {
     const sum = amounts.reduce((a, b) => a + b, 0);
     return (sum / amounts.length) || 0;

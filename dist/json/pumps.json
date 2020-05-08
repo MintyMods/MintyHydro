@@ -99,7 +99,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "3000",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250",
                      "labelWidth": "150"
@@ -172,7 +172,7 @@
                      "maxlength": "7",
                      "gravity": false,
                      "width": "250",
-                     "value": "9999",
+                     "value": "1000",
                      "labelWidth": "150"
                   }
                ]
@@ -240,7 +240,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "1500",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250",
                      "labelWidth": "150"
@@ -338,7 +338,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "500",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -352,7 +352,7 @@
                      "required": "true",
                      "labelWidth": "100",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "gravity": false,
                      "value": "1",
                      "width": "250"
@@ -450,7 +450,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "100",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -465,7 +465,7 @@
                      "required": "true",
                      "validation": "integer",
                      "gravity": false,
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "width": "250"
                   }
@@ -547,7 +547,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -562,7 +562,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "100",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -576,7 +576,7 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "gravity": false,
                      "width": "250"
@@ -659,7 +659,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -674,7 +674,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "100",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -688,7 +688,7 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "gravity": false,
                      "width": "250"
@@ -771,7 +771,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -786,7 +786,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "100",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -800,7 +800,7 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "gravity": false,
                      "width": "250"
@@ -883,7 +883,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -898,7 +898,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "100",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -912,7 +912,7 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "gravity": false,
                      "width": "250"
@@ -995,7 +995,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -1024,7 +1024,7 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
+                     "maxlength": "6",
                      "value": "1",
                      "gravity": false,
                      "width": "250"
@@ -1107,7 +1107,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "30745",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },
@@ -1136,8 +1136,8 @@
                      "labelWidth": "100",
                      "required": "true",
                      "validation": "integer",
-                     "maxlength": "3",
-                     "value": "42.0",
+                     "maxlength": "6",
+                     "value": "1",
                      "gravity": false,
                      "width": "250"
                   }
@@ -1208,7 +1208,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "1000",
                      "gravity": false,
                      "width": "250"
                   },

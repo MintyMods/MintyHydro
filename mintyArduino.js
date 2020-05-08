@@ -290,7 +290,7 @@ board.on('ready', function () {
     pumpDose(pumpHydroGuard, opts);
   });
   socket.on('PUMP:FLORA_MICRO:ON', function (opts) {
-    pumpStart(pumpFloraMicr, opts);
+    pumpStart(pumpFloraMicro, opts);
   });
   socket.on('PUMP:FLORA_MICRO:OFF', function () {
     pumpStop(pumpFloraMicro);

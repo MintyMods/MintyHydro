@@ -84,7 +84,7 @@ function showMsg(type, title, text, icon) {
         default:
             wrapper.addClass += " minty-notice";
             wrapper.icon = icon || "fas fa-question-circle fa-2x";
-            PNotify.notice(wrapper);
+            PNotify.info(wrapper);
     }
 }
 

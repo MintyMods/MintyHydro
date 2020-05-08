@@ -42,8 +42,8 @@ function calibrateDosingPumpWizard(pumpsForm, pumpName) {
     let calibrate = new dhx.Form(null,  loadJSON('/json/calibrate/dosing/calibrate.json'));
 
     tabs.events.on("Change", function(activeId, prevId){
-        calibrate.getItem('CALIBRATE:DOSE:TIME').setValue(1000); 
-        calibrate.getItem('CALIBRATE:DOSE:SPEED').setValue(500); 
+        calibrate.getItem('CALIBRATE:DOSE:TIME').setValue(config.calibration.time); 
+        calibrate.getItem('CALIBRATE:DOSE:SPEED').setValue(config.calibration.speed); 
     });
 
     let pumpStarted = false;

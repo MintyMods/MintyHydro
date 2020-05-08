@@ -1,32 +1,15 @@
-
-function showUnderDevelopmentAlt() {
-    PNotify.success({
-        title: '<span style="color:white">Project Status :</span>     <span style="color:yellow">ALPHA</span>',
-        text: '<b style="color:white">Currently under Development</b><br/><br/><span style="color:greenyellow;text-align:center">Mobile Support has not yet been fully added so larger browser viewing is recommended</span>',
-        titleTrusted: true,
-        textTrusted: true,
-        icon: 'fad fa-laptop-code fa-2x',
-        addClass: 'minty-notification ',
-        shadow: true
-    });
+function isCompact() {
+    return window.innerWidth < 1000   
 }
 
+function getAvg(amounts) {
+    const sum = amounts.reduce((a, b) => a + b, 0);
+    return (sum / amounts.length) || 0;
+}
 
-// const getPumpIcon = function (item) {
-//     if (item.active) {
-//         return '<i class="fal fa-cog fa-spin pump-running"></i>';
-//     } else if (item.state == 'auto') {
-//         return '<i class="fal fa-faucet-drip pump-stopped"></i>';
-//     } else {
-//         return '<i class="fal fa-faucet pump-stopped dhx_form-group--disabled"></i>';
-//     }
-// }
-
-// const getPumpTemplate = function (item) {
-//     let item = '<div class="' + (item.active ? 'pump-running' : 'pump-stopped') + (item.state == 'off' ? ' dhx_form-group--disabled' : '') + '">' +
-//         getPumpIcon(item) + '<span class="title">  ' + item.value + '</span></div>';
-//     return item;
-// }
+function getById(id) {
+    return document.getElementById(id);
+}
 
 function loadJSONAsync(url, callback) {
     console.log("Loading JSON ASync");
@@ -60,3 +43,20 @@ function loadJSON(url) {
     }
 }
 
+function toCamelCase(str){
+    return str.split(' ').map(function(word,index){
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
+}
+
+function showUnderDevelopmentAlt() {
+    PNotify.success({
+        title: '<span style="color:white">Project Status :</span>     <span style="color:yellow">ALPHA</span>',
+        text: '<b style="color:white">Currently under Development</b><br/><br/><span style="color:greenyellow;text-align:center">Some section are not fully working yet</span>',
+        titleTrusted: true,
+        textTrusted: true,
+        icon: 'fad fa-laptop-code fa-2x',
+        addClass: 'minty-notification ',
+        shadow: true
+    });
+}

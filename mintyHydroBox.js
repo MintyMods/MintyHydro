@@ -30,11 +30,24 @@ const MintyHydroBox = {
     if (pollAllSensors) {
       this.pollAtlasSensors();
       this.runAfterTimeout();
+    } else {
+      warn("Skipping Atlas Sensor Polling");
     }
   },
 
   setPollAllSensors: function (poll) {
     pollAllSensors = poll;
+  },
+
+  pollTEMP: function() {
+    // if (!pollAllSensors) {
+      this.io.sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {
+        debugger
+        log("*** CALIBRATE:TEMP:" + temp);
+        this.io.socketEmit('I2C:TEMP:RESULT', temp);
+        setTimeout(function () { this.pollTEMP() }.bind(this), config.tick.calibrationPolling);
+      }.bind(this));
+    // }
   },
 
   pollEC: function() {

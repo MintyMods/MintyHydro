@@ -1,7 +1,6 @@
 
-let isCompact = false; //window.innerWidth < 1000;
 let debug = true;
-let navSelected = 'settings';
+let navSelected = 'sensors';
 let layout = null;
 let sidebar = null;
 let toolbar = null;
@@ -18,21 +17,22 @@ let nutrientAdjustForm = null;
 let calibrateLayout = null;
 let socket = null;
 
+const CALIBRATION_TIME = 1000;
+const CALIBRTION_SPEED = 255;
+
 document.addEventListener("DOMContentLoaded", function (event) {
     initMintyHydro();
 });
 
 function initMintyHydro() {
-    isCompact = window.innerWidth < 1000;
     initSocket();
     registerEventHandlers();
     initComponents();
-    
     // showUnderDevelopmentAlt();
 }
 
 function registerEventHandlers() {
-
+    // @todo
 }
 
 function initSocket() {
@@ -47,10 +47,20 @@ function initSocket() {
     socket.on('disconnect', function(e){
         showMissingMintyHydroHubError();
     });
+    socket.on('PUMP:DOSING:STOPPED', function (pump) {
+        pumpStopped(pump);
+    });    
 }
 
 function handleResize() {
     resetSchedulerLayoutConfig();
+}
+
+function getOverRideResCapacity () {
+    if (nutrientAdjustForm) {
+        return nutrientAdjustForm.getItem('CONFIG:NUTRIENTS:RES_CAPACITY').getValue();
+    }
+    return getResCapacity();
 }
 
 function initComponents() {
@@ -67,7 +77,7 @@ function initComponents() {
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
         initSettingsFormEvents(settingsForm);
-        initNutrientSection();
+       
     });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
@@ -92,21 +102,19 @@ function initComponents() {
 
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
-
 }
 
 function initSettingsFormEvents(settingsForm) {
     settingsForm.events.on("ButtonClick", function (name) {
-        
     });
     settingsForm.events.on("Change", function (name, value) {
         // socket.emit((name + ":" + value.toString()).toUpperCase());
     });  
     if (navSelected == 'settings') {
         layout.cell("content_container").attach(settingsForm);
-    }      
+    }  
+    initNutrientSection();    
 }
-
 
 function initNutrientSection() {
     nutrientLayout = new dhx.Layout(null, {
@@ -124,7 +132,7 @@ function initNutrientSection() {
         editable: true,
         sortable: true,
         resizable: false,
-        splitAt: (isCompact ? 0 : 1),
+        splitAt: (isCompact() ? 0 : 1),
     });
     const dosingGrid = new dhx.Grid(null, {
         columns: gridColumns,
@@ -132,11 +140,15 @@ function initNutrientSection() {
         editable: false,
         sortable: false,
         resizable: false,
-        splitAt:  (isCompact ? 0 : 1)
+        splitAt:  (isCompact() ? 0 : 1)
     });
 
     nutrientAdjustForm = new dhx.Form(null,  loadJSON('/json/nutrients/adjust.json'));
-    nutrientAdjustForm.getItem("CONFIG:NUTRIENTS:RES_CAPACITY").setValue(getResCapacity());
+    
+    nutrientLayout.events.on("BeforeShow", function (name, value) {
+        nutrientAdjustForm.getItem("CONFIG:NUTRIENTS:RES_CAPACITY").setValue(getResCapacity());
+    });    
+
     nutrientAdjustForm.events.on("Change", function (name, value) {
         updateDosingGrid();
     });    
@@ -144,6 +156,7 @@ function initNutrientSection() {
 
     const updateDosingGrid = function () {
         let base = baseNutrientsGrid.data.serialize();
+        let capacity = getOverRideResCapacity();
         dosingGrid.data.removeAll();
         for (let i = 0; i < base.length; i++) {
             let keys = Object.keys(base[i]);
@@ -151,7 +164,7 @@ function initNutrientSection() {
                 let key = keys[j];
                 let cell = base[i][key];
                 if (j > 0) {
-                    base[i][j] = ((parseFloat(base[i][j]) * parseFloat(getOverRideResCapacity()))).toFixed(2);
+                    base[i][j] = ((parseFloat(base[i][j]) * parseFloat(capacity))).toFixed(2);
                 }
             }
             dosingGrid.data.add(base[i]);
@@ -175,160 +188,86 @@ function initNutrientSection() {
     }
 }
 
+function  stopSchedule() {
+    // @todo stop auto dosing when calibrating
+}
+function startSchedule() {
+    // @todo start auto dosing when calibrating
 
-function calibrateECProbeWizard() {
-    let tabs = new dhx.Tabbar(null, {
-        mode: (isCompact ? 'top' : 'right'),
-        tabWidth: (isCompact ? 180 : 200),  
-        views:[ 
-            { disabled:true, header:"Step One - Dry Calibration", id: "dry_calibrate", tab: "Dry Calibration", css:"panel flex"},
-            { disabled:true, header:"Step Two - Low Calibration", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
-            { disabled:true, header:"Step Three - High Calibration", id: "high_calibrate", tab: "High Calibration", css:"panel flex"}
-        ],
-        closable:false,
-        disabled: [ "low_calibrate", "high_calibrate"]
-    });
-    let wizard = new dhx.Window({
-        modal: true,
-        title:"EC Probe Calibration Wizard",
-        resizable: true,
-        movable: true,
-        width: (isCompact ? 400 : 640),
-        height: (isCompact ? 370 : 300)
-    });
-    wizard.events.on("beforeHide", function() {
-        socket.emit('CALIBRATE:EC:STOP');
-        return true;
-    }); 
-    wizard.events.on("beforeShow", function() {
-        socket.emit('CALIBRATE:EC:START');
-        return true;
-    }); 
-
-    let dry = new dhx.Form(null,  loadJSON('/json/calibrate/ec/dry.json'));
-    let low = new dhx.Form(null,  loadJSON('/json/calibrate/ec/low.json'));
-    let high = new dhx.Form(null,  loadJSON('/json/calibrate/ec/high.json'));
-   
-    dry.events.on("ButtonClick", function (name) {
-        tabs.enableTab("low_calibrate");
-        tabs.setActive("low_calibrate");
-        socket.emit('CALIBRATE:EC:DRY');
-        getById("tab-content-high_calibrate").scrollIntoView();
-    });
-    low.events.on("ButtonClick", function (name) {
-        tabs.enableTab("high_calibrate");
-        tabs.setActive("high_calibrate");
-        socket.emit('CALIBRATE:EC:LOW');
-    });
-    high.events.on("ButtonClick", function (name) {
-        socket.emit('CALIBRATE:EC:HIGH');
-        wizard.hide();
-    });
-    socket.on("I2C:EC:RESULT", function(ec){
-        dry.getItem('CALIBRATE:EC:READING').setValue(ec);
-        low.getItem('CALIBRATE:EC:READING').setValue(ec);
-        high.getItem('CALIBRATE:EC:READING').setValue(ec);
-    });
-
-    tabs.getCell("dry_calibrate").attach(dry);
-    tabs.getCell("low_calibrate").attach(low);
-    tabs.getCell("high_calibrate").attach(high);
-    wizard.attach(tabs);
-    wizard.show();
 }
 
-function calibratePHProbeWizard() {
-    let tabs = new dhx.Tabbar(null, {
-        mode: (isCompact ? 'top' : 'right'),
-        tabWidth: (isCompact ? 180 : 200),        
-        views:[ 
-            { disabled:true, header:"Step One - Mid Calibration (7.00pH)", id: "mid_calibrate", tab: "Mid Calibration", css:"panel flex"},
-            { disabled:true, header:"Step Two - Low Calibration (4.00pH)", id: "low_calibrate", tab: "Low Calibration", css:"panel flex"},
-            { disabled:true, header:"Step Three - High Calibration (10.00pH)", id: "high_calibrate", tab: "High Calibration", css:"panel flex"}
-        ],
-        closable:false,
-        disabled: [ "low_calibrate", "high_calibrate"]
-    });
-    let wizard = new dhx.Window({
-        modal: true,
-        title:"EC Probe Calibration Wizard",
-        resizable: true,
-        movable: true,
-        width: (isCompact ? 400 : 640),
-        height: (isCompact ? 350 : 300)
-    });
-    wizard.events.on("beforeHide", function() {
-        socket.emit('CALIBRATE:PH:STOP');
-        return true;
-    }); 
-    wizard.events.on("beforeShow", function() {
-        socket.emit('CALIBRATE:PH:START');
-        return true;
-    }); 
+let runningPump = null;
 
-    let mid = new dhx.Form(null,  loadJSON('/json/calibrate/ph/mid.json'));
-    let low = new dhx.Form(null,  loadJSON('/json/calibrate/ph/low.json'));
-    let high = new dhx.Form(null,  loadJSON('/json/calibrate/ph/high.json'));
-   
-    mid.events.on("ButtonClick", function (name) {
-        tabs.enableTab("low_calibrate");
-        tabs.setActive("low_calibrate");
-        socket.emit('CALIBRATE:PH:MID');
-        getById("tab-content-high_calibrate").scrollIntoView();
-    });
-    low.events.on("ButtonClick", function (name) {
-        tabs.enableTab("high_calibrate");
-        tabs.setActive("high_calibrate");
-        socket.emit('CALIBRATE:PH:LOW');
-    });
-    high.events.on("ButtonClick", function (name) {
-        socket.emit('CALIBRATE:PH:HIGH');
-        wizard.hide();
-    });
-    socket.on("I2C:PH:RESULT", function(ph){
-        mid.getItem('CALIBRATE:PH:READING').setValue(ph);
-        low.getItem('CALIBRATE:PH:READING').setValue(ph);
-        high.getItem('CALIBRATE:PH:READING').setValue(ph);
-    });
-
-    tabs.getCell("mid_calibrate").attach(mid);
-    tabs.getCell("low_calibrate").attach(low);
-    tabs.getCell("high_calibrate").attach(high);
-    wizard.attach(tabs);
-    wizard.show();
-}
-
-function getById(id) {
-    return document.getElementById(id);
-}
-
-function calibrateDosingPump(name) {
-    showMsg('warn', "Calibrate: " + name, 'Currently not implemented');
-}
 function runDosingPump(form, command) {
-    var name = command.split(":")[1];
-    var time = form.getItem('PUMP:' + name + ':TIME');
-    var speed = form.getItem('PUMP:' + name + ':SPEED');
-    var amount = form.getItem('PUMP:' + name + ':AMOUNT');
-    var opts = { 
+    let name = command.split(":")[1];
+    let time = form.getItem('PUMP:' + name + ':TIME');
+    let speed = form.getItem('PUMP:' + name + ':SPEED');
+    let amount = form.getItem('PUMP:' + name + ':AMOUNT');
+    let opts = { 
         "time": (time ? time.getValue() : null),
         "speed": (speed ? speed.getValue() : null),
-        "amount": (amount ? amount.getValue() : null)
+        "amount": (amount ? amount.getValue() : null),
+        "pump": name,
+        "command": command
     };
+    let control = pumpsForm.getItem(command);
+    control.config.color='success';
+    control.config.loading = true;
+    control.paint();
+    runningPump = command;    
     log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
     socket.emit(command, opts);
 }
+
+function stopDosingPump(form, command) {
+    let name = command.split(":")[1];
+    log("Stopping Pump Dosing : " + name);
+    socket.emit("PUMP:" + name + ":OFF");
+}
+
+function pumpStopped(opts) {
+    runningPump = null;
+    log("Pump " + opts.pump + " Stopped");
+    let control = pumpsForm.getItem(opts.command);
+    if (control) {
+        control.config.color='primary';
+        control.config.loading = false;
+        control.paint();
+    }
+}
+
 function initPumpFormEvents(pumpsForm) {
-    pumpsForm.events.on("ButtonClick", function (name) {
-        if (name.indexOf(':CALIBRATE') > 0) {
-            calibrateDosingPump(name);
-        } else if (name.indexOf(':DOSE') > 0) {
-            runDosingPump(pumpsForm, name);
+    pumpsForm.events.on("ButtonClick", function (command) {
+        if (command.indexOf(':CALIBRATE') > 0) {
+            calibrateDosingPumpWizard(pumpsForm, command);
+        } else if (command.indexOf(':DOSE') > 0) {
+            if (runningPump != null) {
+                stopDosingPump(pumpsForm, command)
+            } else {
+
+                runDosingPump(pumpsForm, command);
+            }
         } else {
-            socket.emit(name);
+            socket.emit(command);
         }
     });
     pumpsForm.events.on("Change", function (name, value) {
+        if (name.indexOf(":AMOUNT") > -1) {
+            // let time = calibrate.getItem('PUMP:' + name + ':TIME');
+            // let speed = calibrate.getItem('PUMP:' + name + ':SPEED');   
+            // let result = (time / grams);
+            // let opts = { 
+            //     "time": result,
+            //     "speed": (speed ? speed.getValue() : null),
+            //     "pump": name,
+            //     "command": 'update'
+            // };            
+            // pumpsForm.getItem('PUMP:' +  pump + ':TIME').setValue(result); 
+            // pumpsForm.getItem('PUMP:' +  pump + ':SPEED').setValue(speed); 
+            // pumpsForm.getItem('PUMP:' +  pump + ':AMOUNT').setValue(1);             
+        }
+
+
         socket.emit((name + ":" + value.toString()).toUpperCase());
     });    
 }
@@ -463,15 +402,10 @@ const getResCapacity = function () {
     }
     return 0;
 };
-const getOverRideResCapacity = function () {
-    if (nutrientAdjustForm) {
-        return nutrientAdjustForm.getItem('CONFIG:NUTRIENTS:RES_CAPACITY').getValue();
-    }
-    return getResCapacity();
-};
+
 
 function resetSchedulerLayoutConfig() {
-    scheduler.config.header = isCompact ? schedulerHeaderCompact : schedulerHeader;
+    scheduler.config.header = isCompact() ? schedulerHeaderCompact : schedulerHeader;
     return true;
 }
 

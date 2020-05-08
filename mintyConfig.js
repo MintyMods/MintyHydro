@@ -193,7 +193,7 @@ config.RF = {
 
 const ADAFRUIT_MOTOR_SHIELD_DRIVER = "PCA9685";
 config.ADAFRUIT_MOTOR_SHIELD = {
-  M1: { // Pump A : Flora Micra
+  M1: { // Pump A : Cal Mag
     pins: {
       pwm: 8,
       dir: 9,
@@ -202,7 +202,7 @@ config.ADAFRUIT_MOTOR_SHIELD = {
     address: config.I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
     controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
-  M2: { // Pump B
+  M2: { // Pump B : Flora Micro
     pins: {
       pwm: 13,
       dir: 12,
@@ -211,7 +211,7 @@ config.ADAFRUIT_MOTOR_SHIELD = {
     address: config.I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
     controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
-  M3: { // Pump C
+  M3: { // Pump C : Flora Grow
     pins: {
       pwm: 7,
       dir: 6,
@@ -220,7 +220,7 @@ config.ADAFRUIT_MOTOR_SHIELD = {
     address: config.I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
     controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
-  M4: { // Pump D
+  M4: { // Pump D : Flora Bloom
     pins: {
       pwm: 2,
       dir: 3,
@@ -229,7 +229,7 @@ config.ADAFRUIT_MOTOR_SHIELD = {
     address: config.I2C_ADAFRUIT_MOTORBOARD_ONE_ADDR,
     controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
-  M5: { // Pump E
+  M5: { // Pump E : Hydro Guard
     pins: {
       pwm: 2,
       dir: 3,
@@ -238,7 +238,7 @@ config.ADAFRUIT_MOTOR_SHIELD = {
     address: config.I2C_ADAFRUIT_MOTORBOARD_TWO_ADDR,
     controller: ADAFRUIT_MOTOR_SHIELD_DRIVER
   },
-  M6: { // Pump F
+  M6: { // Pump F : Spare
     pins: {
       pwm: 8,
       dir: 9,

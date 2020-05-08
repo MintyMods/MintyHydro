@@ -23,8 +23,12 @@ app.use(webpackMiddleware(webpack(webpackConfig)));
 io.of('/arduino').on('connection', (socket) => {
   log('New connection to ArduinoServer@' + socket.id);
 
+  /* Events emitted from the Arduino */
   socket.on('ARDUINO:CONFIM', function (msg) {
     socket.broadcast.emit('ARDUINO:CONFIM', msg);
+  });
+  socket.on('PUMP:DOSING:STOPPED', function (msg) {
+    socket.broadcast.emit('PUMP:DOSING:STOPPED', msg);
   });
 
   /* ATLAS CALIBRATION MESSAGES */

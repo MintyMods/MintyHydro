@@ -250,7 +250,7 @@
          ]
       },
       {
-         "title": "P.H. UP : Dosing Pump ",
+         "title": "P.H. UP : Dosing Pump (G)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -338,7 +338,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "500",
                      "gravity": false,
                      "width": "250"
                   },
@@ -362,7 +362,7 @@
          ]
       },
       {
-         "title": "P.H. Down : Dosing Pump ",
+         "title": "P.H. Down : Dosing Pump (H)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -450,7 +450,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   },
@@ -474,7 +474,7 @@
          ]
       },
       {
-         "title": "Calcium / Magnesium : Dosing Pump ",
+         "title": "Calcium / Magnesium : Dosing Pump (A)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -562,7 +562,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   },
@@ -586,7 +586,7 @@
          ]
       },
       {
-         "title": "Hydro Guard : Dosing Pump ",
+         "title": "Hydro Guard : Dosing Pump (E)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -674,7 +674,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   },
@@ -698,7 +698,7 @@
          ]
       },
       {
-         "title": "Flora Micro : Dosing Pump ",
+         "title": "Flora Micro : Dosing Pump (B)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -786,7 +786,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   },
@@ -810,7 +810,7 @@
          ]
       },
       {
-         "title": "Flora Grow : Dosing Pump ",
+         "title": "Flora Grow : Dosing Pump (C)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -898,7 +898,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   },
@@ -922,7 +922,7 @@
          ]
       },
       {
-         "title": "Flora Bloom : Dosing Pump ",
+         "title": "Flora Bloom : Dosing Pump (D)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -1010,7 +1010,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -1034,7 +1034,7 @@
          ]
       },
       {
-         "title": "Spare Currently Unused : Dosing Pump ",
+         "title": "Spare Currently Unused : Dosing Pump (F)",
          "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
@@ -1107,7 +1107,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "7",
-                     "value": "999",
+                     "value": "30745",
                      "gravity": false,
                      "width": "250"
                   },
@@ -1122,7 +1122,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "255",
                      "gravity": false,
                      "width": "250"
                   },
@@ -1137,7 +1137,7 @@
                      "required": "true",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "1",
+                     "value": "42.0",
                      "gravity": false,
                      "width": "250"
                   }
@@ -1223,7 +1223,7 @@
                      "labelWidth": "100",
                      "validation": "integer",
                      "maxlength": "3",
-                     "value": "400",
+                     "value": "100",
                      "gravity": false,
                      "width": "250"
                   }

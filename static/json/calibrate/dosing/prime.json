@@ -1,0 +1,67 @@
+{
+    "padding": 0,
+    "title": "",
+    "rows": [
+       {
+          "title": "",
+          "align": "around",
+          "padding": 0,
+          "rows": [
+             {
+               "padding": 5,
+                "cols": [
+                    {
+                        "type": "textarea",
+                        "label": "",
+                        "labelInline": true,
+                        "labelWidth": "0px",
+                        "value": "Place pump outlet pipe into a container above weigh scales. Run the pump until liquid starts dispensing consistently into the container.\rReset / Tare the scales between runs and after continuing.",
+                        "id":"CALIBRATE:DOSING:INFO",
+                        "width":420,
+                        "gravity":false
+                    }
+                ]
+             },
+             {
+               "padding": 5,
+                "rows": [
+                  {
+                     "type": "radioGroup",
+                     "name": "CALIBRATE:PRIME:DOSE",
+                     "options": {
+                        "padding": "10px",
+                        "align": "center",
+                        "cols": [
+                           {
+                              "type": "radioButton",
+                              "label": "Stop",
+                              "labelPosition": "left",
+                              "value": "off",
+                              "checked": true
+                           },
+                           {
+                              "type": "radioButton",
+                              "label": "Run",
+                              "labelPosition": "left",
+                              "value": "on"
+                           }
+                        ]
+                     }
+                  },
+                   {
+                      "type": "button",
+                      "id":"CALIBRATE:PRIME:NEXT",
+                      "value": "Continue",
+                      "size": "small",
+                      "full":true,
+                      "view": "flat",
+                      "color": "primary",
+                      "icon": "fal fa-arrow-circle-right",
+                      "gravity":false
+                   }
+                ]
+             }
+          ]
+       }      
+    ]
+ }

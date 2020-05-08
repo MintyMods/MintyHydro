@@ -4,18 +4,22 @@ const Encoder7Bit = require('encoder7bit');
 const config = require('./mintyConfig');
 const socket = io.connect(config.url);
 
+const SEND_RF_SIGNALS = false;
+
 const MintyIO = function (board, serial) {
     this.board = board;
     this.serial = serial;
 
     this.sendRF = function (code) {
-        // this.sendSerial(config.RCT_OUTPUT_DETACH, config.RCT_OUT_PIN);
-        // this.sendSerial(config.RCT_OUTPUT_ATTACH, config.RCT_OUT_PIN);
-        // if (config.RCT_PULSE_LENGTH) {
-        //     this.sendSerial(config.RCT_OUTPUT_PULSE_LENGTH, config.RCT_OUT_PIN, config.RCT_PULSE_LENGTH);
-        // }
-        // let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(this.longToByteArray(code)));
-        // this.sendSerial(config.RCT_OUTPUT_CODE_LONG, config.RCT_OUT_PIN, bytes);
+        if (SEND_RF_SIGNALS) {
+            this.sendSerial(config.RCT_OUTPUT_DETACH, config.RCT_OUT_PIN);
+            this.sendSerial(config.RCT_OUTPUT_ATTACH, config.RCT_OUT_PIN);
+            if (config.RCT_PULSE_LENGTH) {
+                this.sendSerial(config.RCT_OUTPUT_PULSE_LENGTH, config.RCT_OUT_PIN, config.RCT_PULSE_LENGTH);
+            }
+            let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(this.longToByteArray(code)));
+            this.sendSerial(config.RCT_OUTPUT_CODE_LONG, config.RCT_OUT_PIN, bytes);
+        }
     }.bind(this);
 
     /* rework of https://github.com/git-developer/RCSwitchFirmata */

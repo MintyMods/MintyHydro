@@ -75,6 +75,7 @@ function calibrateDosingPumpWizard(pumpsForm, pumpName) {
                 "command": 'calibrate'
             };
             calibrate.getItem('CALIBRATE:DOSE:AMOUNT').clear();
+            showPumpFeedBack(opts);
             socket.emit('PUMP:' + pump + ':DOSE', opts);
             getById('CALIBRATE:DOSE:AMOUNT').focus();
         } else if (name === 'CALIBRATE:DOSE:FINISH') {

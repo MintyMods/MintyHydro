@@ -122,3 +122,26 @@ function showMissingMintyHydroHubError(reason) {
         });
     }
 }
+
+
+let feedback_opts = null;
+function showPumpStartedFeedBack(opts) {
+    feedback_opts = opts;
+    setTimeout(function(){
+        showPumpStoppedFeedBack(opts)
+    }, opts.time);
+    let control = pumpsForm.getItem(opts.command);
+    control.config.color='success';
+    control.config.loading = true;
+    control.paint();    
+}
+
+function showPumpStoppedFeedBack(opts) {
+    opts ? opts : feedback_opts;
+    let control = pumpsForm.getItem(opts.command);
+    if (control) {
+        control.config.color='primary';
+        control.config.loading = false;
+        control.paint();
+    }
+}

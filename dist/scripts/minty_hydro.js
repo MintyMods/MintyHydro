@@ -61,6 +61,10 @@ function initSocket() {
     });    
 }
 
+function showPumpFeedBack(opts) {
+    showPumpStartedFeedBack(opts);
+}
+
 function handleResize() {
     resetSchedulerLayoutConfig();
 }
@@ -144,7 +148,7 @@ function runDosingPump(form, command) {
         "pump": name,
         "command": command
     };
-    showPumpStartedFeedBack(opts);
+    showPumpFeedBack(opts);
     log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
     runningPump = command;    
     socket.emit(command, opts);
@@ -156,27 +160,6 @@ function stopDosingPump(form, command) {
     socket.emit("PUMP:" + name + ":OFF");
 }
 
-let options = null;
-function showPumpStartedFeedBack(opts) {
-    // options = opts;
-    setTimeout(showPumpStoppedFeedBack(opts), opts.time);
-    let control = pumpsForm.getItem(opts.command);
-    control.config.color='success';
-    control.config.loading = true;
-    control.paint();    
-}
-
-function showPumpStoppedFeedBack(opts) {
-    // opts = options;
-    runningPump = null;
-    log("Pump " + opts.pump + " Stopped");
-    let control = pumpsForm.getItem(opts.command);
-    if (control) {
-        control.config.color='primary';
-        control.config.loading = false;
-        control.paint();
-    }
-}
 
 function initSideBar() {
     sidebar = new dhx.Sidebar("sidebar_container", { width: 160, collapsed: true });

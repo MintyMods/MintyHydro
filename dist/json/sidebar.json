@@ -9,15 +9,6 @@
       "value": "Environment"
    },
    {
-      "id": "schedule",
-      "type": "button",
-      "active": false,
-      "group": "nav",
-      "twoState": true,
-      "icon": "fal fa-calendar-alt",
-      "value": "Schedule"
-   },
-   {
       "id": "sensors",
       "type": "button",
       "active": true,
@@ -44,6 +35,15 @@
       "icon": "fal fa-faucet-drip",
       "value": "Pumps"
    },
+   {
+      "id": "schedule",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-calendar-alt",
+      "value": "Schedule"
+   },   
    {
       "id": "dosing",
       "type": "button",

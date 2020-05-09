@@ -1,4 +1,4 @@
-const SERIAL_PORT = "COM6";
+const SERIAL_PORT = "COM15";
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = '192.168.0.12';
 const DEBUGGING = true;
@@ -108,12 +108,19 @@ const RF_CODE_12V = {
 }
 
 config.MINTY_FDD = {
-  FILL: RF_CODE_12V.RF_1000,
-  DRAIN: RF_CODE_12V.RF_0110,
-  DRIP: RF_CODE_12V.RF_0010,
+  DRIP: RF_CODE_12V.RF_1000,
+  FILL: RF_CODE_12V.RF_0110,
+  DRAIN: RF_CODE_12V.RF_0010,
   MAGMIX: RF_CODE_12V.RF_0001,
   OFF: RF_CODE_12V.RF_0000,
 }
+// config.MINTY_FDD = {
+//   FILL: RF_CODE_12V.RF_1000,
+//   DRAIN: RF_CODE_12V.RF_0110,
+//   DRIP: RF_CODE_12V.RF_0010,
+//   MAGMIX: RF_CODE_12V.RF_0001,
+//   OFF: RF_CODE_12V.RF_0000,
+// }
 
 /* Etekcity Wireless Remote Control Sockets */
 const RF_CODE_S1_ON = "5264691"; // Dehumidifier

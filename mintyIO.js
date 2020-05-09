@@ -4,7 +4,7 @@ const Encoder7Bit = require('encoder7bit');
 const config = require('./mintyConfig');
 const socket = io.connect(config.url);
 
-const SEND_RF_SIGNALS = false;
+const SEND_RF_SIGNALS = true;
 
 const MintyIO = function (board, serial) {
     this.board = board;

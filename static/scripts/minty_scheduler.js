@@ -7,13 +7,12 @@ function buildScheduler() {
     scheduler.config.prevent_cache = true;
     scheduler.locale.labels.timeline_tab = "Schedule";
     scheduler.locale.labels.unit_tab = "Events";
-//    scheduler.locale.labels.week_agenda_tab = "Agenda";
+   scheduler.locale.labels.week_agenda_tab = "Agenda";
     scheduler.config.details_on_create = true;
     scheduler.config.details_on_dblclick = true;
     scheduler.config.occurrence_timestamp_in_utc = true;
     scheduler.config.include_end_by = true;
     scheduler.config.repeat_precise = true;
-
 
     scheduler.createUnitsView({
         name: "unit",
@@ -66,18 +65,18 @@ function buildScheduler() {
         }
     };
 
-    // scheduler.templates.week_agenda_event_text = function (start_date, end_date, event, date, position) {
-    //     switch (position) {
-    //         case "middle":
-    //             return "-- " + event.text;
-    //         case "end":
-    //             return "End: " + scheduler.templates.event_date(start_date) + " " + event.text;
-    //         case "start":
-    //             return "Start: " + scheduler.templates.event_date(start_date) + " " + event.text;
-    //         default:
-    //             return scheduler.templates.event_date(start_date) + " " + event.text;
-    //     }
-    // };
+    scheduler.templates.week_agenda_event_text = function (start_date, end_date, event, date, position) {
+        switch (position) {
+            case "middle":
+                return "-- " + event.text;
+            case "end":
+                return "End: " + scheduler.templates.event_date(start_date) + " " + event.text;
+            case "start":
+                return "Start: " + scheduler.templates.event_date(start_date) + " " + event.text;
+            default:
+                return scheduler.templates.event_date(start_date) + " " + event.text;
+        }
+    };
 
     scheduler.templates.event_bar_text = getEventText;
     scheduler.templates.event_text = getEventText;

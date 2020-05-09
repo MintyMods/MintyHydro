@@ -30,9 +30,8 @@ function showMsg(type, title, text, icon) {
         titleTrusted: false,
         textTrusted: false,
         icon: icon,
-        // addClass: "nonblock translucent minty-notification " + className,
         shadow: shadow,
-        delay: 1305000,
+        delay: 1000,
         hide: hide
     };
 

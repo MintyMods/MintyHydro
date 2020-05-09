@@ -1,39 +1,25 @@
 /* PNotify Message Styling */
-
-  .pnotify-icon material-icon {
-    border: 5px dashed greenyellow !important;
-    font-size: 10px !important;
-    padding:20px;  
-  }
-  
-  /* pnotify pnotify-with-icon minty-notification  minty-confirmation pnotify-in pnotify-fade-in pnotify-move pnotify-stack-down pnotify-fade-normal     */
-  
-  .pnotify > div {
-    font-size: 5px !important;
-    padding:0px;  
-    width:50px !important;
-    height:10px !important;
-  }
-  .pnotify {
-    border: 5px dashed red !important;
-    font-size: 10px !important;
-    padding:0px;  
-    width:50px !important;
-    height:10px !important;
-  }
-.pnotify-pre-line {
-    height:10px !important;
+.pnotify {
+    right: 0px !important; 
 }
-
-.pnotify-text material-text {
-    color: hotpink !important;
-}
-
+ 
 [data-pnotify] .material-container {
-    padding: 2px;
-
-    font-size: 10px !important;
-    padding:0px;  
-    width:50px !important;
-    height:10px !important;
+    margin:5px !important;
+    padding:2px !important; 
 }
+[data-pnotify] .material-closer, [data-pnotify] .material-icon, [data-pnotify] .material-icon-closer:after, [data-pnotify] .material-icon-sticker:after, [data-pnotify] .material-icon>span:after, [data-pnotify] .material-sticker {
+    /* margin-left: 25px; */
+    padding-top:5px;
+    padding-right:30px; 
+}
+.pnotify-title.material-title  {
+    font-weight: bold;
+    padding-top:10px;
+ }
+
+ .pnotify-text.material-text {
+    /* font-size: 15px !important;
+    display: none;
+    margin:0px !important;
+    padding:0px !important; */
+ } 

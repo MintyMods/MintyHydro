@@ -1,0 +1,39 @@
+/* PNotify Message Styling */
+
+  .pnotify-icon material-icon {
+    border: 5px dashed greenyellow !important;
+    font-size: 10px !important;
+    padding:20px;  
+  }
+  
+  /* pnotify pnotify-with-icon minty-notification  minty-confirmation pnotify-in pnotify-fade-in pnotify-move pnotify-stack-down pnotify-fade-normal     */
+  
+  .pnotify > div {
+    font-size: 5px !important;
+    padding:0px;  
+    width:50px !important;
+    height:10px !important;
+  }
+  .pnotify {
+    border: 5px dashed red !important;
+    font-size: 10px !important;
+    padding:0px;  
+    width:50px !important;
+    height:10px !important;
+  }
+.pnotify-pre-line {
+    height:10px !important;
+}
+
+.pnotify-text material-text {
+    color: hotpink !important;
+}
+
+[data-pnotify] .material-container {
+    padding: 2px;
+
+    font-size: 10px !important;
+    padding:0px;  
+    width:50px !important;
+    height:10px !important;
+}

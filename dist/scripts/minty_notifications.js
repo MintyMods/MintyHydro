@@ -1,5 +1,4 @@
 let className = "";
-
 let type = "error";
 let text = "";
 let title = "";
@@ -20,7 +19,7 @@ var buttons = {
 };
 
 function showServerConfirmation(msg) {
-    showMsg('confirmation', msg.title, msg.text, msg.icon + ' fa-3x'); 
+    showMsg('confirmation', msg.title, msg.text, msg.icon + ' fa-2x'); 
 }
 
 function showMsg(type, title, text, icon) {
@@ -28,12 +27,12 @@ function showMsg(type, title, text, icon) {
         text: text,
         title: title,
         type: type,
-        titleTrusted: true,
-        textTrusted: true,
+        titleTrusted: false,
+        textTrusted: false,
         icon: icon,
-        addClass: "nonblock translucent minty-notification " + className,
+        // addClass: "nonblock translucent minty-notification " + className,
         shadow: shadow,
-        delay: 3000,
+        delay: 1305000,
         hide: hide
     };
 
@@ -56,34 +55,34 @@ function showMsg(type, title, text, icon) {
 
     wrapper = Object.assign({}, core, modules, buttons);
     if (desktop === true) {
-        wrapper.icon = icon || "fad fa-exclamation-triangle fa-2x";
+        wrapper.icon = icon || "fad fa-exclamation-triangle fa-1x";
     }
     switch (type) {
         case "info":
-            wrapper.icon = icon || "fas fa-info-circle fa-2x";
+            wrapper.icon = icon || "fas fa-info-circle fa-1x";
             PNotify.info(wrapper);
             break;
         case "success":
-            wrapper.icon = icon || "fas fa-question-circle fa-2x";
+            wrapper.icon = icon || "fas fa-question-circle fa-1x";
             PNotify.success(wrapper);
             break;
         case "warning":
-            wrapper.icon = icon || "far fa-exclamation-circle fa-2x";
+            wrapper.icon = icon || "far fa-exclamation-circle fa-1x";
             PNotify.notice(wrapper);
             break;
         case "error":
-            wrapper.icon = icon || "fad fa-engine-warning fa-2x";
+            wrapper.icon = icon || "fad fa-engine-warning fa-1x";
             PNotify.error(wrapper);
             break;
         case "confirmation":
             wrapper.addClass += " minty-confirmation";
-            wrapper.icon = icon || "fas raspberry-pi fa-2x fa-spin";
-            PNotify.notice(wrapper);
+            wrapper.icon = icon || "fas raspberry-pi fa-1x fa-spin";
+            PNotify.success(wrapper);
             break;
         case "notice":
         default:
             wrapper.addClass += " minty-notice";
-            wrapper.icon = icon || "fas fa-question-circle fa-2x";
+            wrapper.icon = icon || "fas fa-question-circle fa-1x";
             PNotify.info(wrapper);
     }
 }
@@ -102,7 +101,7 @@ function showMissingMintyHydroHubError(reason) {
             title: 'Offline Mode',
             text: 'Minty Hydro Hub Not Connected',
             hide: false,
-            icon: 'fad fa-wifi-slash fa-2x',
+            icon: 'fad fa-wifi-slash fa-1x',
             width: '400px',
             textTrusted: true,
             modules: {
@@ -144,4 +143,5 @@ function showPumpStoppedFeedBack(opts) {
         control.config.loading = false;
         control.paint();
     }
+    runningPump = null;   
 }

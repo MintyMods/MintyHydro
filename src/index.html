@@ -5,38 +5,46 @@
     <title>Minty Hydro Controller</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
     <script type="text/javascript" src="/assets/pace/pace.min.js"></script>
-    <link rel='stylesheet' href='/assets/fontawesome-pro/css/all.min.css'> 
-    <link rel="stylesheet" href="/assets/dhtmlx/suite/suite.min.css">    
-    <link rel="stylesheet" href="/assets/dhtmlx/skins/material/dhtmlx.css">    
-    <link rel="stylesheet" href="/assets/dhtmlx/scheduler/dhtmlxscheduler.css">    
-    <link rel="stylesheet" href="/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css">    
+    <link type="text/css" rel='stylesheet' href='/assets/fontawesome-pro/css/all.min.css'> 
+    <link type="text/css" rel="stylesheet" href="/assets/pnotify/PNotify.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/pnotify/PNotifyDesktop.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/pnotify/PNotifyMobile.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/pnotify/Material.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/dhtmlx/suite/suite.min.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/dhtmlx/skins/material/dhtmlx.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/dhtmlx/scheduler/dhtmlxscheduler.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css">    
+    <link type="text/css" rel="stylesheet" href="/assets/dhtmlx/scheduler/dhtmlxscheduler_material.css">    
+    <link type="text/css" rel="stylesheet" href="/css/minty_hydro.css">    
 </head>
 <body>
     <div id="layout_container"></div>
     <div id="minty"></div>
-    <script src="/assets/socket.io/socket.io.js"></script>
-    <script src="/assets/pnotify/PNotify.js" ></script>
-    <script src="/assets/pnotify/PNotifyButtons.js" ></script>
-    <script src="/assets/pnotify/PNotifyStyleMaterial.js" ></script>
-    <script src="/assets/dhtmlx/suite/suite.min.js" ></script>
-    <script src="/assets/dhtmlx/scheduler/dhtmlxscheduler.js" ></script>
-    <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_timeline.js" ></script>
-    <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_treetimeline.js" ></script>
-    <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_daytimeline.js" ></script>
-    <!-- <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_minical.js" ></script> -->
-    <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_serialize.js" ></script>
-    <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_recurring.js" ></script>
-    <!-- <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_units.js" ></script> -->
-    <!-- <script src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_week_agenda.js" ></script>     -->
-    <script src="/scripts/minty_utils.js"></script>
-    <script src="/scripts/minty_notifications.js"></script>
-    <script src="/scripts/minty_scheduler.js"></script>
-    <script src="/scripts/minty_events.js"></script>
-    <script src="/scripts/minty_wizards.js"></script>
-    <script src="/scripts/minty_nutrients.js"></script>
-    <script src="/scripts/minty_hydro.js"></script>
+    <script type="text/javascript" src="/assets/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/assets/pnotify/PNotify.js" ></script>
+    <script type="text/javascript" src="/assets/pnotify/PNotifyMobile.js" ></script>
+    <script type="text/javascript" src="/assets/pnotify/PNotifyDesktop.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/suite/suite.min.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/dhtmlxscheduler.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_timeline.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_treetimeline.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_daytimeline.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_minical.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_serialize.js" ></script>
+    <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_recurring.js" ></script>
+    <!-- <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_units.js" ></script> -->
+    <!-- <script type="text/javascript" src="/assets/dhtmlx/scheduler/ext/dhtmlxscheduler_week_agenda.js" ></script>     -->
+    <script type="text/javascript" src="/scripts/minty_utils.js"></script>
+    <script type="text/javascript" src="/scripts/minty_notifications.js"></script>
+    <script type="text/javascript" src="/scripts/minty_scheduler.js"></script>
+    <script type="text/javascript" src="/scripts/minty_events.js"></script>
+    <script type="text/javascript" src="/scripts/minty_wizards.js"></script>
+    <script type="text/javascript" src="/scripts/minty_nutrients.js"></script>
+    <script type="text/javascript" src="/scripts/minty_hydro.js"></script>
     <script>
         Pace.options.ajax.trackWebSockets = true;
+        PNotify.defaultStack.maxOpen = Infinity; 
+        PNotify.defaultStack.modal = false;
         PNotify.defaults.styling = 'material';
         PNotify.defaults.icons = 'fontawesome5';        
     </script>    

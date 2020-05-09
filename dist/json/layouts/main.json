@@ -5,6 +5,7 @@
    "rows":[
       {
          "id":"toolbar_container",
+         "css":"minty_toolbar_container",
          "gravity":false,
          "padding":0
       },

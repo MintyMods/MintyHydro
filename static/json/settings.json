@@ -134,7 +134,7 @@
                "labelWidth": "120",
                "validation": "integer",
                "maxlength": "5",
-               "value": "50",
+               "value": "47.5",
                "gravity": false,
                "width": "300"
             },

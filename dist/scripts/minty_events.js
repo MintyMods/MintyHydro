@@ -1,21 +1,9 @@
 
-function initSettingsFormEvents() {
-    socket.on('DB:RESULT', function (data) {
-        if (data.rows) {
-            data.rows.forEach(function(row) {
-                debugger;
-                console.log(row);
-
-            });
-        } else {
-            let control = sensorsForm.getItem(data.name);
-            if (control) control.setValue(data.value);
-        }
-    });    
-    settingsForm.events.on("Change", function (name, value) {
-        socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', 'table':'SETTING' });
+function initFormEvents(form, table) {
+    form.events.on("Change", function (name, value) {
+        socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', table });
     });      
-    socket.emit("DB:COMMAND", { 'command':'SELECT_ALL', 'table':'SETTING' });
+    socket.emit("DB:COMMAND", { 'command':'ALL', table });
 }
 
 function initPumpFormEvents(pumpsForm) {
@@ -32,23 +20,29 @@ function initPumpFormEvents(pumpsForm) {
             socket.emit(command);
         }
     });
-    pumpsForm.events.on("Change", function (name, value) {
-        if (name.indexOf(":AMOUNT") > -1) {
-            // let time = calibrate.getItem('PUMP:' + name + ':TIME');
-            // let speed = calibrate.getItem('PUMP:' + name + ':SPEED');   
-            // let result = (time / grams);
-            // let opts = { 
-            //     "time": result,
-            //     "speed": (speed ? speed.getValue() : null),
-            //     "pump": name,
-            //     "command": 'update'
-            // };            
-            // pumpsForm.getItem('PUMP:' +  pump + ':TIME').setValue(result); 
-            // pumpsForm.getItem('PUMP:' +  pump + ':SPEED').setValue(speed); 
-            // pumpsForm.getItem('PUMP:' +  pump + ':AMOUNT').setValue(1);             
-        }
-        socket.emit((name + ":" + value.toString()).toUpperCase());
-    });    
+    initFormEvents(pumpsForm, 'PUMP');
+}
+
+function initDatabaseEvents() {
+    socket.on('DB:RESULT', function (data) {
+        if (data.table == 'PUMP') {   
+            processFormEvents(pumpsForm, data);   
+        } else if (data.table == 'SETTING') {
+            processFormEvents(settingsForm, data);
+        } else if (data.table == 'CONTROL') {
+            processFormEvents(controlsForm, data);
+        }         
+    });     
+}
+
+function processFormEvents(form, data) {
+    if (data.rows) {
+        data.rows.forEach(function(row) {
+            form.setValue({ [row.name]: row.value });
+        });
+    } else {
+        form.setValue({ [data.name]: data.value });
+    }
 }
 
 function initSensorFormEvents(sensorsForm) {

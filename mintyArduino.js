@@ -12,7 +12,7 @@ const serial = new Serialport(config.serialPort, {
 });
 let board = new five.Board({
     port: serial,
-    repl: config.debug,
+    repl: false,
     debug: config.debug
   });
 

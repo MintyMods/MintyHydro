@@ -11,7 +11,7 @@
             {
                "title": "Grow Light:",
                "type": "radioGroup",
-               "name": "RF:LIGHT",
+               "name": "CONTROL:LIGHT:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -20,8 +20,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -48,7 +47,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:WATER_PUMP",
+               "name": "CONTROL:WATER_PUMP:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -57,8 +56,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -85,7 +83,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:AIR_PUMP",
+               "name": "CONTROL:AIR_PUMP:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -94,8 +92,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -122,7 +119,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:AIR_EXTRACT_FAN",
+               "name": "CONTROL:AIR_EXTRACT_FAN:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -131,8 +128,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -159,7 +155,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:AIR_INTAKE_FAN",
+               "name": "CONTROL:AIR_INTAKE_FAN:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -168,8 +164,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -202,7 +197,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:AIR_MOVEMENT_FAN",
+               "name": "CONTROL:AIR_MOVEMENT_FAN:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -211,8 +206,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -239,7 +233,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:HUMIDIFIER",
+               "name": "CONTROL:HUMIDIFIER:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -248,8 +242,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -278,7 +271,7 @@
                "labelInline": false,
                "labelWidth": "150px",
                "width": "90%",
-               "id":"RF:HUMIDIFIER:SLIDER",
+               "id":"CONTROL:HUMIDIFIER:SLIDER",
                "min": 30,
                "max": 80,
                "value": 65,
@@ -295,7 +288,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:DEHUMIDIFIER",
+               "name": "CONTROL:DEHUMIDIFIER:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -304,8 +297,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -332,7 +324,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:HEATER",
+               "name": "CONTROL:HEATER:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -341,8 +333,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -361,7 +352,7 @@
             },
             {
                "type": "slider",
-               "id":"RF:HEATER:SLIDER",
+               "id":"CONTROL:HEATER:SLIDER",
                "label": "Air Temp ℃",
                "labelInline": false,
                "labelWidth": "150px",
@@ -382,7 +373,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "RF:WATER_HEATER",
+               "name": "CONTROL:WATER_HEATER:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -391,8 +382,7 @@
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
-                        "value": "AUTO",
-                        "checked": true
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
@@ -412,7 +402,7 @@
             {
                "gravity":true,
                "type": "slider",
-               "id":"RF:WATER_HEATER:SLIDER",
+               "id":"CONTROL:WATER_HEATER:SLIDER",
                "label": "Water Temp ℃",
                "labelInline": false,
                "labelWidth": "140px",

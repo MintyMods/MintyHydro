@@ -33,7 +33,7 @@ const MintyDataSource = {
                 case 'SELECT' :
                     this.select(opts);
                     break;
-                case 'SELECT_ALL' :
+                case 'ALL' :
                     this.all(opts);
                     break;
                 case 'DELETE' :
@@ -43,42 +43,38 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    insert: function(opts) {
+    insert: function(opts, callback) {
         opts.command = 'INSERT';
         db.serialize(function() {
             let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
             stmt.run(opts.name, opts.value, function(err, row) {
-                // if (err == null) {
-                //     this.io.socketEmit(RESULT, opts);
-                // }
             }.bind(this));
             stmt.finalize();
+            if (callback) callback(opts);
         }.bind(this));
     },
 
-    update : function(opts) {
+    update : function(opts, callback) {
         opts.command = 'UPDATE';
         db.serialize(function() {
             let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
-            stmt.run(opts.name, opts.value, function(err, row) {
+            stmt.run(opts.name, opts.value.toString(), function(err, row) {
+                stmt.finalize();
                 if (err == null) {
-                    // opts.command = 'INSERT';
-                    // this.io.socketEmit(RESULT, opts);
+                    if (callback) callback(opts);
                 } else {
                     db.serialize(function() {
                         stmt = db.prepare("UPDATE MH_" + opts.table + " SET value = ? WHERE name = ?");
-                        stmt.run(opts.name, opts.value);
+                        stmt.run(opts.value.toString(), opts.name);
                         stmt.finalize();
-                        // opts.command = 'UPDATE';
-                        // this.io.socketEmit(RESULT, opts);
+                        if (callback) callback(opts);
                     }.bind(this));
                 }
             }.bind(this));
-            stmt.finalize();
         }.bind(this));
     },
 
-    select : function(opts) {
+    select : function(opts, callback) {
         opts.command = 'SELECT_ONE';
         db.serialize(function() {
             db.get('SELECT value FROM MH_' + opts.table + ' WHERE name = ' + opts.name, function(err, row) {
@@ -86,42 +82,62 @@ const MintyDataSource = {
                 if (err == null) {
                     opts.value = row.value;
                     this.io.socketEmit(RESULT, opts);
+                    if (callback) callback(opts);
                 }
             }.bind(this));
         }.bind(this));
     },
 
-    all : function(opts) {
+    all : function(opts, callback) {
         opts.command = 'SELECT_ALL';
         db.serialize(function() {
             db.all('SELECT name, value FROM MH_' + opts.table, function(err, rows) {
                 opts.rows = rows;
                 if (err == null) {
                     this.io.socketEmit(RESULT, opts);
+                    if (callback) callback(opts);
                 }
             }.bind(this));
         }.bind(this));
     },
 
-    delete : function(opts) {
+    delete : function(opts, callback) {
         opts.command = 'DELETE';
         db.serialize(function() {
             db.get("DELETE FROM MH_" + opts.table + " WHERE name = '" + opts.name + "'", function(err, row) {
-                // if (err == null) {
-                //     this.io.socketEmit(RESULT, opts);
-                // }
+                if (callback) callback(opts);
             }.bind(this));
         }.bind(this));
     },
 
     createTables: function() {
+        this.createControlsTable();
         this.createSensorTable();
         this.createSensorReadingTable();  
-        this.createSettingsTable();      
+        this.createSettingTable();      
+        this.createPumpTable();      
     },
 
-    createSettingsTable() {
+    createControlsTable() {
+        var sql = "CREATE TABLE IF NOT EXISTS MH_CONTROL (";
+        sql += " name TEXT PRIMARY KEY,";
+        sql += " value TEXT,";
+        sql += " datetime TEXT";
+        sql += ")";
+        db.run(sql);
+    },
+
+    createSettingTable() {
         var sql = "CREATE TABLE IF NOT EXISTS MH_SETTING (";
+        sql += " name TEXT PRIMARY KEY,";
+        sql += " value TEXT,";
+        sql += " datetime TEXT";
+        sql += ")";
+        db.run(sql);
+    },
+
+    createPumpTable() {
+        var sql = "CREATE TABLE IF NOT EXISTS MH_PUMP (";
         sql += " name TEXT PRIMARY KEY,";
         sql += " value TEXT,";
         sql += " datetime TEXT";

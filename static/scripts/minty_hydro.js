@@ -1,5 +1,3 @@
-
-
 let socket = null;
 let navSelected = 'sensors';
 let layout = null;
@@ -89,8 +87,7 @@ function initComponents() {
     
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
-        initSettingsForm(settingsForm);
-       
+        initFormEvents(settingsForm, 'SETTING');
     });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
@@ -98,11 +95,9 @@ function initComponents() {
     });
     loadJSONAsync('/json/controls.json', function (json) {
         controlsForm = new dhx.Form(null, json);
-        controlsForm.events.on("Change", function (name, value) {
-            socket.emit((name + ":" + value.toString()).toUpperCase());
-        });
+        initFormEvents(controlsForm, 'CONTROL');
         if (navSelected == 'controls') {
-            layout.cell("content_container").attach(sensorsForm);
+            layout.cell("content_container").attach(controlsForm);
         }
     });
     loadJSONAsync('/json/sensors.json', function (json) {
@@ -112,9 +107,10 @@ function initComponents() {
             layout.cell("content_container").attach(sensorsForm);
         }
     });
-
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
+
+    initDatabaseEvents();
 }
 
 function initSettingsForm(settingsForm) {

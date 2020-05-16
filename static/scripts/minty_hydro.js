@@ -1,11 +1,4 @@
 
-const config = {
-    calibration : {
-        time : 1000,
-        speed : 255
-    },
-    debug : true
-}
 
 let socket = null;
 let navSelected = 'sensors';
@@ -76,6 +69,13 @@ function getOverRideResCapacity () {
     return getResCapacity();
 }
 
+const getResCapacity = function () {
+    if (settingsForm) {
+        return settingsForm.getItem('CONFIG:GROW_AREA:RES_CAPACITY').getValue();
+    }
+    return config.defaults.res.capacity;;
+}
+
 function initComponents() {
     
     automation = loadJSON('/json/automation.json');
@@ -89,7 +89,7 @@ function initComponents() {
     
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
-        initSettingsFormEvents(settingsForm);
+        initSettingsForm(settingsForm);
        
     });
     loadJSONAsync('/json/pumps.json', function (json) {
@@ -117,15 +117,14 @@ function initComponents() {
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 }
 
-function initSettingsFormEvents(settingsForm) {
+function initSettingsForm(settingsForm) {
     settingsForm.events.on("ButtonClick", function (name) {
     });
-    settingsForm.events.on("Change", function (name, value) {
-        // socket.emit((name + ":" + value.toString()).toUpperCase());
-    });  
+
     if (navSelected == 'settings') {
         layout.cell("content_container").attach(settingsForm);
-    }  
+    } 
+    initSettingsFormEvents(settingsForm); 
     initNutrientSection();    
 }
 
@@ -218,16 +217,3 @@ function showContent(id) {
     }
 }
 
-const getSetting = function (which) {
-    if (settingsForm) {
-        return settingsForm.getValue()[which];
-    }
-    return null;
-};
-
-const getResCapacity = function () {
-    if (settingsForm) {
-        return settingsForm.getItem('CONFIG:GROW_AREA:RES_CAPACITY').getValue();
-    }
-    return 0;
-};

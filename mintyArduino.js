@@ -1,20 +1,21 @@
 const io = require('socket.io-client');
 const five = require('johnny-five');
-const config = require('./mintyConfig');
-const mintyHydro = require('./mintyHydroBox');
-const MintyIO = require('./mintyIO');
+const config = require('./MintyConfig');
+const MintyHydro = require('./MintyHydroBox');
+const MintyIO = require('./MintyIO');
 const Serialport = require("serialport");
+const MintyDataSource = require('./MintyDataSource');
 
 const serial = new Serialport(config.serialPort, {
   baudRate: 9600,
   buffersize: 1
 });
+let board = new five.Board({
+    port: serial,
+    repl: config.debug,
+    debug: config.debug
+  });
 
-const board = new five.Board({
-  port: serial,
-  repl: config.debug,
-  debug: config.debug
-});
 
 function shutDown() {
   if (pumpCalMag) pumpCalMag.stop();
@@ -26,27 +27,27 @@ function shutDown() {
   if (pumpPhUp) pumpPhUp.stop();
   if (pumpPhDown) pumpPhDown.stop();
   sendRF(config.MINTY_FDD.OFF);
+  MintyDataSource.shutDown();
   process.exit(1);
 }
 
-board.on("ready", function() {
-  log("J5 Board Ready...");
-});
 board.on('exit', function () {
-  log("*** EXIT ***");
   shutDown();
 });
 board.on("error", function(msg) {
-  warn("J5 Board  Error: ", msg);
-  shutDown();
+  warn("Arduino Not Responding : ", msg);
+  Serialport.list().then(ports => {
+    warn("PORTS:", ports);
+  });  
+  // shutDown();
 });
-
 
 log("Minty-Hydro connecting to socket server: " + config.url);
 const socket = io.connect(config.url);
 const mintyIO = new MintyIO(board, serial);
-mintyHydro.setIO(mintyIO);
-mintyHydro.runAfterTimeout();
+MintyDataSource.initDatabase(mintyIO);
+MintyHydro.setIO(mintyIO);
+MintyHydro.runAfterTimeout(MintyDataSource);
 
 // 240v Relays
 let relayWaterPump;
@@ -85,16 +86,15 @@ board.on('ready', function () {
   });
 
   bme280.on("change", function () {
-    try {
-      mintyHydro.reading.temp.air = this.thermometer.celsius;
-      mintyHydro.reading.humidity = this.hygrometer.relativeHumidity;
-      mintyHydro.reading.pressure = this.barometer.pressure;
+      MintyHydro.reading.temp.air = this.thermometer.celsius;
+      MintyHydro.reading.humidity = this.hygrometer.relativeHumidity;
+      MintyHydro.reading.pressure = this.barometer.pressure;
+      MintyDataSource.insert({ name:'HTS:BME280:HUMIDITY:RH', value:this.hygrometer.relativeHumidity, table:'READING' });
+      MintyDataSource.insert({ name:'HTS:BME280:TEMP:CELSIUS', value:this.thermometer.celsius, table:'READING' });
+      MintyDataSource.insert({ name:'HTS:BME280:PRESSURE', value:this.barometer.pressure, table:'READING' });
       socketEmit('HTS:BME280:HUMIDITY:RH', this.hygrometer.relativeHumidity);
       socketEmit('HTS:BME280:TEMP:CELSIUS', this.thermometer.celsius);
       socketEmit('HTS:BME280:PRESSURE', this.barometer.pressure);
-    } catch (e) {
-      warn("Failed BME280:ON:CHANGE:" + this, e);
-    }
   });
 
   /* Water Level Switches */
@@ -193,25 +193,25 @@ board.on('ready', function () {
   }
 
   function sendConfirmation(title, text, icon) {
-    socketEmit('ARDUINO:CONFIM', { 'title':title, 'text':text, icon:icon });
+    socketEmit('ARDUINO:CONFIM', { title, text, icon });
   }
 
   /* ATLAS Calibration Routines */ 
   socket.on('CALIBRATE:EC:START', function () {
-    mintyHydro.setPollAllSensors(false);
-    mintyHydro.pollEC();
+    MintyHydro.setPollAllSensors(false);
+    MintyHydro.pollEC();
   });
   socket.on('CALIBRATE:EC:STOP', function () {
-    mintyHydro.setPollAllSensors(true);
-    mintyHydro.poll();
+    MintyHydro.setPollAllSensors(true);
+    MintyHydro.poll();
   });
   socket.on('CALIBRATE:PH:START', function () {
-    mintyHydro.setPollAllSensors(false);
-    mintyHydro.pollPH();
+    MintyHydro.setPollAllSensors(false);
+    MintyHydro.pollPH();
   });
   socket.on('CALIBRATE:PH:STOP', function () {
-    mintyHydro.setPollAllSensors(true);
-    mintyHydro.poll();
+    MintyHydro.setPollAllSensors(true);
+    MintyHydro.poll();
   });
 
   socket.on('CALIBRATE:EC:DRY', function () {
@@ -229,7 +229,6 @@ board.on('ready', function () {
   socket.on('CALIBRATE:EC:HIGH', function () {
     let command = "cal,high,800000";
     sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation(command, 'E.C. High Calibration Completed.','fal fa-code-branch');
       sendConfirmation("E.C. Calibration Complete", 'The EC probe has been successfully calibrated.','fas fa-check-circle');
     });       
   });
@@ -248,7 +247,6 @@ board.on('ready', function () {
   socket.on('CALIBRATE:PH:HIGH', function () {
     let command = "cal,high,10";
     sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, command, function (temp) {
-      sendConfirmation(command, 'P.H. High Calibration Completed.','fal fa-code-branch');
       sendConfirmation("P.H. Calibration Complete", 'The pH probe has been successfully calibrated.','fas fa-check-circle');
     });       
   });
@@ -371,27 +369,35 @@ board.on('ready', function () {
   });
   
   waterLevelTankHigh.on("open", function () {
+    MintyDataSource.insert({ name:'WLS:TANK:HIGH', value:'OPEN', table:'READING' });
     socketEmit('WLS:TANK:HIGH:OPEN');
   });
   waterLevelTankHigh.on("close", function () {
+    MintyDataSource.insert({ name:'WLS:TANK:HIGH', value:'CLOSE', table:'READING' });
     socketEmit('WLS:TANK:HIGH:CLOSE');
   });
   waterLevelTankLow.on("open", function () {
+    MintyDataSource.insert({ name:'WLS:TANK:LOW', value:'OPEN', table:'READING' });
     socketEmit('WLS:TANK:LOW:OPEN');
   });
   waterLevelTankLow.on("close", function () {
+    MintyDataSource.insert({ name:'WLS:TANK:LOW', value:'CLOSE', table:'READING' });
     socketEmit('WLS:TANK:LOW:CLOSE');
   });
   waterLevelResHigh.on("open", function () {
+    MintyDataSource.insert({ name:'WLS:RES:HIGH', value:'OPEN', table:'READING' });
     socketEmit('WLS:RES:HIGH:OPEN');
   });
   waterLevelResHigh.on("close", function () {
+    MintyDataSource.insert({ name:'WLS:RES:HIGH', value:'CLOSE', table:'READING' });
     socketEmit('WLS:RES:HIGH:CLOSE');
   });
   waterLevelResLow.on("open", function () {
+    MintyDataSource.insert({ name:'WLS:RES:LOW', value:'OPEN', table:'READING' });
     socketEmit('WLS:RES:LOW:OPEN');
   });
   waterLevelResLow.on("close", function () {
+    MintyDataSource.insert({ name:'WLS:RES:LOW', value:'CLOSE', table:'READING' });
     socketEmit('WLS:RES:LOW:CLOSE');
   });
 
@@ -513,6 +519,12 @@ board.on('ready', function () {
      });
   });
 
+
+  /* Settings Section Database Updates */
+  socket.on('SETTINGS:SAVE:STATE', function (config) {
+    MintyDataSource.setConfig(config);
+  });
+
 });
 
 function sendRF(code) {
@@ -532,10 +544,10 @@ function sendAtlasI2C(channel, command, callback) {
 }
 
 function warn(msg, payload) {
-  console.warn("** ALERT ** [ARDUINO] " + msg, payload != undefined ? payload : "");
+  console.warn("[" + (new Date()).toUTCString() + "]  ** ALERT ** [ARDUINO] " + msg, payload != undefined ? payload : "");
 }
 
 function log(msg, payload) {
-  if (config.debug) console.log("[ARDUINO] " + msg, payload != undefined ? payload : "");
+  if (config.debug) console.log("[" + (new Date()).toUTCString() + "]  [ARDUINO] " + msg, payload != undefined ? payload : "");
 }
 

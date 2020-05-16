@@ -4,28 +4,14 @@
  * RF433Mhz Sending
  */
 
-#include <ConfigurableFirmata.h>
-#include <DigitalInputFirmata.h>
 DigitalInputFirmata digitalInput;
-#include <DigitalOutputFirmata.h>
 DigitalOutputFirmata digitalOutput;
-#include <Servo.h>
-#include <ServoFirmata.h>
 ServoFirmata servo;
-#include <Wire.h>
-#include <I2CFirmata.h>
 I2CFirmata i2c;
-#include <SerialFirmata.h>
 SerialFirmata serial;
-#include <RCOutputFirmata.h>
 RCOutputFirmata rcOutput;
-#include <TH02_dev.h>
-#include <AnalogOutputFirmata.h>
 AnalogOutputFirmata analogOutput;
-#include <FirmataExt.h>
 FirmataExt firmataExt;
-#include <AnalogWrite.h>
-#include <FirmataReporting.h>
 FirmataReporting reporting;
 
 void systemResetCallback(){
@@ -39,7 +25,6 @@ void systemResetCallback(){
 }
 
 void initTransport(){
-  // Uncomment to save a couple of seconds by disabling the startup blink sequence.
   Firmata.disableBlinkVersion();
   Firmata.begin(57600);
 }
@@ -65,14 +50,11 @@ void setup(){
 
 void loop(){
   digitalInput.report();
-
   while(Firmata.available()) {
     Firmata.processInput();
   }
-
   if (reporting.elapsed()) {
     i2c.report();
   }
-
   serial.update();
 }

@@ -1,6 +1,7 @@
+const config = require('./MintyConfig');
+const hydroTarget = require('./MintyHydroTargets');
+const MintyDataSource = require('./MintyDataSource');
 
-const config = require('./mintyConfig');
-const hydroTarget = require('./mintyHydroTargets');
 let pollAllSensors = true;
 
 const MintyHydroBox = {
@@ -24,15 +25,16 @@ const MintyHydroBox = {
 
   poll: function () {
     log("----<<<< Minty Hydro Main Cycle Ping... >>>>---- ");
+
     if (!this.defaultsLoaded) {
       this.loadDefaults();
     }
     if (pollAllSensors) {
       this.pollAtlasSensors();
-      this.runAfterTimeout();
     } else {
       warn("Skipping Atlas Sensor Polling");
     }
+    this.runAfterTimeout();
   },
 
   setPollAllSensors: function (poll) {
@@ -42,8 +44,8 @@ const MintyHydroBox = {
   pollTEMP: function() {
     // if (!pollAllSensors) {
       this.io.sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {
-        debugger
         log("*** CALIBRATE:TEMP:" + temp);
+
         this.io.socketEmit('I2C:TEMP:RESULT', temp);
         setTimeout(function () { this.pollTEMP() }.bind(this), config.tick.calibrationPolling);
       }.bind(this));
@@ -77,12 +79,15 @@ const MintyHydroBox = {
   pollAtlasSensors: function () {
     this.io.sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ph) {
       this.reading.ph = ph;
+      MintyDataSource.insert({ name:'I2C:PH:RESULT', value:ph, table:'READING' });
       this.io.socketEmit('I2C:PH:RESULT', ph);
       this.io.sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {
         this.reading.temp.water = temp;
+        MintyDataSource.insert({ name:'I2C:TEMP:RESULT', value:temp, table:'READING' });
         this.io.socketEmit('I2C:TEMP:RESULT', temp);
         this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ec) {
           this.reading.ec = ec;
+          MintyDataSource.insert({ name:'I2C:EC:RESULT', value:ec, table:'READING' });
           this.io.socketEmit('I2C:EC:RESULT', ec);
           // this.processSensors();
         }.bind(this));
@@ -238,10 +243,10 @@ function isValidTemperatureReading(temp) {
 }
 
 function warn(msg, payload) {
-  console.warn("** ALERT ** [HYDRO] " + msg, payload != undefined ? payload : "");
+  console.warn("[" + (new Date()).toUTCString() + "]  ** ALERT ** [HYDRO] " + msg, payload != undefined ? payload : "");
 }
 function log(msg, payload) {
-  if (config.debug) console.log("[HYDRO] " + msg, payload != undefined ? payload : "");
+  if (config.debug) console.log("[" + (new Date()).toUTCString() + "]  [HYDRO] " + msg, payload != undefined ? payload : "");
 }
 module.exports = MintyHydroBox;
 

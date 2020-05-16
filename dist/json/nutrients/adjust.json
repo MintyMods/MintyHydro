@@ -17,7 +17,7 @@
                 "labelPosition": "left",
                 "gravity": false,
                 "labelWidth": "150",
-                "validation": "integer",
+                "validation": "number",
                 "maxlength": "5",
                 "value": ".8",
                 "width":300

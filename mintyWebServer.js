@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('./mintyConfig');
+const config = require('./MintyConfig');
 const app = express();
 const server = app.listen(process.env.PORT || config.port, function () {
   let port = process.env.PORT || config.port;
@@ -23,10 +23,19 @@ app.use(webpackMiddleware(webpack(webpackConfig)));
 io.of('/arduino').on('connection', (socket) => {
   log('New connection to ArduinoServer@' + socket.id);
 
+  /* Database events */ 
+  socket.on('DB:COMMAND', function (data) {
+    socket.broadcast.emit('DB:COMMAND', data);
+  });
+  socket.on('DB:RESULT', function (result) {
+    socket.broadcast.emit('DB:RESULT', result);
+  });
+
   /* Events emitted from the Arduino */
   socket.on('ARDUINO:CONFIM', function (msg) {
     socket.broadcast.emit('ARDUINO:CONFIM', msg);
   });
+
   socket.on('PUMP:DOSING:STOPPED', function (opts) {
     socket.broadcast.emit('PUMP:DOSING:STOPPED', opts);
   });
@@ -358,5 +367,5 @@ io.of('/arduino').on('connection', (socket) => {
 });
 
 function log(msg, payload) {
-  console.log("[SERVER] " + msg, payload != undefined ? payload : "");
+  console.log("[" + (new Date()).toUTCString() + "]  [SERVER] " + msg, payload != undefined ? payload : "");
 }

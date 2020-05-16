@@ -6,10 +6,11 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
-    "dev": "NODE_ENV=development node mintyWebServer.js",
-    "hydro": "concurrently --kill-others \"npm run dev\" \"node --inspect mintyArduino.js\"",
-    "hydro-forever": "concurrently --kill-others \"forever start -a dev\" \"node --inspect mintyArduino.js\"",
-    "arduino:prod": "NODE_ENV=production node mintyArduino.js"
+    "dev": "NODE_ENV=development node MintyWebServer.js",
+    "port": "NODE_ENV=development node portcheck.js",
+    "hydro": "concurrently --kill-others \"npm run dev\" \"node --inspect MintyArduino.js\"",
+    "hydro-forever": "concurrently --kill-others \"forever start -a MintyWebServer.js\" \"node MintyArduino.js\"",
+    "arduino:prod": "NODE_ENV=production node MintyArduino.js"
   },
   "repository": "https://github.com/MintyMods/MintyHydro",
   "author": "Rob Gregory [Minty]",
@@ -24,7 +25,8 @@
     "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "socketio-wildcard": "^2.0.0"
+    "socketio-wildcard": "^2.0.0",
+    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

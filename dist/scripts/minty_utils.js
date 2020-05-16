@@ -1,3 +1,4 @@
+
 function isCompact() {
     return window.innerWidth < 1000   
 }

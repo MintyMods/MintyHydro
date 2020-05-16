@@ -1,14 +1,18 @@
 
 const io = require('socket.io-client');
 const Encoder7Bit = require('encoder7bit');
-const config = require('./mintyConfig');
+const config = require('./MintyConfig');
 const socket = io.connect(config.url);
 
-const SEND_RF_SIGNALS = false;
+const SEND_RF_SIGNALS = true;
 
 const MintyIO = function (board, serial) {
     this.board = board;
     this.serial = serial;
+
+    this.getSocket = function() {
+        return socket;
+    },
 
     this.sendRF = function (code) {
         if (SEND_RF_SIGNALS) {
@@ -87,11 +91,11 @@ const MintyIO = function (board, serial) {
 }
 
 function warn(msg, payload) {
-    console.warn("** ALERT ** [IO] " + msg, payload != undefined ? payload : "");
+    console.warn("[" + (new Date()).toUTCString() + "]  ** ALERT ** [IO] " + msg, payload != undefined ? payload : "");
 }
 
 function log(msg, payload) {
-    if (config.debug) console.log("[IO] " + msg, payload != undefined ? payload : "");
+    if (config.debug) console.log("[" + (new Date()).toUTCString() + "]  [IO] " + msg, payload != undefined ? payload : "");
 }
 
 function lookupAtlasChannel(command) {

@@ -1,3 +1,23 @@
+
+function initSettingsFormEvents() {
+    socket.on('DB:RESULT', function (data) {
+        if (data.rows) {
+            data.rows.forEach(function(row) {
+                debugger;
+                console.log(row);
+
+            });
+        } else {
+            let control = sensorsForm.getItem(data.name);
+            if (control) control.setValue(data.value);
+        }
+    });    
+    settingsForm.events.on("Change", function (name, value) {
+        socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', 'table':'SETTING' });
+    });      
+    socket.emit("DB:COMMAND", { 'command':'SELECT_ALL', 'table':'SETTING' });
+}
+
 function initPumpFormEvents(pumpsForm) {
     pumpsForm.events.on("ButtonClick", function (command) {
         if (command.indexOf(':CALIBRATE') > 0) {

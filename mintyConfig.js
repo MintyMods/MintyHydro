@@ -1,4 +1,4 @@
-const SERIAL_PORT = "COM15";
+const SERIAL_PORT = "COM6";
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = '192.168.0.12';
 const DEBUGGING = true;
@@ -6,13 +6,13 @@ const DEBUGGING = true;
 const development = {
   host: 'http://' + IP_ADDRESS,
   namespace: SOCKET_IO_NAMESPACE,
-  port: 4000
+  port: 80
 };
 
 const production = {
   host: 'http://' + IP_ADDRESS,
   namespace: SOCKET_IO_NAMESPACE,
-  port: 4000
+  port: 80
 };
 
 const config = process.env.NODE_ENV === 'development' ? development : production;
@@ -27,7 +27,7 @@ config.debug = DEBUGGING;
 config.tick = {
   bme280: 4000,
   calibrationPolling: 1000,
-  mintyhydro: 10000,
+  mintyhydro: 20000,
 }
 
 /* RF433 Transmitter Support */

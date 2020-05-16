@@ -37,7 +37,7 @@ function showMsg(type, title, text, icon) {
 
     if (desktop === true) {
         if (Notification.permission !== "granted") {
-            Notification.requestPermission();
+            //Notification.requestPermission();
             //            PNotify.modules.Desktop.permission();
         }
         var modules = {
@@ -94,7 +94,7 @@ function hideMissingMintyHydroHubError() {
 
 function showMissingMintyHydroHubError(reason) {
     if (window.permanotice) {
-        window.permanotice.open();
+        // window.permanotice.open();
     } else {
         window.permanotice = PNotify.error({
             title: 'Offline Mode',

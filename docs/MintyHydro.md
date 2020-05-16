@@ -1,5 +1,10 @@
+# Installation Information
 
-To very briefly introduce myself, I am a software developer that loves everything about open source. Minty Hydro is one of my projects with a goal towards getting into electronics and embedded sofware just to see what is involved really. I like to produce projects in my own time using something different and  I came up with this totally crazy project idea to incorporate both a new softwre stack with some embedded hardware. What could go wrong...
+## Firmata Installation
+
+Starting with a new un-flashed Arduino Leonardo you will need to run the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and load the sketch [MintyHydro.ino](../ino/MintyHydro.ino) this will flash a custom version of [Configurable Firmata](https://github.com/firmata/ConfigurableFirmata) which includes support for [RCSwitchFirmata](https://github.com/git-developer/RCSwitchFirmata) to send RF433Mhz remote control signals.
+
+
 
 
 

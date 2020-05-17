@@ -5,7 +5,9 @@ const server = app.listen(process.env.PORT || config.port, function () {
   let port = process.env.PORT || config.port;
   log('Socket server listening @: ' + port);
 });
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  pingTimeout: 60000,
+});
 
 process.env.NODE_ENV = 'development'; // 'tdoo REMOVE
 
@@ -29,6 +31,9 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('DB:RESULT', function (result) {
     socket.broadcast.emit('DB:RESULT', result);
+  });
+  socket.on('DB:JSON', function (result) {
+    socket.broadcast.emit('DB:JSON', result);
   });
 
   /* Events emitted from the Arduino */

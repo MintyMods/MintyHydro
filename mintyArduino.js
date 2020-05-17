@@ -43,8 +43,8 @@ board.on("error", function(msg) {
 });
 
 log("Minty-Hydro connecting to socket server: " + config.url);
-const socket = io.connect(config.url);
 const mintyIO = new MintyIO(board, serial);
+const socket = mintyIO.getSocket();
 MintyDataSource.initDatabase(mintyIO);
 MintyHydro.setIO(mintyIO);
 MintyHydro.runAfterTimeout(MintyDataSource);

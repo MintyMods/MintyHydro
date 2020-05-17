@@ -1,6 +1,4 @@
-
 let nutrientLayout = null;
-let nutrientAdjustForm = null;
 
 function initNutrientSection() {
     nutrientLayout = new dhx.Layout(null, {
@@ -31,14 +29,10 @@ function initNutrientSection() {
 
     nutrientAdjustForm = new dhx.Form(null,  loadJSON('/json/nutrients/adjust.json'));
     
-    nutrientLayout.events.on("BeforeShow", function (name, value) {
-        nutrientAdjustForm.getItem("CONFIG:NUTRIENTS:RES_CAPACITY").setValue(getResCapacity());
-    });    
-
-    nutrientAdjustForm.events.on("Change", function (name, value) {
-        updateDosingGrid();
-    });    
+    initFormEvents(nutrientAdjustForm, 'NUTRIENT');
     nutrientLayout.cell("dosing_adjust_container").attach(nutrientAdjustForm);
+    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
+    nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
 
     const updateDosingGrid = function () {
         let base = baseNutrientsGrid.data.serialize();
@@ -55,21 +49,46 @@ function initNutrientSection() {
             }
             dosingGrid.data.add(base[i]);
         }
+        baseNutrientsGrid.paint();
+        dosingGrid.paint();
     };
-    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
+
     baseNutrientsGrid.data.events.on("Change", function (id, status, row) {
         if (status) {
-            socket.emit(('BASE_NUTRIENTS:' + status).toUpperCase(), row);
+            let opts = { 'command':'JSON:SET', 'table':'NUTRIENT', 'name':id, 'json':row, status };
+            socket.emit("DB:COMMAND", opts);
+            updateDosingGrid();
         }
-        updateDosingGrid();
     });
+
     baseNutrientsGrid.data.load('/json/nutrients/dosing.json').then(function () {
         updateDosingGrid();
     });
 
-    nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
-    
-    if (navSelected == 'dosing') {
-        layout.cell("content_container").attach(nutrientLayout);
-    }
+    socket.on('DB:JSON', function (data) {
+        if (data.table == 'NUTRIENT' && data.command == 'JSON:ALL') {   
+            var rows = data.json;
+            rows.forEach(element => {
+                let cols = JSON.parse(element.value);
+                if (cols.id != undefined) {
+                    let keys = Object.keys(cols);
+                    for (let i = 0; i < keys.length; i++) {
+                        baseNutrientsGrid.data.getItem(cols.id)[keys[i]] = cols[keys[i]];
+                    }
+                    updateDosingGrid();
+                    
+                }
+            });
+        } 
+    });
+    socket.emit("DB:COMMAND", { 'command':'JSON:ALL', 'table':'NUTRIENT' });
+    nutrientAdjustForm.events.on("Change", updateDosingGrid);
 }
+
+function getOverRideResCapacity () {
+    if (nutrientAdjustForm) {
+        return nutrientAdjustForm.getItem('NUTRIENT:RES_CAPACITY').getValue();
+    }
+    return getResCapacity();
+}
+

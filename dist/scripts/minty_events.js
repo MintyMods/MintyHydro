@@ -31,14 +31,20 @@ function initDatabaseEvents() {
             processFormEvents(settingsForm, data);
         } else if (data.table == 'CONTROL') {
             processFormEvents(controlsForm, data);
-        }         
+        } else if (data.table == 'NUTRIENT') {
+            processFormEvents(nutrientAdjustForm, data);
+        }           
     });     
 }
 
 function processFormEvents(form, data) {
     if (data.rows) {
         data.rows.forEach(function(row) {
-            form.setValue({ [row.name]: row.value });
+            if (row.name.endsWith(':SLIDER')) {
+                if (row.value) form.setValue({ [row.name]: row.value });
+            } else {
+                form.setValue({ [row.name]: row.value });
+            }
         });
     } else {
         form.setValue({ [data.name]: data.value });

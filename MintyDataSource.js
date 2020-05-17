@@ -2,8 +2,9 @@ const config = require('./MintyConfig');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('database/MintyHydro.datasource');
 
-const COMMAND = 'DB:COMMAND';
-const RESULT = 'DB:RESULT';
+const DB_COMMAND = 'DB:COMMAND';
+const DB_RESULT = 'DB:RESULT';
+const DB_JSON = 'DB:JSON';
 
 const MintyDataSource = {
     io: null,
@@ -22,7 +23,7 @@ const MintyDataSource = {
     },
 
     initEvents: function() {
-        this.socket.on(COMMAND, function (opts) {
+        this.socket.on(DB_COMMAND, function (opts) {
             switch (opts.command) {
                 case 'INSERT' :
                     this.insert(opts);
@@ -38,6 +39,14 @@ const MintyDataSource = {
                     break;
                 case 'DELETE' :
                     this.delete(opts);
+                case 'JSON:GET' :
+                    this.getJSON(opts);
+                    break;
+                case 'JSON:SET' :
+                    this.setJSON(opts);
+                    break;
+                case 'JSON:ALL' :
+                    this.allJSON(opts);
                     break;
             }
         }.bind(this));
@@ -51,6 +60,52 @@ const MintyDataSource = {
             }.bind(this));
             stmt.finalize();
             if (callback) callback(opts);
+        }.bind(this));
+    },
+
+    getJSON : function(opts, callback) {
+        opts.command = 'JSON:GET';
+        db.serialize(function() {
+            db.get('SELECT value FROM MH_' + opts.table + ' WHERE name = ' + opts.name, function(err, row) {
+                if (err == null) {
+                    opts.json = row.value;
+                    this.io.socketEmit(DB_JSON, opts);
+                    if (callback) callback(opts);
+                }
+            }.bind(this));
+        }.bind(this));
+    },
+
+    allJSON : function(opts, callback) {
+        opts.command = 'JSON:ALL';
+        db.serialize(function() {
+            db.all('SELECT value FROM MH_' + opts.table, function(err, rows) {
+                if (err == null) {
+                    opts.json = rows;
+                    this.io.socketEmit(DB_JSON, opts);
+                    if (callback) callback(opts);
+                }
+            }.bind(this));
+        }.bind(this));
+    },
+
+    setJSON : function(opts, callback) {
+        opts.command = 'JSON:SET';
+        db.serialize(function() {
+            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
+            stmt.run(opts.name, JSON.stringify(opts.json), function(err, row) {
+                stmt.finalize();
+                if (err == null) {
+                    if (callback) callback(opts);
+                } else {
+                    db.serialize(function() {
+                        stmt = db.prepare("UPDATE MH_" + opts.table + " SET value = ? WHERE name = ?");
+                        stmt.run(JSON.stringify(opts.json), opts.name);
+                        stmt.finalize();
+                        if (callback) callback(opts);
+                    }.bind(this));
+                }
+            }.bind(this));
         }.bind(this));
     },
 
@@ -75,13 +130,13 @@ const MintyDataSource = {
     },
 
     select : function(opts, callback) {
-        opts.command = 'SELECT_ONE';
+        opts.command = 'SELECT';
         db.serialize(function() {
             db.get('SELECT value FROM MH_' + opts.table + ' WHERE name = ' + opts.name, function(err, row) {
                 opts.row = row;
                 if (err == null) {
                     opts.value = row.value;
-                    this.io.socketEmit(RESULT, opts);
+                    this.io.socketEmit(DB_RESULT, opts);
                     if (callback) callback(opts);
                 }
             }.bind(this));
@@ -89,12 +144,12 @@ const MintyDataSource = {
     },
 
     all : function(opts, callback) {
-        opts.command = 'SELECT_ALL';
+        opts.command = 'ALL';
         db.serialize(function() {
             db.all('SELECT name, value FROM MH_' + opts.table, function(err, rows) {
                 opts.rows = rows;
                 if (err == null) {
-                    this.io.socketEmit(RESULT, opts);
+                    this.io.socketEmit(DB_RESULT, opts);
                     if (callback) callback(opts);
                 }
             }.bind(this));
@@ -116,6 +171,7 @@ const MintyDataSource = {
         this.createSensorReadingTable();  
         this.createSettingTable();      
         this.createPumpTable();      
+        this.createNutrientTable();      
     },
 
     createControlsTable() {
@@ -138,6 +194,15 @@ const MintyDataSource = {
 
     createPumpTable() {
         var sql = "CREATE TABLE IF NOT EXISTS MH_PUMP (";
+        sql += " name TEXT PRIMARY KEY,";
+        sql += " value TEXT,";
+        sql += " datetime TEXT";
+        sql += ")";
+        db.run(sql);
+    },
+
+    createNutrientTable() {
+        var sql = "CREATE TABLE IF NOT EXISTS MH_NUTRIENT (";
         sql += " name TEXT PRIMARY KEY,";
         sql += " value TEXT,";
         sql += " datetime TEXT";

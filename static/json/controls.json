@@ -357,8 +357,8 @@
                "labelInline": false,
                "labelWidth": "150px",
                "width": "90%",
-               "min": 20,
-               "max": 30,
+               "min": 0,
+               "max": 40,
                "value": 24,
                "majorTick": 5,
                "tick": 1
@@ -407,8 +407,8 @@
                "labelInline": false,
                "labelWidth": "140px",
                "width": "90%",
-               "min": 18,
-               "max": 26,
+               "min": 0,
+               "max": 40,
                "value": 22,
                "majorTick": 5,
                "tick": 1

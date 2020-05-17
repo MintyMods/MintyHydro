@@ -7,8 +7,8 @@
           "padding": 10,
           "rows": [
             {
-                "name": "CONFIG:NUTRIENTS:RES_CAPACITY",
-                "id": "CONFIG:NUTRIENTS:RES_CAPACITY",
+                "name": "NUTRIENT:RES_CAPACITY",
+                "id": "NUTRIENT:RES_CAPACITY",
                 "type": "input",
                 "labelInline": true,
                 "label": "Total Capacity (litres)",

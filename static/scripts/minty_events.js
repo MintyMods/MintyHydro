@@ -31,7 +31,9 @@ function initDatabaseEvents() {
             processFormEvents(settingsForm, data);
         } else if (data.table == 'CONTROL') {
             processFormEvents(controlsForm, data);
-        }         
+        } else if (data.table == 'NUTRIENT') {
+            processFormEvents(nutrientAdjustForm, data);
+        }           
     });     
 }
 

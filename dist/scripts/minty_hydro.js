@@ -1,5 +1,5 @@
 let socket = null;
-let navSelected = 'sensors';
+let navSelected = 'dosing';
 let layout = null;
 let sidebar = null;
 let toolbar = null;
@@ -8,6 +8,7 @@ let pumpsForm = null;
 let controlsForm = null;
 let sensorsForm = null;
 let settingsForm = null;
+let nutrientAdjustForm = null;
 let envLayout = null;
 let calibrateLayout = null;
 let schedulerHeader = null;
@@ -36,7 +37,9 @@ function registerEventHandlers() {
 }
 
 function initSocket() {
-    socket = io.connect('/arduino');
+    socket = io.connect('/arduino',{
+        pingTimeout: 60000,
+      });
     socket.on('connect', function (data) {
         console.info("Client Connected to Socket Server");
         hideMissingMintyHydroHubError();
@@ -60,16 +63,9 @@ function handleResize() {
     resetSchedulerLayoutConfig();
 }
 
-function getOverRideResCapacity () {
-    if (nutrientAdjustForm) {
-        return nutrientAdjustForm.getItem('CONFIG:NUTRIENTS:RES_CAPACITY').getValue();
-    }
-    return getResCapacity();
-}
-
 const getResCapacity = function () {
     if (settingsForm) {
-        return settingsForm.getItem('CONFIG:GROW_AREA:RES_CAPACITY').getValue();
+        return settingsForm.getItem('CONTROL:GROW_AREA:RES_CAPACITY').getValue();
     }
     return config.defaults.res.capacity;;
 }
@@ -81,13 +77,14 @@ function initComponents() {
         layout = new dhx.Layout("layout_container", json);
         initSideBar();
         initToolBar();
+        initMainContent(navSelected);
     });
     
     envLayout = new dhx.Layout(null, loadJSON('/json/layouts/environment.json'));
     
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
-        initFormEvents(settingsForm, 'SETTING');
+        initSettingsForm(settingsForm) 
     });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
@@ -96,32 +93,21 @@ function initComponents() {
     loadJSONAsync('/json/controls.json', function (json) {
         controlsForm = new dhx.Form(null, json);
         initFormEvents(controlsForm, 'CONTROL');
-        if (navSelected == 'controls') {
-            layout.cell("content_container").attach(controlsForm);
-        }
     });
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
-        if (navSelected == 'sensors') {
-            layout.cell("content_container").attach(sensorsForm);
-        }
     });
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 
+    initNutrientSection(); 
     initDatabaseEvents();
+
 }
 
 function initSettingsForm(settingsForm) {
-    settingsForm.events.on("ButtonClick", function (name) {
-    });
-
-    if (navSelected == 'settings') {
-        layout.cell("content_container").attach(settingsForm);
-    } 
-    initSettingsFormEvents(settingsForm); 
-    initNutrientSection();    
+    initFormEvents(settingsForm, 'SETTING');    
 }
 
 function  stopSchedule() {
@@ -155,27 +141,31 @@ function stopDosingPump(form, command) {
     socket.emit("PUMP:" + name + ":OFF");
 }
 
+function initMainContent(id) {
+    if (id === "schedule") {
+        layout.cell("content_container").attach(scheduler);
+    } else if (id === "environment") {
+        layout.cell("content_container").attach(envLayout);
+    } else if (id === "pumps") {
+        layout.cell("content_container").attach(pumpsForm);
+    } else if (id === "controls") {
+        layout.cell("content_container").attach(controlsForm);
+    } else if (id === "sensors") {
+        layout.cell("content_container").attach(sensorsForm);
+    } else if (id === "dosing") {
+        layout.cell("content_container").attach(nutrientLayout);
+    } else if (id === "settings") {
+        layout.cell("content_container").attach(settingsForm);
+    } else {
+    }    
+}
+
 
 function initSideBar() {
     sidebar = new dhx.Sidebar("sidebar_container", { width: 160, collapsed: true });
     sidebar.data.load('/json/sidebar.json');
     sidebar.events.on("click", function (id) {
-        if (id === "schedule") {
-            layout.cell("content_container").attach(scheduler);
-        } else if (id === "environment") {
-            layout.cell("content_container").attach(envLayout);
-        } else if (id === "pumps") {
-            layout.cell("content_container").attach(pumpsForm);
-        } else if (id === "controls") {
-            layout.cell("content_container").attach(controlsForm);
-        } else if (id === "sensors") {
-            layout.cell("content_container").attach(sensorsForm);
-        } else if (id === "dosing") {
-            layout.cell("content_container").attach(nutrientLayout);
-        } else if (id === "settings") {
-            layout.cell("content_container").attach(settingsForm);
-        } else {
-        }
+        initMainContent(id);
     });
     layout.cell("sidebar_container").attach(sidebar);
 }

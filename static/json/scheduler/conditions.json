@@ -1,0 +1,75 @@
+[
+    {
+       "key": "TEMP:AIR:HIGH",
+       "label": "Current Air Temp >= Configured"
+    },
+    {
+       "key": "TEMP:AIR:LOW",
+       "label": "Current Air Temp <= Configured"
+    },
+    {
+       "key": "TEMP:WATER:HIGH",
+       "label": "Current Water Temp >= Configured"
+    },
+    {
+       "key": "TEMP:WATER:LOW",
+       "label": "Current Water Temp <= Configured"
+    },
+    {
+       "key": "HUMIDITY:AIR:HIGH",
+       "label": "Current Humidity >= Configured"
+    },
+    {
+       "key": "HUMIDITY:AIR:LOW",
+       "label": "Current Humidity <= Configured"
+    },
+    {
+       "key": "PH:WATER:HIGH",
+       "label": "Current pH >= Configured"
+    },
+    {
+       "key": "PH:WATER:LOW",
+       "label": "Current pH <= Configured"
+    },
+    {
+       "key": "EC:WATER:HIGH",
+       "label": "Current E.C. >= Configured"
+    },
+    {
+       "key": "EC:WATER:LOW",
+       "label": "Current E.C. <= Configured"
+    },
+    {
+       "key": "LEVEL:TANK:HIGH:ON",
+       "label": "High Tank water level ON"
+    },
+    {
+       "key": "LEVEL:TANK:HIGH:OFF",
+       "label": "High Tank water level OFF"
+    },
+    {
+       "key": "LEVEL:TANK:LOW:ON",
+       "label": "Low Tank water level ON"
+    },
+    {
+       "key": "LEVEL:TANK:LOW:OFF",
+       "label": "Low Tank water level OFF"
+    },
+    {
+       "key": "LEVEL:RES:HIGH:ON",
+       "label": "High Reservoir water level ON"
+    },
+    {
+       "key": "LEVEL:RES:HIGH:OFF",
+       "label": "High Reservoir water level OFF"
+    },
+    {
+       "key": "LEVEL:RES:LOW:ON",
+       "label": "Low Reservoir water level ON"
+    },
+    {
+       "key": "LEVEL:RES:LOW:OFF",
+       "label": "Low Reservoir water level OFF"
+    }
+
+]

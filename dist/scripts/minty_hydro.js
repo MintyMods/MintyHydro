@@ -1,9 +1,8 @@
 let socket = null;
-let navSelected = 'dosing';
 let layout = null;
 let sidebar = null;
 let toolbar = null;
-let automation = null;
+
 let pumpsForm = null;
 let controlsForm = null;
 let sensorsForm = null;
@@ -28,7 +27,7 @@ function initMintyHydro() {
     initSocket();
     registerEventHandlers();
     initComponents();
-    resetSchedulerLayoutConfig();
+    // resetSchedulerLayoutConfig();
     // showUnderDevelopmentAlt();
 }
 
@@ -71,13 +70,12 @@ const getResCapacity = function () {
 }
 
 function initComponents() {
-    
-    automation = loadJSON('/json/automation.json');
+
     loadJSONAsync('/json/layouts/main.json', function (json) {
         layout = new dhx.Layout("layout_container", json);
         initSideBar();
         initToolBar();
-        initMainContent(navSelected);
+        
     });
     
     envLayout = new dhx.Layout(null, loadJSON('/json/layouts/environment.json'));
@@ -97,13 +95,15 @@ function initComponents() {
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
+        initMainContent('sensors');
     });
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 
+    initScheduler();
     initNutrientSection(); 
     initDatabaseEvents();
-
+    
 }
 
 function initSettingsForm(settingsForm) {
@@ -159,7 +159,6 @@ function initMainContent(id) {
     } else {
     }    
 }
-
 
 function initSideBar() {
     sidebar = new dhx.Sidebar("sidebar_container", { width: 160, collapsed: true });

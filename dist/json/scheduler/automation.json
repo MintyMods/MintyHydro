@@ -1,78 +1,84 @@
 [
    {
-      "key": 0,
+      "key": "__SELECT",
       "color": "#1de9b6",
       "textColor": "#000000",
-      "label": "** Custom Event ** "
+      "label": "Please Select..."
    },
    {
-      "key": 1,
+      "key": "CUSTOM:",
+      "color": "#1de9b6",
+      "textColor": "#000000",
+      "label": "Add Notes:"
+   },
+   {
+      "key": "LIGHT:",
       "color": "#FDFFB8",
       "textColor": "#000000",
       "label": "Grow Light"
    },
    {
-      "key": 2,
+      "key": "FAN:EXTRACT:",
       "color": "#5085FF",
       "textColor": "#FFFFFF",
       "label": "Extract Fan"
    },
    {
-      "key": 3,
+      "key": "FAN:INTAKE:",
       "color": "#BACCF8",
       "textColor": "#000000",
       "label": "Intake Fan"
    },
    {
-      "key": 4,
+      "key": "FAN:OSCILLATING:",
       "color": "#3ADBE3",
       "textColor": "#FFFFFF",
       "label": "Oscillating Fan"
    },
    {
-      "key": 5,
+      "key": "WATER:HEATER:",
       "color": "#FCBBC4",
       "textColor": "#000000",
       "label": "Water Heater"
    },
    {
-      "key": 6,
+      "key": "AIR:HEATER:",
       "color": "#FA0132",
       "textColor": "#FFFFFF",
       "label": "Air Heater"
    },
    {
-      "key": 7,
+      "key": "HUMIDIFIER:",
       "color": "#C501FA",
       "textColor": "#FFFFFF",
       "label": "Humidifier"
    },
    {
-      "key": 8,
+      "key": "DE:HUMIDIFIER:",
       "color": "#FA01AB",
       "textColor": "#000000",
       "label": "De-Humidifier"
    },
    {
-      "key": 9,
+      "key": "AIR:PUMP:",
       "color": "#C1F6FC",
       "textColor": "#000000",
       "label": "Air Pump"
    },
    {
-      "key": 10,
+      "key": "RECIRCULATING:PUMP:",
       "color": "#85B79D",
       "textColor": "#000000",
       "label": "Recirculating Pump"
    },
    {
-      "key": 11,
+      "key": "RES:CHANGE:",
       "color": "#0404FF",
       "textColor": "#FFF704",
       "label": "Reservoir Change"
    },
    {
-      "key": 12,
+      "key": "NUTRIENT:DOSE",
       "color": "#1BFF04",
       "textColor": "#0000FF",
       "label": "Nutrient Dose"

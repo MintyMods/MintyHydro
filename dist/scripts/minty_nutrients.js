@@ -70,7 +70,7 @@ function initNutrientSection() {
             var rows = data.json;
             rows.forEach(element => {
                 let cols = JSON.parse(element.value);
-                if (cols.id) {
+                if (cols.id != undefined) {
                     let keys = Object.keys(cols);
                     for (let i = 0; i < keys.length; i++) {
                         baseNutrientsGrid.data.getItem(cols.id)[keys[i]] = cols[keys[i]];

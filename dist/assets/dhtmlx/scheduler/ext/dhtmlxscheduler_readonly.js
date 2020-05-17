@@ -1,7 +1,7 @@
 /*
 
 @license
-dhtmlxScheduler v.5.3.6 Professional
+dhtmlxScheduler v.5.3.8 Professional
 
 This software is covered by DHTMLX Enterprise License. Usage without proper license is prohibited.
 

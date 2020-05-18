@@ -197,13 +197,7 @@ function getEventTrigger(event) {
     return { resource, trigger, condition, id };
 }
 
-function getEventTypeDesc(event, small) {
-    if (event.automation.condition != null) {
-        return '<br/><i class="fal fa-ballot-check' + (small ? '' : ' fa-2x') + '"></i> <i class="' + getResourceIcon(event) + '"></i>';
-    } else {
-        return '<br/><i class="fal fa-clock' + (small ? '' : ' fa-2x') + '"></i> <i class="' + getResourceIcon(event) + '"></i>';
-    }
-}
+
 
 function getTriggerDesc(trigger) {
     return (trigger.replace('trigger:','').toLowerCase());
@@ -263,32 +257,57 @@ const getEventColor = function (id, event) {
     }
 };
 
+function getEventTypeDesc(event, small) {
+    if (event.automation.condition != null) {
+        return '<br/><div class="fa-stack"><i class="event-icon fal fa-ballot-check' + (small ? '' : ' fa-2x') + '"></i></div>' + getResourceIcon(event);
+    } else {
+        return '<br/><div class="fa-stack"><i class="event-icon fal fa-clock' + (small ? '' : ' fa-2x') + '"></i></div>' + getResourceIcon(event);
+    }
+}
+
 function getResourceIcon(event) {
     let resource = event['RESOURCE:'];
     let trigger = (event.automation) ? event.automation.trigger : event[resource];
     let off = (trigger == 'trigger:off' || trigger == 'off' || trigger == '');
+    let icon = '';
     switch (resource) {
         case 'CUSTOM:' : 
-            return 'fa-2x fal fa-clipboard ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-clipboard ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'LIGHT:' : 
-            return 'fa-2x fal fa-lightbulb-on ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal ' + (off ? 'fa-lightbulb fa-stack-1x' : 'fa-lightbulb-on fa-beat');
+            break;
         case 'FAN:EXTRACT:' : 
-            return 'fa-2x fal fa-fan ' + (off ? '' : 'fa-spin');
+            icon = 'event-icon fa-2x fal fa-fan ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            break;
         case 'FAN:INTAKE:' : 
-            return 'fa-2x fal fa-hurricane ' + (off ? '' : 'fa-spin');
+            icon = 'event-icon fa-2x fal fa-hurricane ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            break;
         case 'FAN:OSCILLATING:' : 
-            return 'fa-2x fal fa-fan-table ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-fan-table ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'WATER:HEATER:' : 
-            return 'fa-2x fal fa-water ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-water ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'AIR:HEATER:' : 
-            return 'fa-2x fal fa-heat ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-heat ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'HUMIDIFIER:' : 
-            return 'fa-2x fal fa-tint ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-tint ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'DE:HUMIDIFIER:' : 
-            return 'fa-2x fal fa-tint-slash ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-tint-slash ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'AIR:PUMP:' : 
-            return 'fa-2x fal fa-wind ' + (off ? '' : 'fa-beat');
+            icon = 'event-icon fa-2x fal fa-wind ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            break;
         case 'RECIRCULATING:PUMP:' : 
-            return 'fa-2x fal fa-cog ' + (off ? '' : 'fa-spin');
+            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
     }
+    if (off) {
+        icon = '<div class="fa-stack"><i class="' + icon + '"></i><i class="event-icon-ban fas fa-slash fa-stack-2x fa-1x"></i></div>';
+    } else {
+        icon = '<div class="fa-stack"><i class="' + icon + '"></i></div>';
+    }
+    return icon;
 }

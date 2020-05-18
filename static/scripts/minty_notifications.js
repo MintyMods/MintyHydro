@@ -62,10 +62,12 @@ function showMsg(type, title, text, icon) {
             PNotify.info(wrapper);
             break;
         case "success":
+        case "ok":
             wrapper.icon = icon || "fas fa-question-circle fa-1x";
             PNotify.success(wrapper);
             break;
         case "warning":
+        case "warn":
             wrapper.icon = icon || "far fa-exclamation-circle fa-1x";
             PNotify.notice(wrapper);
             break;
@@ -74,6 +76,7 @@ function showMsg(type, title, text, icon) {
             PNotify.error(wrapper);
             break;
         case "confirmation":
+        case "confirm":
             wrapper.addClass += " minty-confirmation";
             wrapper.icon = icon || "fas raspberry-pi fa-1x fa-spin";
             PNotify.success(wrapper);

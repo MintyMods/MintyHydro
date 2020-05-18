@@ -9,8 +9,8 @@ function initScheduler() {
     scheduler.config.multi_day = true;
     scheduler.config.prevent_cache = true;
     scheduler.locale.labels.timeline_tab = "Schedule";
-    // scheduler.locale.labels.unit_tab = "Events";
-    // scheduler.locale.labels.week_agenda_tab = "Agenda";
+    scheduler.locale.labels.unit_tab = "Events";
+    scheduler.locale.labels.week_agenda_tab = "Agenda";
     scheduler.config.details_on_create = true;
     scheduler.config.details_on_dblclick = true;
     scheduler.config.include_end_by = true;
@@ -19,25 +19,25 @@ function initScheduler() {
     // scheduler.config.wide_form = false;
    // scheduler.config.update_render = true;
 
-    // scheduler.createUnitsView({
-    //     name: "unit",
-    //     property: "label",
-    //     list: automation
-    // });
+    scheduler.createUnitsView({
+        name: "unit",
+        property: "label",
+        list: automation
+    });
 
-    // scheduler.createTimelineView({
-    //     name: "timeline",
-    //     x_unit: "minute",
-    //     x_date: "%H:%i",
-    //     x_step: 60,
-    //     x_size: 24,
-    //     x_start: 0,
-    //     render: "days",
-    //     days: 63
-    //     // ,
-    //     // y_unit: automation,
-    //     // y_property: "section_id"
-    // });
+    scheduler.createTimelineView({
+        name: "timeline",
+        x_unit: "minute",
+        x_date: "%H:%i",
+        x_step: 60,
+        x_size: 24,
+        x_start: 0,
+        render: "days",
+        days: 63
+        // ,
+        // y_unit: automation,
+        // y_property: "section_id"
+    });
 
     scheduler.config.lightbox.sections = [
         { name:"Resource", tag:"RESOURCE:", type: "select", map_to: "RESOURCE:", options: automation, onchange:hideLightBoxControls },
@@ -57,34 +57,62 @@ function initScheduler() {
         { name:"Time", tag:"_TIME", type: "calendar_time", map_to: "time" }
     ];
 
-
     scheduler.attachEvent("onLightbox", function (id){
+        var event = scheduler.getEvent(id);
         let sections = document.getElementsByClassName("dhx_wrap_section");
+        let resource = event['RESOURCE:'];
+        let conditional = event[resource] && event[resource].startsWith('trigger:');
+
         for (let i = 1; i < sections.length-1; i++) {
             let section = sections[i];
-            section.style.display='none';
+            let title = sections[i].childNodes[0].innerText;
+            let current = getTriggerIdFromTitle(title);
+            if (resource == current) {
+                section.style.display='inline';
+            } else if (conditional && current == 'TRIGGER:') {
+                section.style.display='inline';
+            } else {
+                section.style.display='none';
+            }
         }
-        return true;
+        scheduler.updateEvent(id);
     });
 
-    scheduler.attachEvent("onEventAdded", function(id, event){
+    scheduler.attachEvent("onEventSave",function(id,event,is_new){
+        let resource = event['RESOURCE:'];
+        if (resource == '__SELECT') {
+            showMsg('warn', 'Missing Resource', 'Please select a resource to schedule','fal fa-exclamation-triangle fa-2x');
+            return false;
+        } else if (resource == 'CUSTOM:' && event['CUSTOM:'] == '') {
+            showMsg('warn', 'Missing Notes', 'Please enter some text for the notes','fal fa-exclamation-triangle fa-2x');
+            return false;
+        } else if (event[resource] == '') {
+            showMsg('warn', 'Missing Action', 'Select the schedule action - timed / event ', getResourceIcon(event));
+            return false;                      
+        } 
+        if (event[resource].startsWith('trigger:') &&  event['TRIGGER:'] == '__SELECT') {  
+            showMsg('warn', 'Missing Condition', 'Select a condition trigger to apply to the schedule', getResourceIcon(event));
+            return false;
+        }
         event.automation = getEventTrigger(event);
-        let type = getAutomation(event);
-        let color = getEventColor(event.id, event);
-        
         return true;
     });
     
-    scheduler.templates.week_agenda_event_text = function (start_date, end_date, event, date, position) {
+    scheduler.attachEvent("onEventAdded", function(id, event){
+        event.automation = getEventTrigger(event);
+        return true;
+    });
+    
+    scheduler.templates.week_agenda_event_text = function (start, end, event, date, position) {
         switch (position) {
             case "middle":
-                return "-- " + getEventTypeDesc(event) + event.text;
+                return getEventTextSmall(start, end, event);
             case "end":
-                return "End: " + getEventTypeDesc(event) + scheduler.templates.event_date(start_date) + " " + event.text;
+                return getEventTextSmall(start, end, event);
             case "start":
-                return "Start: " + getEventTypeDesc(event) + scheduler.templates.event_date(start_date) + " " + event.text;
+                return getEventTextSmall(start, end, event);
             default:
-                return  + getEventTypeDesc(event) + scheduler.templates.event_date(start_date) + " " + event.text;
+                return  + getEventTypeDesc(event) + scheduler.templates.event_date(start) + " " + event.text;
         }
     };
 
@@ -103,19 +131,21 @@ function initScheduler() {
 }
 
 const ON_OFF = [
-    { key: "off", label: 'Off : Scheduled' },
-    { key: "on", label: 'On : Scheduled' },
-    { key: "trigger:off", label: 'Off : Conditional' },
-    { key: "trigger:on", label: 'On : Conditional' },
+    { key: "", label: 'Select Action...' },
+    { key: "off", label: 'Switch Off' },
+    { key: "on", label: 'Switch On' },
+    { key: "trigger:off", label: 'Conditional Off' },
+    { key: "trigger:on", label: 'Conditional On' },
 ];
 
 const HIGH_LOW_OFF = [
-    { key: "off", label: 'Off : Scheduled' },
-    { key: "low", label: 'Low : Scheduled' },
-    { key: "high", label: 'High : Scheduled' },
-    { key: "trigger:off", label: 'Off : Conditional' },
-    { key: "trigger:low", label: 'Low : Conditional' },
-    { key: "trigger:high", label: 'High : Conditional' },
+    { key: "", label: 'Select Action...' },
+    { key: "off", label: 'Switch Off' },
+    { key: "low", label: 'Switch On Low' },
+    { key: "high", label: 'Switch On High' },
+    { key: "trigger:off", label: 'Conditional Off' },
+    { key: "trigger:low", label: 'Conditional Low' },
+    { key: "trigger:high", label: 'Conditional High' },
 ];
 
 function checkTriggerEnabled(event){
@@ -167,53 +197,54 @@ function getEventTrigger(event) {
     return { resource, trigger, condition, id };
 }
 
-function getEventTypeDesc(event) {
-    let trigger = event['TRIGGER:'];
+function getEventTypeDesc(event, small) {
     if (event.automation.condition != null) {
-        return '<br/>[Conditional=' + trigger +  '] <br/><i class="fal fa-ballot-check fa-2x"></i> <i class="fa-2x fa-beat ' + getResourceIcon(event) + '"></i>';
+        return '<br/><i class="fal fa-ballot-check' + (small ? '' : ' fa-2x') + '"></i> <i class="' + getResourceIcon(event) + '"></i>';
     } else {
-        return '<br/><i class="fal fa-clock fa-2x"></i> <i class="fa-2x fa-beat ' + getResourceIcon(event) + '"></i>';
+        return '<br/><i class="fal fa-clock' + (small ? '' : ' fa-2x') + '"></i> <i class="' + getResourceIcon(event) + '"></i>';
     }
 }
 
-function getResourceIcon(event) {
-    let resource = event['RESOURCE:'];
-    let condition = event.automation.condition;
-    let trigger = event.automation.trigger;
-    switch(resource) {
-        case 'CUSTOM:' : 
-        return 'fal fa-clipboard';
-        case 'LIGHT:' : 
-        return 'fal fa-lightbulb-on';
-        case 'FAN:EXTRACT:' : 
-        return 'fal fa-fan';
-        case 'FAN:INTAKE:' : 
-        return 'fal fa-hurricane';
-        case 'FAN:OSCILLATING:' : 
-        return 'fal fa-fan-table';
-        case 'WATER:HEATER:' : 
-        return 'fal fa-water';
-        case 'AIR:HEATER:' : 
-        return 'fal fa-heat';
-        case 'HUMIDIFIER:' : 
-        return 'fal fa-tint';
-        case 'DE:HUMIDIFIER:' : 
-        return 'fal fa-tint-slash';
-        case 'AIR:PUMP:' : 
-        return 'fal fa-wind';
-        case 'RECIRCULATING:PUMP:' : 
-        return 'fal fa-cog'; 
-    }
+function getTriggerDesc(trigger) {
+    return (trigger.replace('trigger:','').toLowerCase());
 }
+
+function getConditionDesc(action) {
+    let desc;
+    conditions.forEach(condition => {
+        if (condition.key == action) {
+            desc = ' if ' + condition.label + '.';
+        }
+    });
+    return desc.toLowerCase();
+}
+
+const getEventTextSmall = function (start, end, event) {
+    let type = getAutomation(event);
+    if (type) {
+        let action = event['TRIGGER:'];
+        let resource = event['RESOURCE:'];
+        let trigger = event[resource];
+        if (event.automation.condition != null) {
+            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getConditionDesc(action);
+        } else {
+            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger);
+        }
+    } else {
+        return "New Schedule";
+    }
+};
 
 const getEventText = function (start, end, event) {
     let type = getAutomation(event);
-    currentEvent = event;
     if (type) {
-        if (event.text == "New event") {
-            return '<b>' + type.label + '</b>' + getEventTypeDesc(event);
+        let action = event['TRIGGER:'];
+        let resource = event['RESOURCE:'];
+        let trigger = event[resource];
+        if (event.automation.condition != null) {
+            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getConditionDesc(action) + getEventTypeDesc(event);
         } else {
-            return '<b>' + event.text + '</b>' + getEventTypeDesc(event);
+            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getEventTypeDesc(event);
         }
     } else {
         return "New Schedule";
@@ -231,3 +262,33 @@ const getEventColor = function (id, event) {
         }
     }
 };
+
+function getResourceIcon(event) {
+    let resource = event['RESOURCE:'];
+    let trigger = (event.automation) ? event.automation.trigger : event[resource];
+    let off = (trigger == 'trigger:off' || trigger == 'off' || trigger == '');
+    switch (resource) {
+        case 'CUSTOM:' : 
+            return 'fa-2x fal fa-clipboard ' + (off ? '' : 'fa-beat');
+        case 'LIGHT:' : 
+            return 'fa-2x fal fa-lightbulb-on ' + (off ? '' : 'fa-beat');
+        case 'FAN:EXTRACT:' : 
+            return 'fa-2x fal fa-fan ' + (off ? '' : 'fa-spin');
+        case 'FAN:INTAKE:' : 
+            return 'fa-2x fal fa-hurricane ' + (off ? '' : 'fa-spin');
+        case 'FAN:OSCILLATING:' : 
+            return 'fa-2x fal fa-fan-table ' + (off ? '' : 'fa-beat');
+        case 'WATER:HEATER:' : 
+            return 'fa-2x fal fa-water ' + (off ? '' : 'fa-beat');
+        case 'AIR:HEATER:' : 
+            return 'fa-2x fal fa-heat ' + (off ? '' : 'fa-beat');
+        case 'HUMIDIFIER:' : 
+            return 'fa-2x fal fa-tint ' + (off ? '' : 'fa-beat');
+        case 'DE:HUMIDIFIER:' : 
+            return 'fa-2x fal fa-tint-slash ' + (off ? '' : 'fa-beat');
+        case 'AIR:PUMP:' : 
+            return 'fa-2x fal fa-wind ' + (off ? '' : 'fa-beat');
+        case 'RECIRCULATING:PUMP:' : 
+            return 'fa-2x fal fa-cog ' + (off ? '' : 'fa-spin');
+    }
+}

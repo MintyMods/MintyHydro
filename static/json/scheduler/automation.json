@@ -3,7 +3,7 @@
       "key": "__SELECT",
       "color": "#1de9b6",
       "textColor": "#000000",
-      "label": "Please Select..."
+      "label": "Select Resource..."
    },
    {
       "key": "CUSTOM:",

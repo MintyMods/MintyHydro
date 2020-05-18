@@ -99,7 +99,7 @@ function showMissingMintyHydroHubError(reason) {
     if (window.permanotice) {
         //window.permanotice.open();
     } else {
-        window.permanotice = PNotify.notice({
+        window.permanotice = PNotify.error({
             title: 'Offline Mode',
             text: 'Minty Hydro Hub Not Connected',
             hide: false,

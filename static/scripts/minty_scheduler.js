@@ -1,9 +1,31 @@
 let automation = null;
 let conditions = null;
+let nutrients = null;
+
+const EXCLUDED_SECTIONS = 1;
+
+const ON_OFF = [
+    { key: "", label: 'Select Action...' },
+    { key: "off", label: 'Switch Off' },
+    { key: "on", label: 'Switch On' },
+    { key: "trigger:off", label: 'Conditional Off' },
+    { key: "trigger:on", label: 'Conditional On' },
+];
+
+const HIGH_LOW_OFF = [
+    { key: "", label: 'Select Action...' },
+    { key: "off", label: 'Switch Off' },
+    { key: "low", label: 'Switch On Low' },
+    { key: "high", label: 'Switch On High' },
+    { key: "trigger:off", label: 'Conditional Off' },
+    { key: "trigger:low", label: 'Conditional Low' },
+    { key: "trigger:high", label: 'Conditional High' },
+];
 
 function initScheduler() {
     automation = loadJSON('/json/scheduler/automation.json');
     conditions = loadJSON('/json/scheduler/conditions.json');
+    nutrients = loadJSON('/json/nutrients/nutrients.json');
 
     scheduler.config.responsive_lightbox = true;
     scheduler.config.multi_day = true;
@@ -13,9 +35,11 @@ function initScheduler() {
     scheduler.locale.labels.week_agenda_tab = "Agenda";
     scheduler.config.details_on_create = true;
     scheduler.config.details_on_dblclick = true;
-    scheduler.config.include_end_by = true;
-    scheduler.config.repeat_precise = true;
-    scheduler.config.mark_now = true;
+
+    // scheduler.config.repeat_precise = true;
+    // scheduler.config.mark_now = true;
+    // scheduler.config.repeat_date = "%m/%d/%Y";
+    // scheduler.config.include_end_by = true;
     // scheduler.config.wide_form = false;
    // scheduler.config.update_render = true;
 
@@ -45,15 +69,19 @@ function initScheduler() {
         { name:"Light", tag:"LIGHT:", options:ON_OFF, map_to:"LIGHT:", type:"select", onchange:checkTriggerEnabled },
         { name:"Extract Fan", tag:"FAN:EXTRACT:", options:ON_OFF, map_to:"FAN:EXTRACT:", type:"select", onchange:checkTriggerEnabled },
         { name:"Intake Fan", tag:"FAN:INTAKE:", options:HIGH_LOW_OFF, map_to:"FAN:INTAKE:", type:"select", onchange:checkTriggerEnabled  },
-        { name:"Oscillating Fans", tag:"FAN:OSCILLATING:", options:ON_OFF, map_to:"FAN:OSCILLATING:", type:"select", onchange:checkTriggerEnabled  },
+        { name:"Std Fans", tag:"FAN:OSCILLATING:", options:ON_OFF, map_to:"FAN:OSCILLATING:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Water Heater", tag:"WATER:HEATER:", options:ON_OFF,  map_to:"WATER:HEATER:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Air Heater", tag:"AIR:HEATER:", options:ON_OFF,  map_to:"AIR:HEATER:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Humidifier", tag:"HUMIDIFIER:", options:HIGH_LOW_OFF, map_to:"HUMIDIFIER:", type:"select", onchange:checkTriggerEnabled  },
         { name:"De-Humidifier", tag:"DE:HUMIDIFIER:", options:ON_OFF, map_to:"DE:HUMIDIFIER:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Air Pump", tag:"AIR:PUMP:", options:ON_OFF, map_to:"AIR:PUMP:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Recirculating Pump", tag:"RECIRCULATING:PUMP:", options:ON_OFF, map_to:"RECIRCULATING:PUMP:", type:"select", onchange:checkTriggerEnabled  },
+        { name:"Fill Pump", tag:"FILL:PUMP:", options:ON_OFF, map_to:"FILL:PUMP:", type:"select", onchange:checkTriggerEnabled  },
+        { name:"Drain Pump", tag:"DRAIN:PUMP:", options:ON_OFF, map_to:"DRAIN:PUMP:", type:"select", onchange:checkTriggerEnabled  },
+        { name:"Drip Feed Pump", tag:"DRIP:PUMP:", options:ON_OFF, map_to:"DRIP:PUMP:", type:"select", onchange:checkTriggerEnabled  },
+        { name:"Nutrient", tag:"NUTRIENT:DOSE:", options:nutrients, map_to:"NUTRIENT:DOSE:", type:"select", onchange:checkTriggerEnabled  },
         { name:"Condition", tag:"TRIGGER:", type: "select", map_to: "TRIGGER:", options: conditions, onchange:getEventConditions },
-        // { name:"Recurring", tag:"RECURRING:", height: 115, type: "recurring", map_to: "auto", button: "recurring" },
+       // { name:"recurring",  type:"recurring", map_to:"rec_type",  button:"recurring"},
         { name:"Time", tag:"_TIME", type: "calendar_time", map_to: "time" }
     ];
 
@@ -63,11 +91,13 @@ function initScheduler() {
         let resource = event['RESOURCE:'];
         let conditional = event[resource] && event[resource].startsWith('trigger:');
 
-        for (let i = 1; i < sections.length-1; i++) {
+        for (let i = 1; i < (sections.length - EXCLUDED_SECTIONS); i++) {
             let section = sections[i];
             let title = sections[i].childNodes[0].innerText;
             let current = getTriggerIdFromTitle(title);
             if (resource == current) {
+                section.style.display='inline';
+            } else if (resource =='Condition'||resource =='recurring'||resource =='Time') {
                 section.style.display='inline';
             } else if (conditional && current == 'TRIGGER:') {
                 section.style.display='inline';
@@ -79,6 +109,7 @@ function initScheduler() {
     });
 
     scheduler.attachEvent("onEventSave",function(id,event,is_new){
+        event.automation = getEventTrigger(event);
         let resource = event['RESOURCE:'];
         if (resource == '__SELECT') {
             showMsg('warn', 'Missing Resource', 'Please select a resource to schedule','fal fa-exclamation-triangle fa-2x');
@@ -90,11 +121,10 @@ function initScheduler() {
             showMsg('warn', 'Missing Action', 'Select the schedule action - timed / event ', getResourceIcon(event));
             return false;                      
         } 
-        if (event[resource].startsWith('trigger:') &&  event['TRIGGER:'] == '__SELECT') {  
+        if ((event[resource].startsWith('trigger:') || resource == 'NUTRIENT:DOSE:') &&  event['TRIGGER:'] == '__SELECT') {  
             showMsg('warn', 'Missing Condition', 'Select a condition trigger to apply to the schedule', getResourceIcon(event));
             return false;
         }
-        event.automation = getEventTrigger(event);
         return true;
     });
     
@@ -130,28 +160,12 @@ function initScheduler() {
     });
 }
 
-const ON_OFF = [
-    { key: "", label: 'Select Action...' },
-    { key: "off", label: 'Switch Off' },
-    { key: "on", label: 'Switch On' },
-    { key: "trigger:off", label: 'Conditional Off' },
-    { key: "trigger:on", label: 'Conditional On' },
-];
-
-const HIGH_LOW_OFF = [
-    { key: "", label: 'Select Action...' },
-    { key: "off", label: 'Switch Off' },
-    { key: "low", label: 'Switch On Low' },
-    { key: "high", label: 'Switch On High' },
-    { key: "trigger:off", label: 'Conditional Off' },
-    { key: "trigger:low", label: 'Conditional Low' },
-    { key: "trigger:high", label: 'Conditional High' },
-];
 
 function checkTriggerEnabled(event){
     var e = event || window.event, node = this;
     let sections = document.getElementsByClassName("dhx_wrap_section");
-    sections[sections.length - 2].style.display= (node.value.startsWith('trigger:')) ? 'inline' : 'none';
+    let show = node.value.startsWith('trigger:') || (node.value.indexOf('- (Pump ') != -1);
+    sections[sections.length - (EXCLUDED_SECTIONS + 1)].style.display= (show) ? 'inline' : 'none';
 }
 
 function getTriggerIdFromTitle(title) {
@@ -166,7 +180,7 @@ function getTriggerIdFromTitle(title) {
 function hideLightBoxControls(event) {
     let selected = event.currentTarget.value;
     let sections = document.getElementsByClassName("dhx_wrap_section");
-    for (let i = 1; i < sections.length-1; i++) {
+    for (let i = 1; i < (sections.length - EXCLUDED_SECTIONS); i++) {
         let section = sections[i].childNodes[0].innerText;
         section = getTriggerIdFromTitle(section);
         sections[i].style.display= (section == selected) ? 'inline' : 'none';
@@ -200,7 +214,12 @@ function getEventTrigger(event) {
 
 
 function getTriggerDesc(trigger) {
-    return (trigger.replace('trigger:','').toLowerCase());
+    let text = trigger.replace('trigger:','');
+    if (text == 'low' || text == 'high') {
+        return 'on ' + text;
+    } else {
+        return text;
+    }
 }
 
 function getConditionDesc(action) {
@@ -219,14 +238,16 @@ const getEventTextSmall = function (start, end, event) {
         let action = event['TRIGGER:'];
         let resource = event['RESOURCE:'];
         let trigger = event[resource];
-        if (event.automation.condition != null) {
-            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getConditionDesc(action);
+        if (resource == "CUSTOM:") {
+            return trigger;
+        } else if (event.automation.condition != null) {
+            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + 
+            getTriggerDesc(trigger).toLowerCase() + getConditionDesc(action);
         } else {
-            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger);
+            return getEventTypeDesc(event, true) + " Switch " + type.label.toLowerCase() + ' ' + 
+            getTriggerDesc(trigger).toLowerCase();
         }
-    } else {
-        return "New Schedule";
-    }
+    } 
 };
 
 const getEventText = function (start, end, event) {
@@ -235,13 +256,20 @@ const getEventText = function (start, end, event) {
         let action = event['TRIGGER:'];
         let resource = event['RESOURCE:'];
         let trigger = event[resource];
-        if (event.automation.condition != null) {
-            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getConditionDesc(action) + getEventTypeDesc(event);
+        if (resource == "CUSTOM:") {
+            return trigger;
+        } else if (resource == "NUTRIENT:DOSE:") {
+            return "Run " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) +
+             getConditionDesc(action) + getEventTypeDesc(event);
+        } else if (event.automation.condition != null) {
+            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger).toLowerCase()
+             + getConditionDesc(action) + getEventTypeDesc(event);
         } else {
-            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger) + getEventTypeDesc(event);
+            return "Switch " + type.label.toLowerCase() + ' ' + getTriggerDesc(trigger).toLowerCase()
+             + getEventTypeDesc(event);
         }
     } else {
-        return "New Schedule";
+        return "Create New Schedule";
     }
 };
 
@@ -303,6 +331,19 @@ function getResourceIcon(event) {
             break;
         case 'RECIRCULATING:PUMP:' : 
             icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            break;
+        case 'FILL:PUMP:' : 
+            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            break;
+        case 'DRAIN:PUMP:' : 
+            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            break;
+        case 'DRIP:PUMP:' : 
+            icon = 'event-icon fa-2x fal ' + (off ? 'fa-stack-1x fa-faucet' : ' fa-faucet-drip fa-beat');
+            break;
+        case 'NUTRIENT:DOSE:' : 
+            icon = 'event-icon fa-2x fal ' + (off ? 'fa-stack-1x fa-faucet' : ' fa-faucet-drip fa-beat');
+            break;
     }
     if (off) {
         icon = '<div class="fa-stack"><i class="' + icon + '"></i><i class="event-icon-ban fas fa-slash fa-stack-2x fa-1x"></i></div>';

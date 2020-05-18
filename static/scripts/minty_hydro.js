@@ -157,7 +157,8 @@ function initMainContent(id) {
     } else if (id === "settings") {
         layout.cell("content_container").attach(settingsForm);
     } else {
-    }    
+        layout.cell("content_container").attachHtml(orignalHtml);
+    }
 }
 
 function initSideBar() {
@@ -181,24 +182,3 @@ function initToolBar() {
     });
     layout.cell("toolbar_container").attach(toolbar);
 }
-
-function showContent(id) {
-    if (id === "schedule") {
-        layout.cell("content_container").attach(scheduler);
-    } else if (id === "environment") {
-        layout.cell("content_container").attach(envLayout);
-    } else if (id === "pumps") {
-        layout.cell("content_container").attach(pumpsForm);
-    } else if (id === "controls") {
-        layout.cell("content_container").attach(controlsForm);
-    } else if (id === "sensors") {
-        layout.cell("content_container").attach(sensorsForm);
-    } else if (id === "dosing") {
-        layout.cell("content_container").attach(nutrientLayout);
-    } else if (id === "settings") {
-        layout.cell("content_container").attach(settingsForm);
-    } else {
-        layout.cell("content_container").attachHtml(orignalHtml);
-    }
-}
-

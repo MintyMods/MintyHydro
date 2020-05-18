@@ -24,9 +24,15 @@
     padding:0px !important; */
  } 
 
- .dhx_cal_ltext select {
-    width: 300px !important;
+ /* .dhx_cal_ltext select {
+    width: 200px !important;
 }
+
+.dhx_cal_light .dhx_wrap_section .dhx_cal_lsection {
+    width: 90px !important;
+    min-height:unset !important;
+} */
+
 
 .fa-beat {
     animation:fa-beat 1s ease infinite;
@@ -46,7 +52,7 @@
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    padding:2px;
+    padding:5px;
   }
   .event-icon-ban {
     display: inline-block;
@@ -54,7 +60,11 @@
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    padding:2px;
-    color:tomato;
+    padding:5px;
+    color:white;
     opacity: 70%;
+    font-weight: 900;
+    -webkit-text-fill-color: tomato; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
   }
+

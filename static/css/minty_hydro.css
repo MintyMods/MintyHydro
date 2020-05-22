@@ -68,3 +68,61 @@
     -webkit-text-stroke-width: 1px;
   }
 
+/* just the line */
+.sparkline {
+  stroke: red;
+  fill: none;
+}
+
+/* line with highlight area */
+.sparkline {
+  stroke: red;
+  fill: rgba(255, 0, 0, .3);
+}
+
+/* change the spot color */
+.sparkline--spot {
+  stroke: blue;
+  fill: blue;
+}
+
+/* change the cursor color */
+.sparkline--cursor {
+  stroke: orange;
+}
+
+/* style fill area and line colors using specific class name */
+/* .sparkline--fill {
+  fill: rgba(255, 0, 0, .3);
+}
+
+.sparkline--line {
+  stroke: red;
+} */
+.sparkdiv {
+  border:1px dashed greenyellow;
+}
+.chart-ph {
+  stroke: blue;
+  fill: rgba(187, 255, 0, 0.3);
+}
+.chart-ec {
+  stroke: blue;
+  fill: rgba(255, 196, 0, 0.3);
+}
+.chart-air-temp {
+  stroke: blue;
+  fill: rgba(14, 194, 211, 0.3);
+}
+.chart-water-temp {
+  stroke: blue;
+  fill: rgba(27, 14, 211, 0.3);
+}
+.chart-humidity {
+  stroke: blue;
+  fill: rgba(0, 255, 34, 0.3);
+}
+.chart-wattage {
+  stroke: blue;
+  fill: rgba(255, 0, 170, 0.3);
+}

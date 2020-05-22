@@ -1,6 +1,6 @@
 const config = require('./MintyConfig');
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('database/MintyHydro.datasource');
+var db = new sqlite3.Database('./database/MintyHydro.datasource');
 
 const DB_COMMAND = 'DB:COMMAND';
 const DB_RESULT = 'DB:RESULT';
@@ -47,6 +47,9 @@ const MintyDataSource = {
                     break;
                 case 'JSON:ALL' :
                     this.allJSON(opts);
+                    break;
+                case 'SAVE:EVENT' :
+                    this.saveEvent(opts);
                     break;
             }
         }.bind(this));
@@ -109,6 +112,40 @@ const MintyDataSource = {
         }.bind(this));
     },
 
+    saveEvent : function(opts, callback) {
+        let event = opts.event;
+        opts.command = 'SAVE:EVENT';
+        db.serialize(function() {
+            let stmt = db.prepare("INSERT INTO MH_EVENT VALUES (?,?,?,?,?,?,?,?,?)");
+            stmt.run(event.id, event.start_date, event.end_date,
+                     event.desc,event.textColor, event.color, event.automation.resource, 
+                     event.automation.trigger, event.automation.condition,  
+                     function(err, row) {
+                stmt.finalize();
+                if (err == null) {
+                    if (callback) callback(opts);
+                } else {
+                    db.serialize(function() {
+                        let sql = "UPDATE MH_EVENT SET start_date = ?, end_date = ?,";
+                        sql += " desc = ?, textColor = ?, color = ?, ";
+                        sql += " resource = ?, trigger = ?, condition = ? ";
+                        sql += " WHERE id = ?";
+                        stmt = db.prepare(sql);
+                        stmt.run(event.start_date, 
+                                event.end_date,
+                                event.desc, event.textColor, event.color,
+                                event.automation.resource, 
+                                event.automation.trigger,
+                                event.automation.condition, 
+                                event.id);
+                        stmt.finalize();
+                        if (callback) callback(opts);
+                    }.bind(this));
+                }
+            }.bind(this));
+        }.bind(this));
+    },
+
     update : function(opts, callback) {
         opts.command = 'UPDATE';
         db.serialize(function() {
@@ -146,7 +183,7 @@ const MintyDataSource = {
     all : function(opts, callback) {
         opts.command = 'ALL';
         db.serialize(function() {
-            db.all('SELECT name, value FROM MH_' + opts.table, function(err, rows) {
+            db.all('SELECT * FROM MH_' + opts.table, function(err, rows) {
                 opts.rows = rows;
                 if (err == null) {
                     this.io.socketEmit(DB_RESULT, opts);
@@ -172,6 +209,22 @@ const MintyDataSource = {
         this.createSettingTable();      
         this.createPumpTable();      
         this.createNutrientTable();      
+        this.createSchedulerEventsTable();
+    },
+
+    createSchedulerEventsTable() {
+        var sql = "CREATE TABLE IF NOT EXISTS MH_EVENT (";
+        sql += " id INTEGER PRIMARY KEY,";
+        sql += " start_date datetime NOT NULL,";
+        sql += " end_date datetime,";
+        sql += " desc TEXT,";
+        sql += " textColor TEXT,";
+        sql += " color TEXT,";
+        sql += " resource TEXT NOT NULL,";
+        sql += " trigger TEXT NOT NULL,";
+        sql += " condition TEXT";
+        sql += ")";
+        db.run(sql);
     },
 
     createControlsTable() {

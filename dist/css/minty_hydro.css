@@ -24,6 +24,103 @@
     padding:0px !important; */
  } 
 
- .dhx_cal_ltext select {
-    width: 300px !important;
+ /* .dhx_cal_ltext select {
+    width: 200px !important;
+}
+
+.dhx_cal_light .dhx_wrap_section .dhx_cal_lsection {
+    width: 90px !important;
+    min-height:unset !important;
+} */
+
+
+.fa-beat {
+    animation:fa-beat 1s ease infinite;
+  }
+  @keyframes fa-beat {
+    0% {
+      transform:scale(1);
+    }
+    50% {
+        transform:scale(1.25);
+    }
+  }
+  
+  .event-icon {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    padding:5px;
+  }
+  .event-icon-ban {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    padding:5px;
+    color:white;
+    opacity: 70%;
+    font-weight: 900;
+    -webkit-text-fill-color: tomato; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+  }
+
+/* just the line */
+.sparkline {
+  stroke: red;
+  fill: none;
+}
+
+/* line with highlight area */
+.sparkline {
+  stroke: red;
+  fill: rgba(255, 0, 0, .3);
+}
+
+/* change the spot color */
+.sparkline--spot {
+  stroke: blue;
+  fill: blue;
+}
+
+/* change the cursor color */
+.sparkline--cursor {
+  stroke: orange;
+}
+
+/* style fill area and line colors using specific class name */
+/* .sparkline--fill {
+  fill: rgba(255, 0, 0, .3);
+}
+
+.sparkline--line {
+  stroke: red;
+} */
+
+.chart-ph {
+  stroke: blue;
+  fill: rgba(187, 255, 0, 0.3);
+}
+.chart-ec {
+  stroke: blue;
+  fill: rgba(255, 196, 0, 0.3);
+}
+.chart-air-temp {
+  stroke: blue;
+  fill: rgba(14, 194, 211, 0.3);
+}
+.chart-water-temp {
+  stroke: blue;
+  fill: rgba(27, 14, 211, 0.3);
+}
+.chart-humidity {
+  stroke: blue;
+  fill: rgba(0, 255, 34, 0.3);
+}
+.chart-wattage {
+  stroke: blue;
+  fill: rgba(255, 0, 170, 0.3);
 }

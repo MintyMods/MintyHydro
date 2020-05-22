@@ -16,6 +16,7 @@
   "author": "Rob Gregory [Minty]",
   "license": "MIT",
   "dependencies": {
+    "@fnando/sparkline": "^0.3.10",
     "copy-webpack-plugin": "^5.1.1",
     "encoder7bit": "^1.0.0",
     "express": "^4.17.1",

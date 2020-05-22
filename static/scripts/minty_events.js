@@ -1,4 +1,12 @@
 
+function saveSchedulerEvent(event) {
+    socket.emit("DB:COMMAND", { event, 'command':'SAVE:EVENT', 'table':'EVENTS' });
+}
+
+function loadSchedulerEvents() {
+    socket.emit("DB:COMMAND", { 'command':'ALL', 'table':'EVENT' });
+}
+
 function initFormEvents(form, table) {
     form.events.on("Change", function (name, value) {
         socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', table });
@@ -33,6 +41,8 @@ function initDatabaseEvents() {
             processFormEvents(controlsForm, data);
         } else if (data.table == 'NUTRIENT') {
             processFormEvents(nutrientAdjustForm, data);
+        } else if (data.table == 'EVENT') {
+            processSchedulerEvents(data);
         }           
     });     
 }

@@ -27,8 +27,18 @@ function initMintyHydro() {
     initSocket();
     registerEventHandlers();
     initComponents();
+    setTimeout(initCharts, 360);
     // resetSchedulerLayoutConfig();
     // showUnderDevelopmentAlt();
+}
+
+function initCharts() {
+    sparkline.sparkline(getById("chart-ph"), [6.0, 6.1, 6.1, 6.0, 6.0, 6.1, 6.2, 6.3, 6.3, 6.3, 6.2, 6.2, 6.1]);    
+    sparkline.sparkline(getById("chart-ec"), [1, 2, 3, 4, 3, 2, 7,1, 5, 2, 5, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-water-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-air-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-humidity"), [1,1, 5, 2, 4, 8, 3, 7, 3, 2, 4, 8, 7, 8]);    
+    sparkline.sparkline(getById("chart-wattage"), [1, 5, 2, 4, 8,1, 5, 2, 4, 8, 3, 7, 3, 7]);    
 }
 
 function registerEventHandlers() {
@@ -66,7 +76,7 @@ const getResCapacity = function () {
     if (settingsForm) {
         return settingsForm.getItem('CONTROL:GROW_AREA:RES_CAPACITY').getValue();
     }
-    return config.defaults.res.capacity;;
+    return config.defaults.res.capacity;
 }
 
 function initComponents() {
@@ -78,11 +88,23 @@ function initComponents() {
         
     });
     
-    envLayout = new dhx.Layout(null, loadJSON('/json/layouts/environment.json'));
+    loadJSONAsync('/json/layouts/environment.json', function (json) {
+        envLayout = new dhx.Layout(null, json);
+        envLayout.events.on("AfterShow", function(){
+            initCharts();
+        });
+        envLayout.events.on("BeforeShow", function(){
+            initCharts();
+        });
+        envLayout.events.on("AfterAdd", function(){
+            initCharts();
+        });
+        initMainContent('environment');
+    })
     
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
-        initSettingsForm(settingsForm) 
+        initFormEvents(settingsForm, 'SETTING');   
     });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
@@ -95,7 +117,6 @@ function initComponents() {
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
-        initMainContent('sensors');
     });
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
@@ -104,10 +125,6 @@ function initComponents() {
     initNutrientSection(); 
     initDatabaseEvents();
     
-}
-
-function initSettingsForm(settingsForm) {
-    initFormEvents(settingsForm, 'SETTING');    
 }
 
 function  stopSchedule() {

@@ -1,0 +1,44 @@
+{
+    "1588087792551":{
+       "start_date":"2020-04-17T23:00:00.000Z",
+       "end_date":"2020-08-07T23:00:00.000Z",
+       "text":"GR420 LED Grow Off Sponsored By Invisible Sun",
+       "id":"1588087792551",
+       "automation":{
+          "resource":"CUSTOM:",
+          "trigger":"Invisible Sun Grow Comp",
+          "condition":null
+       },
+       "textColor":"#000000",
+       "color":"#FFFF00",
+       "_timed":false,
+       "_sday":0,
+       "_eday":7,
+       "_length":7,
+       "_sweek":4,
+       "_sorder":0,
+       "_first_chunk":false,
+       "_last_chunk":false,
+       "RESOURCE:":"CUSTOM:",
+       "CUSTOM:":"GR420 LED Grow Off Sponsored By Invisible Sun",
+       "LIGHT:":"",
+       "FAN:EXTRACT:":"",
+       "FAN:INTAKE:":"",
+       "FAN:OSCILLATING:":"",
+       "WATER:HEATER:":"",
+       "AIR:HEATER:":"",
+       "HUMIDIFIER:":"",
+       "DE:HUMIDIFIER:":"",
+       "AIR:PUMP:":"",
+       "RECIRCULATING:PUMP:":"",
+       "FILL:PUMP:":"",
+       "DRAIN:PUMP:":"",
+       "DRIP:PUMP:":"",
+       "NUTRIENT:DOSE:":"",
+       "TRIGGER:":"__SELECT",
+       "time":{
+          "start_date":"2020-04-17T23:00:00.000Z",
+          "end_date":"2020-08-07T23:00:00.000Z"
+       }
+    }
+ }

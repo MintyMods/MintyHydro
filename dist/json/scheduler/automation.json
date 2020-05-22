@@ -1,13 +1,13 @@
 [
    {
       "key": "__SELECT",
-      "color": "#1de9b6",
+      "color": "#000",
       "textColor": "#000000",
-      "label": "Please Select..."
+      "label": "Select Resource..."
    },
    {
       "key": "CUSTOM:",
-      "color": "#1de9b6",
+      "color": "#FFFF00",
       "textColor": "#000000",
       "label": "Add Notes:"
    },
@@ -56,7 +56,7 @@
    {
       "key": "DE:HUMIDIFIER:",
       "color": "#FA01AB",
-      "textColor": "#000000",
+      "textColor": "#fff",
       "label": "De-Humidifier"
    },
    {
@@ -68,19 +68,31 @@
    {
       "key": "RECIRCULATING:PUMP:",
       "color": "#85B79D",
-      "textColor": "#000000",
+      "textColor": "#fff",
       "label": "Recirculating Pump"
    },
    {
-      "key": "RES:CHANGE:",
-      "color": "#0404FF",
-      "textColor": "#FFF704",
-      "label": "Reservoir Change"
+      "key": "FILL:PUMP:",
+      "color": "#226633",
+      "textColor": "#FFF",
+      "label": "Fill Reservoir Pump"
    },
    {
-      "key": "NUTRIENT:DOSE",
+      "key": "DRAIN:PUMP:",
+      "color": "#85339D",
+      "textColor": "#FFF",
+      "label": "Drain Pump"
+   },
+   {
+      "key": "DRIP:PUMP:",
+      "color": "#85B755",
+      "textColor": "#FFF",
+      "label": "Drip Feed Pump"
+   },
+   {
+      "key": "NUTRIENT:DOSE:",
       "color": "#1BFF04",
-      "textColor": "#0000FF",
+      "textColor": "#fff",
       "label": "Nutrient Dose"
    }
 ]

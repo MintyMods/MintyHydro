@@ -1,75 +1,71 @@
 [
     {
+       "key": "__SELECT",
+       "label": "Select Condition..."
+    },
+    {
        "key": "TEMP:AIR:HIGH",
-       "label": "Current Air Temp >= Configured"
+       "label": "High Air Temperature"
     },
     {
        "key": "TEMP:AIR:LOW",
-       "label": "Current Air Temp <= Configured"
+       "label": "Low Air Temperature"
     },
     {
        "key": "TEMP:WATER:HIGH",
-       "label": "Current Water Temp >= Configured"
+       "label": "High Water Temperature"
     },
     {
        "key": "TEMP:WATER:LOW",
-       "label": "Current Water Temp <= Configured"
+       "label": "Low Water Temperature"
     },
     {
        "key": "HUMIDITY:AIR:HIGH",
-       "label": "Current Humidity >= Configured"
+       "label": "High Humidity"
     },
     {
        "key": "HUMIDITY:AIR:LOW",
-       "label": "Current Humidity <= Configured"
+       "label": "Low Humidity"
     },
     {
        "key": "PH:WATER:HIGH",
-       "label": "Current pH >= Configured"
+       "label": "High pH"
     },
     {
        "key": "PH:WATER:LOW",
-       "label": "Current pH <= Configured"
+       "label": "Low pH"
     },
     {
        "key": "EC:WATER:HIGH",
-       "label": "Current E.C. >= Configured"
+       "label": "High E.C."
     },
     {
        "key": "EC:WATER:LOW",
-       "label": "Current E.C. <= Configured"
+       "label": "Low E.C."
     },
     {
        "key": "LEVEL:TANK:HIGH:ON",
-       "label": "High Tank water level ON"
+       "label": "Water Tank Full"
     },
     {
-       "key": "LEVEL:TANK:HIGH:OFF",
-       "label": "High Tank water level OFF"
-    },
-    {
-       "key": "LEVEL:TANK:LOW:ON",
-       "label": "Low Tank water level ON"
+       "key": "LEVEL:TANK:HIGH:OFF&&LEVEL:TANK:LOW:ON",
+       "label": "Water Tank Low"
     },
     {
        "key": "LEVEL:TANK:LOW:OFF",
-       "label": "Low Tank water level OFF"
+       "label": "Water Tank Empty"
     },
     {
-       "key": "LEVEL:RES:HIGH:ON",
-       "label": "High Reservoir water level ON"
-    },
-    {
-       "key": "LEVEL:RES:HIGH:OFF",
-       "label": "High Reservoir water level OFF"
-    },
-    {
-       "key": "LEVEL:RES:LOW:ON",
-       "label": "Low Reservoir water level ON"
-    },
-    {
-       "key": "LEVEL:RES:LOW:OFF",
-       "label": "Low Reservoir water level OFF"
-    }
+      "key": "LEVEL:RES:HIGH:ON",
+      "label": "Reservoir Full"
+   },
+   {
+      "key": "LEVEL:RES:HIGH:OFF&&LEVEL:RES:LOW:ON",
+      "label": "Reservoir Low"
+   },
+   {
+      "key": "LEVEL:RES:LOW:OFF",
+      "label": "Reservoir Empty"
+   }
 
 ]

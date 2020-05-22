@@ -22,6 +22,10 @@ const HIGH_LOW_OFF = [
     { key: "trigger:high", label: 'Conditional High' },
 ];
 
+function populateScheduler(opts) {
+debugger;
+}
+
 function initScheduler() {
     automation = loadJSON('/json/scheduler/automation.json');
     conditions = loadJSON('/json/scheduler/conditions.json');
@@ -35,6 +39,9 @@ function initScheduler() {
     scheduler.locale.labels.week_agenda_tab = "Agenda";
     scheduler.config.details_on_create = true;
     scheduler.config.details_on_dblclick = true;
+    scheduler.config.date_format = "%Y-%m-%d %H:%i";
+
+    //YYYY-MM-DD HH:MM
 
     // scheduler.config.repeat_precise = true;
     // scheduler.config.mark_now = true;
@@ -112,10 +119,10 @@ function initScheduler() {
         event.automation = getEventTrigger(event);
         let resource = event['RESOURCE:'];
         if (resource == '__SELECT') {
-            showMsg('warn', 'Missing Resource', 'Please select a resource to schedule','fal fa-exclamation-triangle fa-2x');
+            showMsg('warn', 'Missing Resource', 'Please select a resource to schedule','fal fa-exclamation-triangle');
             return false;
         } else if (resource == 'CUSTOM:' && event['CUSTOM:'] == '') {
-            showMsg('warn', 'Missing Notes', 'Please enter some text for the notes','fal fa-exclamation-triangle fa-2x');
+            showMsg('warn', 'Missing Notes', 'Please enter some text for the notes','fal fa-exclamation-triangle');
             return false;
         } else if (event[resource] == '') {
             showMsg('warn', 'Missing Action', 'Select the schedule action - timed / event ', getResourceIcon(event));
@@ -130,7 +137,13 @@ function initScheduler() {
     
     scheduler.attachEvent("onEventAdded", function(id, event){
         event.automation = getEventTrigger(event);
-        return true;
+        getEventColor(event.id, event);
+        saveSchedulerEvent(event);
+    });
+    scheduler.attachEvent("onEventChanged", function(id, event){
+        event.automation = getEventTrigger(event);
+        getEventColor(event.id, event);
+        saveSchedulerEvent(event);
     });
     
     scheduler.templates.week_agenda_event_text = function (start, end, event, date, position) {
@@ -148,18 +161,46 @@ function initScheduler() {
 
     scheduler.templates.event_bar_text = getEventText;
     scheduler.templates.event_text = getEventText;
-    scheduler.attachEvent("onEventAdded", getEventColor);
-    scheduler.attachEvent("onEventChanged", getEventColor);
     scheduler.attachEvent("onBeforeViewChange", resetSchedulerLayoutConfig);
     scheduler.attachEvent("onSchedulerResize", resetSchedulerLayoutConfig);
     scheduler.attachEvent("onSchedulerReady", function () {
         requestAnimationFrame(function () {
             scheduler.setCurrentView(new Date(), "week");
             scheduler.load('/json/events.json');
+            loadSchedulerEvents();
         });
     });
 }
 
+function processSchedulerEvents(data) {
+    data.rows.forEach(function(row) {
+        let event = {
+            id: row.id,
+            start_date: row.start_date, 
+            end_date: row.end_date,
+            text: row.text,
+            textColor: row.textColor,
+            color: row.color,
+            '_timed': true,
+            'RESOURCE:': row.resource,
+            'TRIGGER:': row.condition,
+            'label':  "__SELECT",
+            [ row.resource ] : row.trigger,
+            automation : {
+                'resource': row.resource,
+                'trigger': row.trigger,
+                'condition': row.condtion,
+                'id': row.id
+            },
+            time : {
+                "start_date": row.start_date,
+                "end_date": row.end_date
+            }
+        }
+        scheduler.addEvent(event);
+    });
+
+}
 
 function checkTriggerEnabled(event){
     var e = event || window.event, node = this;
@@ -211,8 +252,6 @@ function getEventTrigger(event) {
     return { resource, trigger, condition, id };
 }
 
-
-
 function getTriggerDesc(trigger) {
     let text = trigger.replace('trigger:','');
     if (text == 'low' || text == 'high') {
@@ -229,7 +268,7 @@ function getConditionDesc(action) {
             desc = ' if ' + condition.label + '.';
         }
     });
-    return desc.toLowerCase();
+    return desc ? desc.toLowerCase() : '';
 }
 
 const getEventTextSmall = function (start, end, event) {
@@ -300,53 +339,53 @@ function getResourceIcon(event) {
     let icon = '';
     switch (resource) {
         case 'CUSTOM:' : 
-            icon = 'event-icon fa-2x fal fa-clipboard ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-clipboard ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'LIGHT:' : 
-            icon = 'event-icon fa-2x fal ' + (off ? 'fa-lightbulb fa-stack-1x' : 'fa-lightbulb-on fa-beat');
+            icon = 'event-icon fal ' + (off ? 'fa-lightbulb fa-stack-1x fa-2x' : 'fa-lightbulb-on fa-beat fa-2x');
             break;
         case 'FAN:EXTRACT:' : 
-            icon = 'event-icon fa-2x fal fa-fan ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            icon = 'event-icon fal fa-fan ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;
         case 'FAN:INTAKE:' : 
-            icon = 'event-icon fa-2x fal fa-hurricane ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            icon = 'event-icon fal fa-hurricane ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;
         case 'FAN:OSCILLATING:' : 
-            icon = 'event-icon fa-2x fal fa-fan-table ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-fan-table ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'WATER:HEATER:' : 
-            icon = 'event-icon fa-2x fal fa-water ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-water ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'AIR:HEATER:' : 
-            icon = 'event-icon fa-2x fal fa-heat ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-heat ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'HUMIDIFIER:' : 
-            icon = 'event-icon fa-2x fal fa-tint ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-tint ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'DE:HUMIDIFIER:' : 
-            icon = 'event-icon fa-2x fal fa-tint-slash ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-tint-slash ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'AIR:PUMP:' : 
-            icon = 'event-icon fa-2x fal fa-wind ' + (off ? 'fa-stack-1x' : 'fa-beat');
+            icon = 'event-icon fal fa-wind ' + (off ? 'fa-stack-1x fa-2x' : 'fa-beat fa-2x');
             break;
         case 'RECIRCULATING:PUMP:' : 
-            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            icon = 'event-icon fal fa-cog ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;
         case 'FILL:PUMP:' : 
-            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            icon = 'event-icon fal fa-cog ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;
         case 'DRAIN:PUMP:' : 
-            icon = 'event-icon fa-2x fal fa-cog ' + (off ? 'fa-stack-1x' : 'fa-spin');
+            icon = 'event-icon fal fa-cog ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;
         case 'DRIP:PUMP:' : 
-            icon = 'event-icon fa-2x fal ' + (off ? 'fa-stack-1x fa-faucet' : ' fa-faucet-drip fa-beat');
+            icon = 'event-icon fal ' + (off ? 'fa-stack-1x fa-faucet fa-2x' : ' fa-faucet-drip fa-beat fa-2x');
             break;
         case 'NUTRIENT:DOSE:' : 
-            icon = 'event-icon fa-2x fal ' + (off ? 'fa-stack-1x fa-faucet' : ' fa-faucet-drip fa-beat');
+            icon = 'event-icon fal ' + (off ? 'fa-stack-1x fa-faucet fa-2x' : ' fa-faucet-drip fa-beat fa-2x');
             break;
     }
     if (off) {
-        icon = '<div class="fa-stack"><i class="' + icon + '"></i><i class="event-icon-ban fas fa-slash fa-stack-2x fa-1x"></i></div>';
+        icon = '<div class="fa-stack"><i class="' + icon + '"></i><i class="event-icon-ban fas fa-slash fa-stack-2x fa-2x"></i></div>';
     } else {
         icon = '<div class="fa-stack"><i class="' + icon + '"></i></div>';
     }

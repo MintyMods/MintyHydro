@@ -31,6 +31,14 @@ function initMintyHydro() {
     // showUnderDevelopmentAlt();
 }
 
+function initCharts() {
+    sparkline.sparkline(getById("chart-ph"), [1, 5, 2, 4, 8, 3, 7,1, 5, 2, 4, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-ec"), [1, 2, 3, 4, 3, 2, 7,1, 5, 2, 5, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-humidity"), [1,1, 5, 2, 4, 8, 3, 7, 3, 2, 4, 8, 7, 8]);    
+    sparkline.sparkline(getById("chart-wattage"), [1, 5, 2, 4, 8,1, 5, 2, 4, 8, 3, 7, 3, 7]);    
+}
+
 function registerEventHandlers() {
     // @todo
 }
@@ -66,7 +74,7 @@ const getResCapacity = function () {
     if (settingsForm) {
         return settingsForm.getItem('CONTROL:GROW_AREA:RES_CAPACITY').getValue();
     }
-    return config.defaults.res.capacity;;
+    return config.defaults.res.capacity;
 }
 
 function initComponents() {
@@ -78,11 +86,17 @@ function initComponents() {
         
     });
     
-    envLayout = new dhx.Layout(null, loadJSON('/json/layouts/environment.json'));
+    loadJSONAsync('/json/layouts/environment.json', function (json) {
+        envLayout = new dhx.Layout(null, json);
+        envLayout.events.on("AfterShow", function (id) {
+            initCharts();
+            return true;
+        });        
+    })
     
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
-        initSettingsForm(settingsForm) 
+        initFormEvents(settingsForm, 'SETTING');   
     });
     loadJSONAsync('/json/pumps.json', function (json) {
         pumpsForm = new dhx.Form(null, json);
@@ -104,10 +118,6 @@ function initComponents() {
     initNutrientSection(); 
     initDatabaseEvents();
     
-}
-
-function initSettingsForm(settingsForm) {
-    initFormEvents(settingsForm, 'SETTING');    
 }
 
 function  stopSchedule() {
@@ -157,7 +167,8 @@ function initMainContent(id) {
     } else if (id === "settings") {
         layout.cell("content_container").attach(settingsForm);
     } else {
-    }    
+        layout.cell("content_container").attachHtml(orignalHtml);
+    }
 }
 
 function initSideBar() {
@@ -181,24 +192,3 @@ function initToolBar() {
     });
     layout.cell("toolbar_container").attach(toolbar);
 }
-
-function showContent(id) {
-    if (id === "schedule") {
-        layout.cell("content_container").attach(scheduler);
-    } else if (id === "environment") {
-        layout.cell("content_container").attach(envLayout);
-    } else if (id === "pumps") {
-        layout.cell("content_container").attach(pumpsForm);
-    } else if (id === "controls") {
-        layout.cell("content_container").attach(controlsForm);
-    } else if (id === "sensors") {
-        layout.cell("content_container").attach(sensorsForm);
-    } else if (id === "dosing") {
-        layout.cell("content_container").attach(nutrientLayout);
-    } else if (id === "settings") {
-        layout.cell("content_container").attach(settingsForm);
-    } else {
-        layout.cell("content_container").attachHtml(orignalHtml);
-    }
-}
-

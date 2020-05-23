@@ -7,8 +7,21 @@ function loadSchedulerEvents() {
     socket.emit("DB:COMMAND", { 'command':'ALL', 'table':'EVENT' });
 }
 
+function getFormValue(form, name) {
+    let item = form.getItem(name); 
+    return item ? item.getValue() : undefined;
+}
+
 function initFormEvents(form, table) {
     form.events.on("Change", function (name, value) {
+        if (name.indexOf(':STATE') > -1) {
+            let time = getFormValue(form, name.replace(':STATE',':TIME'));
+            let speed = getFormValue(form, name.replace(':STATE',':SPEED'));
+            let amount = getFormValue(form, name.replace(':STATE',':AMOUNT'));
+            socket.emit(name, { value, time, speed, amount });
+        } else {
+            socket.emit(name, { value });
+        }
         socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', table });
     });      
     socket.emit("DB:COMMAND", { 'command':'ALL', table });

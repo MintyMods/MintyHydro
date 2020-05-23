@@ -99,7 +99,9 @@
 .sparkline--line {
   stroke: red;
 } */
-
+.sparkdiv {
+  border:1px dashed greenyellow;
+}
 .chart-ph {
   stroke: blue;
   fill: rgba(187, 255, 0, 0.3);

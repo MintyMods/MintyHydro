@@ -83,103 +83,43 @@ io.of('/arduino').on('connection', (socket) => {
   });
 
   /* RF Remote Control Devices */ 
-  socket.on('RF:WATER_PUMP:OFF', function () {
-    socket.broadcast.emit('RF:WATER_PUMP:OFF');
+  socket.on('CONTROL:WATER_PUMP:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:WATER_PUMP:STATE', opts);
   });
-  socket.on('RF:WATER_PUMP:ON', function () {
-    socket.broadcast.emit('RF:WATER_PUMP:ON');
+  socket.on('CONTROL:WATER_HEATER:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:WATER_HEATER:STATE', opts);
   });
-  socket.on('RF:WATER_PUMP:AUTO', function () {
-    socket.broadcast.emit('RF:WATER_PUMP:AUTO');
+  socket.on('CONTROL:AIR_PUMP:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:AIR_PUMP:STATE', opts);
   });
-  socket.on('RF:WATER_HEATER:OFF', function () {
-    socket.broadcast.emit('RF:WATER_HEATER:OFF');
+  socket.on('CONTROL:DEHUMIDIFIER:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:DEHUMIDIFIER:STATE', opts);
   });
-  socket.on('RF:WATER_HEATER:ON', function () {
-    socket.broadcast.emit('RF:WATER_HEATER:ON');
+  socket.on('CONTROL:HUMIDIFIER:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:HUMIDIFIER:STATE', opts);
   });
-  socket.on('RF:WATER_HEATER:AUTO', function () {
-    socket.broadcast.emit('RF:WATER_HEATER:AUTO');
+  socket.on('CONTROL:HEATER:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:HEATER:STATE',opts);
   });
-  socket.on('RF:AIR_PUMP:OFF', function () {
-    socket.broadcast.emit('RF:AIR_PUMP:OFF');
+  socket.on('CONTROL:AIR_EXTRACT_FAN:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:AIR_EXTRACT_FAN:STATE', opts);
   });
-  socket.on('RF:AIR_PUMP:ON', function () {
-    socket.broadcast.emit('RF:AIR_PUMP:ON');
+  socket.on('CONTROL:AIR_INTAKE_FAN:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:AIR_INTAKE_FAN:STATE', opts);
   });
-  socket.on('RF:AIR_PUMP:AUTO', function () {
-    socket.broadcast.emit('RF:AIR_PUMP:AUTO');
+  socket.on('CONTROL:AIR_MOVEMENT_FAN_A:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:AIR_MOVEMENT_FAN_A:STATE', opts);
   });
-  socket.on('RF:DEHUMIDIFIER:OFF', function () {
-    socket.broadcast.emit('RF:DEHUMIDIFIER:OFF');
+  socket.on('CONTROL:AIR_MOVEMENT_FAN_B:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:AIR_MOVEMENT_FAN_B:STATE', opts);
   });
-  socket.on('RF:DEHUMIDIFIER:ON', function () {
-    socket.broadcast.emit('RF:DEHUMIDIFIER:ON');
+  socket.on('CONTROL:LIGHT:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:LIGHT:STATE', opts);
   });
-  socket.on('RF:DEHUMIDIFIER:AUTO', function () {
-    socket.broadcast.emit('RF:DEHUMIDIFIER:AUTO');
+  socket.on('CONTROL:CAMERA:STATE', function (opts) {
+    socket.broadcast.emit('CONTROL:CAMERA:STATE', opts);
   });
-  socket.on('RF:HUMIDIFIER:LOW', function () {
-    socket.broadcast.emit('RF:HUMIDIFIER:LOW');
-  });
-  socket.on('RF:HUMIDIFIER:HIGH', function () {
-    socket.broadcast.emit('RF:HUMIDIFIER:HIGH');
-  });
-  socket.on('RF:HUMIDIFIER:OFF', function () {
-    socket.broadcast.emit('RF:HUMIDIFIER:OFF');
-  });
-  socket.on('RF:HUMIDIFIER:AUTO', function () {
-    socket.broadcast.emit('RF:HUMIDIFIER:AUTO');
-  });
-  socket.on('RF:HEATER:OFF', function () {
-    socket.broadcast.emit('RF:HEATER:OFF');
-  });
-  socket.on('RF:HEATER:ON', function () {
-    socket.broadcast.emit('RF:HEATER:ON');
-  });
-  socket.on('RF:HEATER:AUTO', function () {
-    socket.broadcast.emit('RF:HEATER:AUTO');
-  });
-  socket.on('RF:AIR_EXTRACT_FAN:OFF', function () {
-    socket.broadcast.emit('RF:AIR_EXTRACT_FAN:OFF');
-  });
-  socket.on('RF:AIR_EXTRACT_FAN:ON', function () {
-    socket.broadcast.emit('RF:AIR_EXTRACT_FAN:ON');
-  });
-  socket.on('RF:AIR_EXTRACT_FAN:AUTO', function () {
-    socket.broadcast.emit('RF:AIR_EXTRACT_FAN:AUTO');
-  });
-  socket.on('RF:AIR_INTAKE_FAN:OFF', function () {
-    socket.broadcast.emit('RF:AIR_INTAKE_FAN:OFF');
-  });
-  socket.on('RF:AIR_INTAKE_FAN:LOW', function () {
-    socket.broadcast.emit('RF:AIR_INTAKE_FAN:LOW');
-  });
-  socket.on('RF:AIR_INTAKE_FAN:HIGH', function () {
-    socket.broadcast.emit('RF:AIR_INTAKE_FAN:HIGH');
-  });
-  socket.on('RF:AIR_INTAKE_FAN:AUTO', function () {
-    socket.broadcast.emit('RF:AIR_INTAKE_FAN:AUTO');
-  });
-  socket.on('RF:AIR_MOVEMENT_FAN:OFF', function () {
-    socket.broadcast.emit('RF:AIR_MOVEMENT_FAN:OFF');
-  });
-  socket.on('RF:AIR_MOVEMENT_FAN:ON', function () {
-    socket.broadcast.emit('RF:AIR_MOVEMENT_FAN:ON');
-  });
-  socket.on('RF:AIR_MOVEMENT_FAN:AUTO', function () {
-    socket.broadcast.emit('RF:AIR_MOVEMENT_FAN:AUTO');
-  });
-  socket.on('RF:LIGHT:OFF', function () {
-    socket.broadcast.emit('RF:LIGHT:OFF');
-  });
-  socket.on('RF:LIGHT:ON', function () {
-    socket.broadcast.emit('RF:LIGHT:ON');
-  });
-  socket.on('RF:LIGHT:AUTO', function () {
-    socket.broadcast.emit('RF:LIGHT:AUTO');
-  });
-
+ 
   /* SENSOR OUTPUT */ 
   socket.on('I2C:TEMP:RESULT', function (temp) {
     socket.broadcast.emit('I2C:TEMP:RESULT', temp);
@@ -223,152 +163,82 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('HTS:BME280:PRESSURE', function (pressure) {
     socket.broadcast.emit('HTS:BME280:PRESSURE', pressure);
   });
-
-  /* PUMP Controls  */
-  socket.on('PUMP:PH_UP:ON', function (opts) {
-    socket.broadcast.emit('PUMP:PH_UP:ON', opts);
-  });
-  socket.on('PUMP:PH_UP:OFF', function () {
-    socket.broadcast.emit('PUMP:PH_UP:OFF');
-  });
-  socket.on('PUMP:PH_UP:AUTO', function () {
-    socket.broadcast.emit('PUMP:PH_UP:AUTO');
+  socket.on('PUMP:PH_UP:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:PH_UP:STATE', opts);
   });
   socket.on('PUMP:PH_UP:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:PH_UP:DOSE', opts);
   });
-  socket.on('PUMP:PH_DOWN:ON', function (opts) {
-    socket.broadcast.emit('PUMP:PH_DOWN:ON', opts);
-  });
-  socket.on('PUMP:PH_DOWN:OFF', function () {
-    socket.broadcast.emit('PUMP:PH_DOWN:OFF');
-  });
-  socket.on('PUMP:PH_DOWN:AUTO', function () {
-    socket.broadcast.emit('PUMP:PH_DOWN:AUTO');
+  socket.on('PUMP:PH_DOWN:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:PH_DOWN:STATE', opts);
   });
   socket.on('PUMP:PH_DOWN:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:PH_DOWN:DOSE', opts);
   });
-  socket.on('PUMP:CALMAG:ON', function (opts) {
-    socket.broadcast.emit('PUMP:CALMAG:ON', opts);
-  });
-  socket.on('PUMP:CALMAG:OFF', function () {
-    socket.broadcast.emit('PUMP:CALMAG:OFF');
-  });
-  socket.on('PUMP:CALMAG:AUTO', function () {
-    socket.broadcast.emit('PUMP:CALMAG:AUTO');
+  socket.on('PUMP:CALMAG:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:CALMAG:STATE', opts);
   });
   socket.on('PUMP:CALMAG:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:CALMAG:DOSE', opts);
   });
-  socket.on('PUMP:HYDROGUARD:ON', function (opts) {
-    socket.broadcast.emit('PUMP:HYDROGUARD:ON', opts);
-  });
-  socket.on('PUMP:HYDROGUARD:OFF', function () {
-    socket.broadcast.emit('PUMP:HYDROGUARD:OFF');
-  });
-  socket.on('PUMP:HYDROGUARD:AUTO', function () {
-    socket.broadcast.emit('PUMP:HYDROGUARD:AUTO');
-  });
+  socket.on('PUMP:HYDROGUARD:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:HYDROGUARD:STATE', opts);
+  });  
   socket.on('PUMP:HYDROGUARD:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:HYDROGUARD:DOSE', opts);
   });  
-  socket.on('PUMP:FLORA_MICRO:ON', function (opts) {
-    socket.broadcast.emit('PUMP:FLORA_MICRO:ON', opts);
-  });
-  socket.on('PUMP:FLORA_MICRO:OFF', function () {
-    socket.broadcast.emit('PUMP:FLORA_MICRO:OFF');
-  });
-  socket.on('PUMP:FLORA_MICRO:AUTO', function () {
-    socket.broadcast.emit('PUMP:FLORA_MICRO:AUTO');
+  socket.on('PUMP:FLORA_MICRO:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:FLORA_MICRO:STATE', opts);
   });
   socket.on('PUMP:FLORA_MICRO:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_MICRO:DOSE', opts);
   });
-  socket.on('PUMP:FLORA_GROW:ON', function (opts) {
-    socket.broadcast.emit('PUMP:FLORA_GROW:ON', opts);
-  });
-  socket.on('PUMP:FLORA_GROW:OFF', function () {
-    socket.broadcast.emit('PUMP:FLORA_GROW:OFF');
-  });
-  socket.on('PUMP:FLORA_GROW:AUTO', function () {
-    socket.broadcast.emit('PUMP:FLORA_GROW:AUTO');
-  });
+  socket.on('PUMP:FLORA_GROW:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:FLORA_GROW:STATE', opts);
+  });  
   socket.on('PUMP:FLORA_GROW:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_GROW:DOSE', opts);
   });  
-  socket.on('PUMP:FLORA_BLOOM:ON', function (opts) {
-    socket.broadcast.emit('PUMP:FLORA_BLOOM:ON', opts);
-  });
-  socket.on('PUMP:FLORA_BLOOM:OFF', function () {
-    socket.broadcast.emit('PUMP:FLORA_BLOOM:OFF');
-  });
-  socket.on('PUMP:FLORA_BLOOM:AUTO', function () {
-    socket.broadcast.emit('PUMP:FLORA_BLOOM:AUTO');
-  });
+  socket.on('PUMP:FLORA_BLOOM:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:FLORA_BLOOM:STATE', opts);
+  });  
   socket.on('PUMP:FLORA_BLOOM:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_BLOOM:DOSE', opts);
   });  
-  socket.on('PUMP:SPARE:ON', function (opts) {
-    socket.broadcast.emit('PUMP:SPARE:ON', opts);
-  });
-  socket.on('PUMP:SPARE:OFF', function () {
-    socket.broadcast.emit('PUMP:SPARE:OFF');
-  });
-  socket.on('PUMP:SPARE:AUTO', function () {
-    socket.broadcast.emit('PUMP:SPARE:AUTO');
-  });
+  socket.on('PUMP:SPARE:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:SPARE:STATE', opts);
+  });    
   socket.on('PUMP:SPARE:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:SPARE:DOSE', opts);
   });    
-  socket.on('PUMP:FILL:ON', function (opts) {
-    socket.broadcast.emit('PUMP:FILL:ON', opts);
-  });
-  socket.on('PUMP:FILL:OFF', function () {
-    socket.broadcast.emit('PUMP:FILL:OFF');
-  });
-  socket.on('PUMP:FILL:AUTO', function () {
-    socket.broadcast.emit('PUMP:FILL:AUTO');
-  });
+  socket.on('PUMP:FILL:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:FILL:STATE', opts);
+  });   
   socket.on('PUMP:FILL:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FILL:DOSE', opts);
   });   
-  socket.on('PUMP:DRAIN:ON', function (opts) {
-    socket.broadcast.emit('PUMP:DRAIN:ON', opts);
-  });
-  socket.on('PUMP:DRAIN:OFF', function () {
-    socket.broadcast.emit('PUMP:DRAIN:OFF');
-  });
-  socket.on('PUMP:DRAIN:AUTO', function () {
-    socket.broadcast.emit('PUMP:DRAIN:AUTO');
-  });
+  socket.on('PUMP:DRAIN:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:DRAIN:STATE', opts);
+  });     
   socket.on('PUMP:DRAIN:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:DRAIN:DOSE', opts);
   });     
-  socket.on('PUMP:DRIP:ON', function (opts) {
-    socket.broadcast.emit('PUMP:DRIP:ON', opts);
-  });
-  socket.on('PUMP:DRIP:OFF', function () {
-    socket.broadcast.emit('PUMP:DRIP:OFF');
-  });
-  socket.on('PUMP:DRIP:AUTO', function () {
-    socket.broadcast.emit('PUMP:DRIP:AUTO');
-  });
+  socket.on('PUMP:DRIP:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:DRIP:STATE', opts);
+  });     
   socket.on('PUMP:DRIP:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:DRIP:DOSE', opts);
   });     
-  socket.on('PUMP:MAGMIX:ON', function (opts) {
-    socket.broadcast.emit('PUMP:MAGMIX:ON', opts);
-  });
-  socket.on('PUMP:MAGMIX:OFF', function () {
-    socket.broadcast.emit('PUMP:MAGMIX:OFF');
-  });
-  socket.on('PUMP:MAGMIX:AUTO', function () {
-    socket.broadcast.emit('PUMP:MAGMIX:AUTO');
-  });
   socket.on('PUMP:MAGMIX:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:MAGMIX:DOSE', opts);
   }); 
+  socket.on('PUMP:MAGMIX:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:MAGMIX:STATE', opts);
+  }); 
+  socket.on('PUMP:RECIRCULATING:STATE', function (opts) {
+    socket.broadcast.emit('PUMP:RECIRCULATING:STATE', opts);
+  }); 
+
 });
 
 function log(msg, payload) {

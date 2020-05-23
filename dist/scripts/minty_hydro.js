@@ -27,14 +27,16 @@ function initMintyHydro() {
     initSocket();
     registerEventHandlers();
     initComponents();
+    setTimeout(initCharts, 360);
     // resetSchedulerLayoutConfig();
     // showUnderDevelopmentAlt();
 }
 
 function initCharts() {
-    sparkline.sparkline(getById("chart-ph"), [1, 5, 2, 4, 8, 3, 7,1, 5, 2, 4, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-ph"), [6.0, 6.1, 6.1, 6.0, 6.0, 6.1, 6.2, 6.3, 6.3, 6.3, 6.2, 6.2, 6.1]);    
     sparkline.sparkline(getById("chart-ec"), [1, 2, 3, 4, 3, 2, 7,1, 5, 2, 5, 8, 3, 7]);    
-    sparkline.sparkline(getById("chart-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-water-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
+    sparkline.sparkline(getById("chart-air-temp"), [4, 5, 3,1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);    
     sparkline.sparkline(getById("chart-humidity"), [1,1, 5, 2, 4, 8, 3, 7, 3, 2, 4, 8, 7, 8]);    
     sparkline.sparkline(getById("chart-wattage"), [1, 5, 2, 4, 8,1, 5, 2, 4, 8, 3, 7, 3, 7]);    
 }
@@ -62,10 +64,6 @@ function initSocket() {
     });    
 }
 
-function showPumpFeedBack(opts) {
-    showPumpStartedFeedBack(opts);
-}
-
 function handleResize() {
     resetSchedulerLayoutConfig();
 }
@@ -88,10 +86,16 @@ function initComponents() {
     
     loadJSONAsync('/json/layouts/environment.json', function (json) {
         envLayout = new dhx.Layout(null, json);
-        envLayout.events.on("AfterShow", function (id) {
+        envLayout.events.on("AfterShow", function(){
             initCharts();
-            return true;
-        });        
+        });
+        envLayout.events.on("BeforeShow", function(){
+            initCharts();
+        });
+        envLayout.events.on("AfterAdd", function(){
+            initCharts();
+        });
+        initMainContent('environment');
     })
     
     loadJSONAsync('/json/settings.json', function (json) {
@@ -109,7 +113,6 @@ function initComponents() {
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
-        initMainContent('sensors');
     });
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
@@ -139,7 +142,7 @@ function runDosingPump(form, command) {
         "pump": name,
         "command": command
     };
-    showPumpFeedBack(opts);
+    showPumpStartedFeedBack(opts);
     log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
     runningPump = command;    
     socket.emit(command, opts);

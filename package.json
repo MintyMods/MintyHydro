@@ -7,8 +7,9 @@
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "dev": "NODE_ENV=development node MintyWebServer.js",
-    "port": "NODE_ENV=development node portcheck.js",
-    "hydro": "concurrently --kill-others \"npm run dev\" \"node --inspect MintyArduino.js\"",
+    "ports": "NODE_ENV=development node portcheck.js",
+    "hydro": "concurrently --kill-others \"npm run dev\" \"node MintyArduino.js\"",
+    "hydro-debug": "concurrently --kill-others \"npm run dev\" \"node --inspect  MintyArduino.js\"",
     "hydro-forever": "concurrently --kill-others \"forever start -a MintyWebServer.js\" \"node MintyArduino.js\"",
     "arduino:prod": "NODE_ENV=production node MintyArduino.js"
   },

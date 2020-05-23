@@ -64,10 +64,6 @@ function initSocket() {
     });    
 }
 
-function showPumpFeedBack(opts) {
-    showPumpStartedFeedBack(opts);
-}
-
 function handleResize() {
     resetSchedulerLayoutConfig();
 }
@@ -146,7 +142,7 @@ function runDosingPump(form, command) {
         "pump": name,
         "command": command
     };
-    showPumpFeedBack(opts);
+    showPumpStartedFeedBack(opts);
     log("Running Pump Dosing : " + command + ' : ' + JSON.stringify(opts));
     runningPump = command;    
     socket.emit(command, opts);

@@ -9,6 +9,14 @@ function loadSchedulerEvents() {
 
 function initFormEvents(form, table) {
     form.events.on("Change", function (name, value) {
+        if (name.indexOf(':STATE') > -1) {
+            let time = form.getItem(name.replace(':STATE',':TIME')).getValue();
+            let speed = form.getItem(name.replace(':STATE',':SPEED')).getValue();
+            let amount = form.getItem(name.replace(':STATE',':AMOUNT')).getValue();
+            socket.emit(name, { value, time, speed, amount });
+        } else {
+            socket.emit(name, { value });
+        }
         socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', table });
     });      
     socket.emit("DB:COMMAND", { 'command':'ALL', table });

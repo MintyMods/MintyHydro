@@ -3,6 +3,43 @@
    "padding": 10,
    "rows": [
       {
+         "title": "Camera:",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered",
+         "padding": 10,
+         "rows": [
+            {
+               "title": "Camera:",
+               "type": "radioGroup",
+               "name": "CONTROL:CAMERA:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      {
          "title": "Grow Light:",
          "align": "around",
          "css": "dhx_layout-cell--bordered",
@@ -190,14 +227,51 @@
          ]
       },
       {
-         "title": "Oscillating Fan:",
+         "title": "Oscillating Fan A:",
          "align": "around",
          "padding": 10,
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
             {
                "type": "radioGroup",
-               "name": "CONTROL:AIR_MOVEMENT_FAN:STATE",
+               "name": "CONTROL:AIR_MOVEMENT_FAN_A:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      
+      {
+         "title": "Oscillating Fan B:",
+         "align": "around",
+         "padding": 10,
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:AIR_MOVEMENT_FAN_B:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",

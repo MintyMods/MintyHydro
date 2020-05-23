@@ -1,7 +1,7 @@
 const SERIAL_PORT = 'COM6';
 // const SERIAL_PORT = '/dev/ttyACM0' ;
 const SOCKET_IO_NAMESPACE = 'arduino';
-const IP_ADDRESS = '192.168.0.12';
+const IP_ADDRESS = 'localhost';
 const DEBUGGING = true;
 
 const development = {
@@ -136,7 +136,7 @@ const RF_CODE_S5_ON = "5272835"; // Light
 const RF_CODE_S5_OFF = "5272844";
 
 /* Energenie Trailing Gang with Four Radio Controlled Surge Protected Sockets */
-const RF_CODE_Q1_ON = "8950879"; // SPARE
+const RF_CODE_Q1_ON = "8950879"; // Camera
 const RF_CODE_Q1_OFF = "8950878";
 const RF_CODE_Q2_ON = "8950871"; // SPARE
 const RF_CODE_Q2_OFF = "8950870";
@@ -153,7 +153,7 @@ config.RF = {
     on: RF_CODE_S5_ON,
     off: RF_CODE_S5_OFF
   },
-  WaterPump: {
+  Camera: {
     on: RF_CODE_Q1_ON,
     off: RF_CODE_Q1_OFF
   },
@@ -161,7 +161,7 @@ config.RF = {
     on: RF_CODE_Q3_ON,
     off: RF_CODE_Q3_OFF
   },
-  WaterHeater: {
+  Spare: {
     on: RF_CODE_Q2_ON,
     off: RF_CODE_Q2_OFF
   },
@@ -169,9 +169,13 @@ config.RF = {
     on: RF_CODE_S2_ON,
     off: RF_CODE_S2_OFF
   },
-  AirMovementFan: {
+  AirMovementFanA: {
     on: RF_CODE_Q4_ON,
     off: RF_CODE_Q4_OFF
+  },
+  AirMovementFanB: {
+    on: RF_CODE_S3_ON,
+    off: RF_CODE_S3_OFF
   },
   AirExtractFan: {
     on: RF_CODE_S4_ON,

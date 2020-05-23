@@ -6,44 +6,44 @@
           "id":"water_ph_container",
           "gravity":true,
           "padding":0,
-          "html":"<div><svg id='chart-ph' class='sparkline chart-ph' width='500' height='80' stroke-width='2'></svg></div>"
+          "html":"<div class='sparkdiv'><svg id='chart-ph' class='sparkline chart-ph' width='500' height='80' stroke-width='2'></svg></div>"
 
        },
        {
           "id":"water_ec_container",
           "gravity":true,
           "padding":0,
-          "html":"<div><svg id='chart-ec' class='sparkline chart-ec' width='500' height='80' stroke-width='2'></svg></div>"
+          "html":"<div class='sparkdiv'><svg id='chart-ec' class='sparkline chart-ec' width='500' height='80' stroke-width='2'></svg></div>"
        },
        {
           "id":"water_temp_container",
           "gravity":true,
           "padding":0,
-          "html":"<div><svg id='chart-water-temp' class='sparkline chart-temp' width='500' height='80' stroke-width='2'></svg></div>"
+          "html":"<div class='sparkdiv'><svg id='chart-water-temp' class='sparkline chart-temp' width='500' height='80' stroke-width='2'></svg></div>"
        },
        {
           "id":"air_temp_container",
           "gravity":true,
           "padding":0,
-          "html":"<div><svg id='chart-air-temp' class='sparkline chart-air-temp' width='500' height='80' stroke-width='2'></svg></div>"
+          "html":"<div class='sparkdiv'><svg id='chart-air-temp' class='sparkline chart-air-temp' width='500' height='80' stroke-width='2'></svg></div>"
          },
          {
             "id":"air_humidity_container",
             "gravity":true,
             "padding":0,
-            "html":"<div><svg id='chart-humidity' class='sparkline chart-humidity' width='500' height='80' stroke-width='2'></svg></div>"
+            "html":"<div class='sparkdiv'><svg id='chart-humidity' class='sparkline chart-humidity' width='500' height='80' stroke-width='2'></svg></div>"
        },
        {
           "id":"wattage_container",
           "gravity":true,
           "padding":0,
-          "html":"<div><svg id='chart-wattage' class='sparkline chart-wattage' width='500' height='80' stroke-width='2'></svg></div>"
+          "html":"<div class='sparkdiv'><svg id='chart-wattage' class='sparkline chart-wattage' width='500' height='80' stroke-width='2'></svg></div>"
        },
        {
           "id":"control_container",
           "gravity":true,
           "padding":0,
-          "html":"<div>@todo Show Running Status of all Controls Here as Icons</div>"
+          "html":"<div class='sparkdiv'>@todo Show Running Status of all Controls Here as Icons</div>"
        },
        {
           "cols":[

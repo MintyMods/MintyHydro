@@ -16,19 +16,19 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
                         "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -50,19 +50,19 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
                         "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
                         "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
                         "value": "ON"
                      }
@@ -120,21 +120,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -189,21 +189,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -259,21 +259,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -370,21 +370,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -481,21 +481,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -592,21 +592,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -703,21 +703,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -814,21 +814,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -925,21 +925,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -1036,21 +1036,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }
@@ -1147,21 +1147,21 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
+                        "label": "AUTO",
                         "labelPosition": "left",
-                        "value": "auto"
+                        "value": "AUTO"
                      },
                      {
                         "type": "radioButton",
-                        "label": "Off",
+                        "label": "OFF",
                         "labelPosition": "left",
-                        "value": "off"
+                        "value": "OFF"
                      },
                      {
                         "type": "radioButton",
-                        "label": "On",
+                        "label": "ON",
                         "labelPosition": "left",
-                        "value": "on"
+                        "value": "ON"
                      }
                   ]
                }

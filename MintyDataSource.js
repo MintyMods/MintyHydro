@@ -1,6 +1,6 @@
 const config = require('./MintyConfig');
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./database/MintyHydro.datasource');
+var db = new sqlite3.Database('./database/MintyHydro.db');
 
 const DB_COMMAND = 'DB:COMMAND';
 const DB_RESULT = 'DB:RESULT';
@@ -149,7 +149,7 @@ const MintyDataSource = {
     update : function(opts, callback) {
         opts.command = 'UPDATE';
         db.serialize(function() {
-            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
+            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?, datetime('now'))");
             stmt.run(opts.name, opts.value.toString(), function(err, row) {
                 stmt.finalize();
                 if (err == null) {

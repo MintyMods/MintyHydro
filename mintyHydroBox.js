@@ -339,48 +339,107 @@ const MintyHydroBox = {
   },
 
   processAirTemp: function (opts) {
-    log("process " + opts);
-//     let high = opts.config[''];
+    let range = opts.config['CONTROL:AIR:TEMPERATURE:SLIDER']['value'].split(',');
+    let low = range[0];
+    let high = range[1];
+    let current = this.reading.temp.air;
+    if (opts.condition == 'TEMP:AIR:HIGH') {
+      if (current >= high) {
+        processResourceState(opts);
+      }
+    } else if (opts.condition == 'TEMP:AIR:LOW') {
+      if (current <= low) {
+        processResourceState(opts);
+      }
+    }
   },
 
   processWaterTemp: function (opts) {
-    log("process " + opts);
+    let range = opts.config['CONTROL:WATER:TEMPERATURE:SLIDER']['value'].split(',');
+    let low = range[0];
+    let high = range[1];
+    let current = this.reading.temp.water;
+    if (opts.condition == 'TEMP:WATER:HIGH') {
+      if (current >= high) {
+        processResourceState(opts);
+      }
+    } else if (opts.condition == 'TEMP:WATER:LOW') {
+      if (current <= low) {
+        processResourceState(opts);
+      }
+    }
   },
 
   processHumidity: function (opts) {
-    log("process " + opts);
+    let range = opts.config['CONTROL:AIR:HUMIDITY:SLIDER']['value'].split(',');
+    let low = range[0];
+    let high = range[1];
+    let current = this.reading.humidity;
+    if (opts.condition == 'HUMIDITY:AIR:HIGH') {
+      if (current >= high) {
+        processResourceState(opts);
+      }
+    } else if (opts.condition == 'HUMIDITY:AIR:LOW') {
+      if (current <= low) {
+        processResourceState(opts);
+      }
+    }
   },
 
   processWaterPH: function (opts) {
-    log("process " + opts);
+    let range = opts.config['CONTROL:WATER:PH:SLIDER']['value'].split(',');
+    let low = range[0];
+    let high = range[1];
+    let current = this.reading.ph;
+    if (opts.condition == 'PH:WATER:HIGH') {
+      if (current >= high) {
+        processResourceState(opts);
+      }
+    } else if (opts.condition == 'PH:WATER:LOW') {
+      if (current <= low) {
+        processResourceState(opts);
+      }
+    }
   },
 
   processWaterEC: function (opts) {
-    log("process " + opts);
+    let range = opts.config['CONTROL:WATER:EC:SLIDER']['value'].split(',');
+    let low = range[0];
+    let high = range[1];
+    let current = this.reading.ec;
+    if (opts.condition == 'EC:WATER:HIGH') {
+      if (current >= high) {
+        processResourceState(opts);
+      }
+    } else if (opts.condition == 'EC:WATER:LOW') {
+      if (current <= low) {
+        processResourceState(opts);
+      }
+    }
   },
 
   processWaterLevelHighTank: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   processWaterLevelMediumTank: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   processWaterLevelLowTank: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   processWaterLevelHighRes: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   processWaterLevelMediumRes: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   processWaterLevelLowRes: function (opts) {
-    log("process " + opts);
+    log("@todo implement... ", opts);
   },
 
   setPollAllSensors: function (poll) {

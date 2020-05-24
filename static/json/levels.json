@@ -70,7 +70,7 @@
                 "labelInline": false,
                 "labelWidth": "150px",
                 "width": "90%",
-                "id": "CONTROL:AIR:HUMIDIFIER:SLIDER",
+                "id": "CONTROL:AIR:HUMIDITY:SLIDER",
                 "min": 20,
                 "max": 80,
                 "majorTick": 10,

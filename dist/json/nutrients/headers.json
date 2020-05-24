@@ -7,13 +7,13 @@
          {
             "text": "Week:"
          }
-      ]      
+      ]
    },
    {
       "id": "1",
       "width": 60,
       "type": "number",
-      "tooltip":"Seedling",
+      "tooltip": "Seedling",
       "header": [
          {
             "text": "1"
@@ -27,7 +27,7 @@
       "type": "number",
       "header": [
          {
-            "text":"2"
+            "text": "2"
          }
       ]
    },
@@ -37,7 +37,7 @@
       "type": "number",
       "header": [
          {
-            "text":"3",
+            "text": "3",
             "tooltip": "Late Growth"
          }
       ]
@@ -48,7 +48,7 @@
       "type": "number",
       "header": [
          {
-            "text":"4",
+            "text": "4",
             "tooltip": "Transition"
          }
       ]
@@ -59,7 +59,7 @@
       "type": "number",
       "header": [
          {
-            "text":"5",
+            "text": "5",
             "tooltip": "Early Bloom"
          }
       ]
@@ -70,7 +70,7 @@
       "type": "number",
       "header": [
          {
-            "text":"6",
+            "text": "6",
             "tooltip": "Mid Bloom"
          }
       ]
@@ -81,7 +81,7 @@
       "type": "number",
       "header": [
          {
-            "text":"7",
+            "text": "7",
             "tooltip": "Late Bloom"
          }
       ]
@@ -92,7 +92,7 @@
       "type": "number",
       "header": [
          {
-            "text":"8",
+            "text": "8",
             "tooltip": "Ripen"
          }
       ]
@@ -103,10 +103,9 @@
       "type": "number",
       "header": [
          {
-            "text":"9",
+            "text": "9",
             "tooltip": "Flush"
          }
       ]
-   
    }
 ]

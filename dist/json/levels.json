@@ -1,0 +1,85 @@
+{
+    "title": "Environmental Control Ranges",
+    "padding": 10,
+    "rows": [
+        {
+          "title": "",
+          "align": "around",
+          "padding": 25,
+          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+          "rows": [
+             {
+                "type": "slider",
+                "range":true,
+                "label": "p.H.",
+                "labelInline": false,
+                "labelWidth": "150px",
+                "width": "90%",
+                "id": "CONTROL:PH:SLIDER",
+                "min": 30,
+                "max": 80,
+                "value": 65,
+                "majorTick": 5,
+                "tick": 1
+             },
+             {
+                "type": "slider",
+                "range":true,
+                "label": "E.C.",
+                "labelInline": false,
+                "labelWidth": "150px",
+                "width": "90%",
+                "id": "CONTROL:EC:SLIDER",
+                "min": 30,
+                "max": 80,
+                "value": 65,
+                "majorTick": 5,
+                "tick": 1
+             },
+             {
+                "gravity": true,
+                "range":true,
+                "type": "slider",
+                "id": "CONTROL:WATER_HEATER:SLIDER",
+                "label": "Water Temp ℃",
+                "labelInline": false,
+                "labelWidth": "140px",
+                "width": "90%",
+                "min": 0,
+                "max": 40,
+                "value": 22,
+                "majorTick": 5,
+                "tick": 1
+             },
+             {
+                "type": "slider",
+                "range":true,
+                "id": "CONTROL:HEATER:SLIDER",
+                "label": "Air Temp ℃",
+                "labelInline": false,
+                "labelWidth": "150px",
+                "width": "90%",
+                "min": 0,
+                "max": 40,
+                "value": 24,
+                "majorTick": 5,
+                "tick": 1
+             },             
+             {
+                "type": "slider",
+                "range":true,
+                "label": "Relative Humidity",
+                "labelInline": false,
+                "labelWidth": "150px",
+                "width": "90%",
+                "id": "CONTROL:HUMIDIFIER:SLIDER",
+                "min": 30,
+                "max": 80,
+                "value": 65,
+                "majorTick": 5,
+                "tick": 1
+             }
+          ]
+       }
+    ]
+ }

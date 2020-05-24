@@ -1,1 +1,5 @@
-[{ "start_date": "2020-04-18 00:00", "end_date": "2020-08-08 00:00", "text": "GR420 LED Grow Off Sponsored By Invisible Sun", "id": "1588087792551", "automation": "0", "textColor": "black", "color": "greenyellow"}]
+[{ "start_date": "2020-04-18 00:00", "end_date": "2020-08-08 00:00", "text": "GR420 LED Grow Off Sponsored By Invisible Sun", "id": "1588087792551", "automation": "0",
+        "textColor": "black",
+        "color": "greenyellow"
+    }
+]

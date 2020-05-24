@@ -10,32 +10,32 @@
             {
                "padding": 5,
                "cols": [
-                   {
-                       "type": "textarea",
-                       "label": "",
-                       "labelInline": true,
-                       "labelWidth": "0px",                       
-                       "value": "Clean the probe and submerge in 12,880µS calibration solution. Let the following EH reading stabilise before continuing.",                       
-                       "id":"CALIBRATE:EC:LOW",
-                       "width":420,
-                       "height":400,
-                       "gravity":true
-                   }
+                  {
+                     "type": "textarea",
+                     "label": "",
+                     "labelInline": true,
+                     "labelWidth": "0px",
+                     "value": "Clean the probe and submerge in 12,880µS calibration solution. Let the following EH reading stabilise before continuing.",
+                     "id": "CALIBRATE:EC:LOW",
+                     "width": 420,
+                     "height": 400,
+                     "gravity": true
+                  }
                ]
             },
             {
                "padding": 10,
                "cols": [
-                   {
-                       "type": "text",
-                       "id":"CALIBRATE:EC:READING",
-                       "label": "EC:",
-                       "labelInline": true,
-                       "value": "0.00"
-                   },                      
+                  {
+                     "type": "text",
+                     "id": "CALIBRATE:EC:READING",
+                     "label": "EC:",
+                     "labelInline": true,
+                     "value": "0.00"
+                  },
                   {
                      "type": "button",
-                     "id":"CALIBRATE:EC:LOW:NEXT",
+                     "id": "CALIBRATE:EC:LOW:NEXT",
                      "value": "Continue",
                      "size": "small",
                      "view": "flat",
@@ -45,6 +45,6 @@
                ]
             }
          ]
-      }      
+      }
    ]
 }

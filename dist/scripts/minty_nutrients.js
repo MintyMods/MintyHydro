@@ -24,11 +24,11 @@ function initNutrientSection() {
         editable: false,
         sortable: false,
         resizable: false,
-        splitAt:  (isCompact() ? 0 : 1)
+        splitAt: (isCompact() ? 0 : 1)
     });
 
-    nutrientAdjustForm = new dhx.Form(null,  loadJSON('/json/nutrients/adjust.json'));
-    
+    nutrientAdjustForm = new dhx.Form(null, loadJSON('/json/nutrients/adjust.json'));
+
     initFormEvents(nutrientAdjustForm, 'NUTRIENT');
     nutrientLayout.cell("dosing_adjust_container").attach(nutrientAdjustForm);
     nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
@@ -55,7 +55,7 @@ function initNutrientSection() {
 
     baseNutrientsGrid.data.events.on("Change", function (id, status, row) {
         if (status) {
-            let opts = { 'command':'JSON:SET', 'table':'NUTRIENT', 'name':id, 'json':row, status };
+            let opts = { 'command': 'JSON:SET', 'table': 'NUTRIENT', 'name': id, 'json': row, status };
             socket.emit("DB:COMMAND", opts);
             updateDosingGrid();
         }
@@ -66,7 +66,7 @@ function initNutrientSection() {
     });
 
     socket.on('DB:JSON', function (data) {
-        if (data.table == 'NUTRIENT' && data.command == 'JSON:ALL') {   
+        if (data.table == 'NUTRIENT' && data.command == 'JSON:ALL') {
             var rows = data.json;
             rows.forEach(element => {
                 let cols = JSON.parse(element.value);
@@ -76,16 +76,16 @@ function initNutrientSection() {
                         baseNutrientsGrid.data.getItem(cols.id)[keys[i]] = cols[keys[i]];
                     }
                     updateDosingGrid();
-                    
+
                 }
             });
-        } 
+        }
     });
-    socket.emit("DB:COMMAND", { 'command':'JSON:ALL', 'table':'NUTRIENT' });
+    socket.emit("DB:COMMAND", { 'command': 'JSON:ALL', 'table': 'NUTRIENT' });
     nutrientAdjustForm.events.on("Change", updateDosingGrid);
 }
 
-function getOverRideResCapacity () {
+function getOverRideResCapacity() {
     if (nutrientAdjustForm) {
         return nutrientAdjustForm.getItem('NUTRIENT:RES_CAPACITY').getValue();
     }

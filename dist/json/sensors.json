@@ -20,8 +20,8 @@
                      "full": true,
                      "id": "WLS:RES:HIGH",
                      "gravity": true,
-                     "width":"40%",
-                     "size":"small",
+                     "width": "40%",
+                     "size": "small",
                      "view": "flat"
                   },
                   {
@@ -34,8 +34,8 @@
                      "full": true,
                      "id": "WLS:TANK:HIGH",
                      "gravity": true,
-                     "width":"40%",
-                     "size":"small",
+                     "width": "40%",
+                     "size": "small",
                      "view": "flat"
                   }
                ]
@@ -53,8 +53,8 @@
                      "full": true,
                      "id": "WLS:RES:LOW",
                      "gravity": true,
-                     "width":"40%",
-                     "size":"small",
+                     "width": "40%",
+                     "size": "small",
                      "view": "flat"
                   },
                   {
@@ -67,8 +67,8 @@
                      "full": true,
                      "id": "WLS:TANK:LOW",
                      "gravity": true,
-                     "width":"40%",
-                     "size":"small",
+                     "width": "40%",
+                     "size": "small",
                      "view": "flat"
                   }
                ]

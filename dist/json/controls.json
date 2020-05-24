@@ -262,7 +262,6 @@
             }
          ]
       },
-      
       {
          "title": "Oscillating Fan B:",
          "align": "around",
@@ -345,7 +344,7 @@
                "labelInline": false,
                "labelWidth": "150px",
                "width": "90%",
-               "id":"CONTROL:HUMIDIFIER:SLIDER",
+               "id": "CONTROL:HUMIDIFIER:SLIDER",
                "min": 30,
                "max": 80,
                "value": 65,
@@ -426,7 +425,7 @@
             },
             {
                "type": "slider",
-               "id":"CONTROL:HEATER:SLIDER",
+               "id": "CONTROL:HEATER:SLIDER",
                "label": "Air Temp ℃",
                "labelInline": false,
                "labelWidth": "150px",
@@ -474,9 +473,9 @@
                }
             },
             {
-               "gravity":true,
+               "gravity": true,
                "type": "slider",
-               "id":"CONTROL:WATER_HEATER:SLIDER",
+               "id": "CONTROL:WATER_HEATER:SLIDER",
                "label": "Water Temp ℃",
                "labelInline": false,
                "labelWidth": "140px",

@@ -1,7 +1,7 @@
 {
-   "rows":[
+   "rows": [
       {
-         "cols":[
+         "cols": [
             "today",
             "prev",
             "date",
@@ -9,7 +9,7 @@
          ]
       },
       {
-         "cols":[
+         "cols": [
             "day",
             "week",
             "month",

@@ -1,30 +1,30 @@
 {
-    "padding": 0,
-    "title": "",
-    "rows": [
-       {
-          "title": "",
-          "align": "around",
-          "padding":5,
-          "rows": [
-             {
+   "padding": 0,
+   "title": "",
+   "rows": [
+      {
+         "title": "",
+         "align": "around",
+         "padding": 5,
+         "rows": [
+            {
                "padding": 5,
-                "cols": [
-                    {
-                        "type": "textarea",
-                        "label": "",
-                        "labelInline": true,
-                        "labelWidth": "0px",
-                        "value": "Tare scales, click 'run' and after the pump has finished, enter the amount dispensed in grams.",
-                        "id":"CALIBRATE:DOSE:NOTES",
-                        "width":"420px",
-                        "height":"300px",
-                        "gravity":false
-                    }
-                ]
-             },
-             {
-                "padding":10,
+               "cols": [
+                  {
+                     "type": "textarea",
+                     "label": "",
+                     "labelInline": true,
+                     "labelWidth": "0px",
+                     "value": "Tare scales, click 'run' and after the pump has finished, enter the amount dispensed in grams.",
+                     "id": "CALIBRATE:DOSE:NOTES",
+                     "width": "420px",
+                     "height": "300px",
+                     "gravity": false
+                  }
+               ]
+            },
+            {
+               "padding": 10,
                "cols": [
                   {
                      "type": "input",
@@ -36,9 +36,9 @@
                      "validation": "integer",
                      "maxlength": "7",
                      "gravity": false,
-                     "disabled":true,
+                     "disabled": true,
                      "width": "150"
-                  },             
+                  },
                   {
                      "type": "input",
                      "id": "CALIBRATE:DOSE:SPEED",
@@ -49,27 +49,27 @@
                      "validation": "integer",
                      "maxlength": "3",
                      "gravity": false,
-                     "disabled":true,                     
+                     "disabled": true,
                      "width": "150"
                   }
                ]
             },
             {
                "padding": 5,
-                "cols": [
-                   {
-                      "type": "button",
-                      "id":"CALIBRATE:DOSE:RUN",
-                      "full":true,
-                      "value": "Run",
-                      "size": "small",
-                      "view": "flat",
-                      "color": "primary",
-                      "icon": "fal fa-arrow-circle-right",
-                      "gravity":true
-                   }
-                ]
-             },            
+               "cols": [
+                  {
+                     "type": "button",
+                     "id": "CALIBRATE:DOSE:RUN",
+                     "full": true,
+                     "value": "Run",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "primary",
+                     "icon": "fal fa-arrow-circle-right",
+                     "gravity": true
+                  }
+               ]
+            },
             {
                "type": "input",
                "id": "CALIBRATE:DOSE:AMOUNT",
@@ -80,27 +80,26 @@
                "required": "true",
                "labelWidth": "100",
                "maxlength": "5",
-               
                "gravity": false,
                "width": "250"
-            },            
-             {
+            },
+            {
                "padding": 10,
-                "cols": [
-                   {
-                      "type": "button",
-                      "id":"CALIBRATE:DOSE:FINISH",
-                      "full":true,
-                      "value": "Finish",
-                      "size": "small",
-                      "view": "flat",
-                      "color": "primary",
-                      "icon": "fal fa-arrow-circle-right",
-                      "gravity":true
-                   }
-                ]
-             }
-          ]
-       }      
-    ]
- }
+               "cols": [
+                  {
+                     "type": "button",
+                     "id": "CALIBRATE:DOSE:FINISH",
+                     "full": true,
+                     "value": "Finish",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "primary",
+                     "icon": "fal fa-arrow-circle-right",
+                     "gravity": true
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

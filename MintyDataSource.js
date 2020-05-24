@@ -55,10 +55,53 @@ const MintyDataSource = {
         }.bind(this));
     },
 
+    getActiveControlStates: function(callback) {
+        let sql = "SELECT name, value FROM MH_CONTROL";// WHERE value IN ('ON','OFF')
+        db.serialize(function() {
+            db.all(sql, function(err, rows) {
+                if (err == null) {
+                    if (callback) callback(rows);
+                }
+            }.bind(this));
+        }.bind(this));  
+    },
+
+    getActiveControlStates: function(callback) {
+        let sql = "SELECT name, value FROM MH_CONTROL";
+        db.serialize(function() {
+            db.all(sql, function(err, rows) {
+                if (err == null) {
+                    if (callback) callback(rows);
+                }
+            }.bind(this));
+        }.bind(this));  
+    },
+  
+    getActiveSchedules: function(callback) {
+        let sql = "SELECT E.resource, E.trigger, E.condition, C.value" + 
+                  " FROM MH_EVENT E, MH_CONTROL C" +
+                  " WHERE (strftime('%Y-%m-%d %H:%M:%S', E.start_date)" + 
+                  " <= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))" + 
+                  " AND strftime('%Y-%m-%d %H:%M:%S', e.end_date) " + 
+                  " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))) " + 
+                  " AND E.resource||'STATE' = C.name " + 
+                  " AND C.value = 'AUTO' " + 
+                  " ORDER BY E.resource, E.condition ";
+        log("sql",sql);
+        db.serialize(function() {
+            db.all(sql, function(err, rows) {
+                if (err == null) {
+                    if (callback) callback(rows);
+                }
+            }.bind(this));
+        }.bind(this));  
+    },
+
+
     insert: function(opts, callback) {
         opts.command = 'INSERT';
         db.serialize(function() {
-            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
+            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now', 'localtime'))");
             stmt.run(opts.name, opts.value, function(err, row) {
             }.bind(this));
             stmt.finalize();
@@ -69,7 +112,7 @@ const MintyDataSource = {
     getJSON : function(opts, callback) {
         opts.command = 'JSON:GET';
         db.serialize(function() {
-            db.get('SELECT value FROM MH_' + opts.table + ' WHERE name = ' + opts.name, function(err, row) {
+            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function(err, row) {
                 if (err == null) {
                     opts.json = row.value;
                     this.io.socketEmit(DB_JSON, opts);
@@ -82,7 +125,7 @@ const MintyDataSource = {
     allJSON : function(opts, callback) {
         opts.command = 'JSON:ALL';
         db.serialize(function() {
-            db.all('SELECT value FROM MH_' + opts.table, function(err, rows) {
+            db.all("SELECT value FROM MH_" + opts.table, function(err, rows) {
                 if (err == null) {
                     opts.json = rows;
                     this.io.socketEmit(DB_JSON, opts);
@@ -95,7 +138,7 @@ const MintyDataSource = {
     setJSON : function(opts, callback) {
         opts.command = 'JSON:SET';
         db.serialize(function() {
-            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now'))");
+            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now', 'localtime'))");
             stmt.run(opts.name, JSON.stringify(opts.json), function(err, row) {
                 stmt.finalize();
                 if (err == null) {
@@ -149,7 +192,7 @@ const MintyDataSource = {
     update : function(opts, callback) {
         opts.command = 'UPDATE';
         db.serialize(function() {
-            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?, datetime('now'))");
+            let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?, datetime('now', 'localtime'))");
             stmt.run(opts.name, opts.value.toString(), function(err, row) {
                 stmt.finalize();
                 if (err == null) {
@@ -169,7 +212,7 @@ const MintyDataSource = {
     select : function(opts, callback) {
         opts.command = 'SELECT';
         db.serialize(function() {
-            db.get('SELECT value FROM MH_' + opts.table + ' WHERE name = ' + opts.name, function(err, row) {
+            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function(err, row) {
                 opts.row = row;
                 if (err == null) {
                     opts.value = row.value;
@@ -183,7 +226,7 @@ const MintyDataSource = {
     all : function(opts, callback) {
         opts.command = 'ALL';
         db.serialize(function() {
-            db.all('SELECT * FROM MH_' + opts.table, function(err, rows) {
+            db.all("SELECT * FROM MH_" + opts.table, function(err, rows) {
                 opts.rows = rows;
                 if (err == null) {
                     this.io.socketEmit(DB_RESULT, opts);
@@ -207,7 +250,6 @@ const MintyDataSource = {
         this.createSensorTable();
         this.createSensorReadingTable();  
         this.createSettingTable();      
-        this.createPumpTable();      
         this.createNutrientTable();      
         this.createSchedulerEventsTable();
     },
@@ -245,15 +287,6 @@ const MintyDataSource = {
         db.run(sql);
     },
 
-    createPumpTable() {
-        var sql = "CREATE TABLE IF NOT EXISTS MH_PUMP (";
-        sql += " name TEXT PRIMARY KEY,";
-        sql += " value TEXT,";
-        sql += " datetime TEXT";
-        sql += ")";
-        db.run(sql);
-    },
-
     createNutrientTable() {
         var sql = "CREATE TABLE IF NOT EXISTS MH_NUTRIENT (";
         sql += " name TEXT PRIMARY KEY,";
@@ -268,7 +301,7 @@ const MintyDataSource = {
         sql += " name TEXT PRIMARY KEY,";
         sql += " desc TEXT NOT NULL,";
         sql += " unit TEXT NOT NULL,";
-        sql += " datetime TEXT";
+        sql += " datetime TEXT"; 
         sql += ")";
         db.run(sql);
     },

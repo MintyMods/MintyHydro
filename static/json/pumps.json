@@ -9,7 +9,7 @@
          "rows": [
             {
                "type": "radioGroup",
-               "name": "PUMP:RECIRCULATING:STATE",
+               "name": "CONTROL:WATER_PUMP:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",

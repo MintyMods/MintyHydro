@@ -2,29 +2,27 @@
     "gravity": false,
     "padding": 0,
     "rows": [
-       {
-          "gravity": false,
-          "padding": 10,
-          "rows": [
-            {
-                "name": "NUTRIENT:RES_CAPACITY",
-                "id": "NUTRIENT:RES_CAPACITY",
-                "type": "input",
-                "labelInline": true,
-                "label": "Total Capacity (litres)",
-                "icon": "fal fa-trash-restore",
-                "placeholder": "ltrs",
-                "labelPosition": "left",
-                "gravity": false,
-                "labelWidth": "150",
-                "validation": "number",
-                "maxlength": "5",
-                "value": ".8",
-                "width":300
-             }
+        {
+            "gravity": false,
+            "padding": 10,
+            "rows": [
+                {
+                    "name": "NUTRIENT:RES_CAPACITY",
+                    "id": "NUTRIENT:RES_CAPACITY",
+                    "type": "input",
+                    "labelInline": true,
+                    "label": "Total Capacity (litres)",
+                    "icon": "fal fa-trash-restore",
+                    "placeholder": "ltrs",
+                    "labelPosition": "left",
+                    "gravity": false,
+                    "labelWidth": "150",
+                    "validation": "number",
+                    "maxlength": "5",
+                    "value": ".8",
+                    "width": 300
+                }
             ]
-
-    
         }
     ]
 }

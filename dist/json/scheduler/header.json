@@ -1,7 +1,6 @@
 [
     "week_agenda",
     "timeline",
-
     "spacer",
     "day",
     "week",
@@ -12,4 +11,3 @@
     "date",
     "next"
 ]
-

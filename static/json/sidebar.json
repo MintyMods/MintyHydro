@@ -18,6 +18,15 @@
       "value": "Sensors"
    },
    {
+      "id": "levels",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-sliders-h-square",
+      "value": "Levels"
+   },   
+   {
       "id": "controls",
       "type": "button",
       "active": false,
@@ -43,7 +52,7 @@
       "twoState": true,
       "icon": "fal fa-calendar-alt",
       "value": "Schedule"
-   },   
+   },
    {
       "id": "dosing",
       "type": "button",
@@ -75,13 +84,14 @@
       "icon": "fal fa-analytics",
       "value": "Statistics"
    },
+
    {
       "id": "settings",
       "type": "button",
       "active": false,
       "group": "nav",
       "twoState": true,
-      "icon": "fal fa-sliders-h-square",
+      "icon": "fal fa-user-cog",
       "value": "Settings"
    }
 ]

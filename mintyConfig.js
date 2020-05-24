@@ -1,8 +1,9 @@
 const SERIAL_PORT = 'COM6';
-// const SERIAL_PORT = '/dev/ttyACM0' ;
+//const SERIAL_PORT = '/dev/ttyACM0' ;
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = 'localhost';
-const DEBUGGING = true;
+const DEBUGGING = false;
+const SEND_RF_SIGNALS = false;
 
 const development = {
   host: 'http://' + IP_ADDRESS,
@@ -24,6 +25,7 @@ const url = config.host + port + '/' + namespace;
 config.url = url;
 config.serialPort = SERIAL_PORT;
 config.debug = DEBUGGING;
+config.isSendingRfSignals = SEND_RF_SIGNALS;
 
 config.tick = {
   bme280: 4000,

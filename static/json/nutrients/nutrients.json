@@ -1,47 +1,47 @@
 [
-    {
-       "key": "",
-       "id": 99,
-       "label": "Select Pump..."
-    },
-    {
-       "key": "Cal/Mag - (Pump A)",
-       "id": 0,
-       "label": "Cal/Mag"
-    },
-    {
-       "key": "F/Micro - (Pump B)",
-       "id": 1,
-       "label": "F/Micro"
-    },
-    {
-       "key": "F/Grow - (Pump C)",
-       "id": 2,
-       "label": "F/Grow"
-    },
-    {
-       "key": "F/Bloom - (Pump D)",
-       "id": 3,
-       "label": "F/Bloom"
-    },
-    {
-       "key": "H/Guard - (Pump E)",
-       "id": 4,
-       "label": "H/Guard"
-    },
-    {
-       "key": "pH Down - (Pump H)",
-       "id": 6,
-       "label": "pH UP"
-    },
-    {
-       "key": "pH Down - (Pump G)",
-       "id": 7,
-       "label": "pH Down"
-    },
-    {
-       "key": "Dose All - (Pump *)",
-       "id": 9,
-       "label": "Complete"
-    }
- ]
+   {
+      "key": "",
+      "id": 99,
+      "label": "Select Pump..."
+   },
+   {
+      "key": "Cal/Mag - (Pump A)",
+      "id": 0,
+      "label": "Cal/Mag"
+   },
+   {
+      "key": "F/Micro - (Pump B)",
+      "id": 1,
+      "label": "F/Micro"
+   },
+   {
+      "key": "F/Grow - (Pump C)",
+      "id": 2,
+      "label": "F/Grow"
+   },
+   {
+      "key": "F/Bloom - (Pump D)",
+      "id": 3,
+      "label": "F/Bloom"
+   },
+   {
+      "key": "H/Guard - (Pump E)",
+      "id": 4,
+      "label": "H/Guard"
+   },
+   {
+      "key": "pH Down - (Pump H)",
+      "id": 6,
+      "label": "pH UP"
+   },
+   {
+      "key": "pH Down - (Pump G)",
+      "id": 7,
+      "label": "pH Down"
+   },
+   {
+      "key": "Dose All - (Pump *)",
+      "id": 9,
+      "label": "Complete"
+   }
+]

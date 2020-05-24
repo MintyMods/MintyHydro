@@ -1,71 +1,70 @@
 [
-    {
-       "key": "__SELECT",
-       "label": "Select Condition..."
-    },
-    {
-       "key": "TEMP:AIR:HIGH",
-       "label": "High Air Temperature"
-    },
-    {
-       "key": "TEMP:AIR:LOW",
-       "label": "Low Air Temperature"
-    },
-    {
-       "key": "TEMP:WATER:HIGH",
-       "label": "High Water Temperature"
-    },
-    {
-       "key": "TEMP:WATER:LOW",
-       "label": "Low Water Temperature"
-    },
-    {
-       "key": "HUMIDITY:AIR:HIGH",
-       "label": "High Humidity"
-    },
-    {
-       "key": "HUMIDITY:AIR:LOW",
-       "label": "Low Humidity"
-    },
-    {
-       "key": "PH:WATER:HIGH",
-       "label": "High pH"
-    },
-    {
-       "key": "PH:WATER:LOW",
-       "label": "Low pH"
-    },
-    {
-       "key": "EC:WATER:HIGH",
-       "label": "High E.C."
-    },
-    {
-       "key": "EC:WATER:LOW",
-       "label": "Low E.C."
-    },
-    {
-       "key": "LEVEL:TANK:HIGH:ON",
-       "label": "Water Tank Full"
-    },
-    {
-       "key": "LEVEL:TANK:HIGH:OFF&&LEVEL:TANK:LOW:ON",
-       "label": "Water Tank Low"
-    },
-    {
-       "key": "LEVEL:TANK:LOW:OFF",
-       "label": "Water Tank Empty"
-    },
-    {
-      "key": "LEVEL:RES:HIGH:ON",
+   {
+      "key": "__SELECT",
+      "label": "Select Condition..."
+   },
+   {
+      "key": "TEMP:AIR:HIGH",
+      "label": "High Air Temperature"
+   },
+   {
+      "key": "TEMP:AIR:LOW",
+      "label": "Low Air Temperature"
+   },
+   {
+      "key": "TEMP:WATER:HIGH",
+      "label": "High Water Temperature"
+   },
+   {
+      "key": "TEMP:WATER:LOW",
+      "label": "Low Water Temperature"
+   },
+   {
+      "key": "HUMIDITY:AIR:HIGH",
+      "label": "High Humidity"
+   },
+   {
+      "key": "HUMIDITY:AIR:LOW",
+      "label": "Low Humidity"
+   },
+   {
+      "key": "PH:WATER:HIGH",
+      "label": "High pH"
+   },
+   {
+      "key": "PH:WATER:LOW",
+      "label": "Low pH"
+   },
+   {
+      "key": "EC:WATER:HIGH",
+      "label": "High E.C."
+   },
+   {
+      "key": "EC:WATER:LOW",
+      "label": "Low E.C."
+   },
+   {
+      "key": "LEVEL:TANK:HIGH",
+      "label": "Water Tank Full"
+   },
+   {
+      "key": "LEVEL:TANK:MEDIUM",
+      "label": "Water Tank Medium"
+   },
+   {
+      "key": "LEVEL:TANK:LOW",
+      "label": "Water Tank Empty"
+   },
+   {
+      "key": "LEVEL:RES:HIGH",
       "label": "Reservoir Full"
    },
    {
-      "key": "LEVEL:RES:HIGH:OFF&&LEVEL:RES:LOW:ON",
-      "label": "Reservoir Low"
+      "key": "LEVEL:RES:MEDIUM",
+      "label": "Reservoir Medium"
    },
    {
-      "key": "LEVEL:RES:LOW:OFF",
+      "key": "LEVEL:RES:LOW",
       "label": "Reservoir Empty"
    }
-
 ]

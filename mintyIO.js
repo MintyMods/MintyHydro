@@ -3,7 +3,6 @@ const io = require('socket.io-client');
 const Encoder7Bit = require('encoder7bit');
 const config = require('./MintyConfig');
 const socket = io.connect(config.url);
-const SEND_RF_SIGNALS = true;
 
 const MintyIO = function (board, serial) {
     this.board = board;
@@ -14,7 +13,8 @@ const MintyIO = function (board, serial) {
     },
 
     this.sendRF = function (code) {
-        if (SEND_RF_SIGNALS) {
+        if (config.isSendingRfSignals) {
+            log("RF@" + code);
             this.sendSerial(config.RCT_OUTPUT_DETACH, config.RCT_OUT_PIN);
             this.sendSerial(config.RCT_OUTPUT_ATTACH, config.RCT_OUT_PIN);
             if (config.RCT_PULSE_LENGTH) {
@@ -22,6 +22,8 @@ const MintyIO = function (board, serial) {
             }
             let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(this.longToByteArray(code)));
             this.sendSerial(config.RCT_OUTPUT_CODE_LONG, config.RCT_OUT_PIN, bytes);
+        } else {
+            warn("RF@" + code + " - surpressed");
         }
     }.bind(this);
 
@@ -66,6 +68,10 @@ const MintyIO = function (board, serial) {
     this.socketEmit = function (namespace, payload) {
         log("EMIT@" + namespace, payload != undefined ? payload : "");
         socket.emit(namespace, payload);
+    }.bind(this);
+    this.socketBroadcast = function (namespace, payload) {
+        log("BroadCast@" + namespace, payload != undefined ? payload : "");
+        socket.broadcast.emit(namespace, payload);
     }.bind(this);
 
     // https://stackoverflow.com/questions/8482309/converting-javascript-integer-to-byte-array-and-back

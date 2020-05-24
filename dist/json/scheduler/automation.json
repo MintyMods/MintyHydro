@@ -12,79 +12,85 @@
       "label": "Add Notes:"
    },
    {
-      "key": "LIGHT:",
+      "key": "CONTROL:LIGHT:",
       "color": "#FDFFB8",
       "textColor": "#000000",
       "label": "Grow Light"
    },
    {
-      "key": "FAN:EXTRACT:",
+      "key": "CONTROL:AIR_EXTRACT_FAN:",
       "color": "#5085FF",
       "textColor": "#FFFFFF",
       "label": "Extract Fan"
    },
    {
-      "key": "FAN:INTAKE:",
+      "key": "CONTROL:AIR_INTAKE_FAN:",
       "color": "#BACCF8",
       "textColor": "#000000",
       "label": "Intake Fan"
    },
    {
-      "key": "FAN:OSCILLATING:",
+      "key": "CONTROL:AIR_MOVEMENT_FAN_A:",
       "color": "#3ADBE3",
       "textColor": "#FFFFFF",
-      "label": "Oscillating Fan"
+      "label": "Oscillating Fan A"
    },
    {
-      "key": "WATER:HEATER:",
+      "key": "CONTROL:AIR_MOVEMENT_FAN_B:",
+      "color": "#3ADBE3",
+      "textColor": "#FFFFFF",
+      "label": "Oscillating Fan B"
+   },
+   {
+      "key": "CONTROL:WATER_HEATER:",
       "color": "#FCBBC4",
       "textColor": "#000000",
       "label": "Water Heater"
    },
    {
-      "key": "AIR:HEATER:",
+      "key": "CONTROL:HEATER:",
       "color": "#FA0132",
       "textColor": "#FFFFFF",
       "label": "Air Heater"
    },
    {
-      "key": "HUMIDIFIER:",
+      "key": "CONTROL:HUMIDIFIER:",
       "color": "#C501FA",
       "textColor": "#FFFFFF",
       "label": "Humidifier"
    },
    {
-      "key": "DE:HUMIDIFIER:",
+      "key": "CONTROL:DEHUMIDIFIER:",
       "color": "#FA01AB",
       "textColor": "#fff",
       "label": "De-Humidifier"
    },
    {
-      "key": "AIR:PUMP:",
+      "key": "CONTROL:AIR_PUMP:",
       "color": "#C1F6FC",
       "textColor": "#000000",
       "label": "Air Pump"
    },
    {
-      "key": "RECIRCULATING:PUMP:",
+      "key": "CONTROL:WATER_PUMP:",
       "color": "#85B79D",
       "textColor": "#fff",
       "label": "Recirculating Pump"
    },
    {
-      "key": "FILL:PUMP:",
+      "key": "PUMP:FILL:",
       "color": "#226633",
       "textColor": "#FFF",
       "label": "Fill Reservoir Pump"
    },
    {
-      "key": "DRAIN:PUMP:",
+      "key": "PUMP:DRAIN:",
       "color": "#85339D",
       "textColor": "#FFF",
       "label": "Drain Pump"
    },
    {
-      "key": "DRIP:PUMP:",
+      "key": "PUMP:DRIP:",
       "color": "#85B755",
       "textColor": "#FFF",
       "label": "Drip Feed Pump"

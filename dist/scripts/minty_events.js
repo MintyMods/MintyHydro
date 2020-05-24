@@ -1,25 +1,30 @@
 
 function saveSchedulerEvent(event) {
-    socket.emit("DB:COMMAND", { event, 'command':'SAVE:EVENT', 'table':'EVENTS' });
+    socket.emit("DB:COMMAND", { event, 'command': 'SAVE:EVENT', 'table': 'EVENTS' });
 }
 
 function loadSchedulerEvents() {
-    socket.emit("DB:COMMAND", { 'command':'ALL', 'table':'EVENT' });
+    socket.emit("DB:COMMAND", { 'command': 'ALL', 'table': 'EVENT' });
+}
+
+function getFormValue(form, name) {
+    let item = form.getItem(name);
+    return item ? item.getValue() : undefined;
 }
 
 function initFormEvents(form, table) {
     form.events.on("Change", function (name, value) {
         if (name.indexOf(':STATE') > -1) {
-            let time = form.getItem(name.replace(':STATE',':TIME')).getValue();
-            let speed = form.getItem(name.replace(':STATE',':SPEED')).getValue();
-            let amount = form.getItem(name.replace(':STATE',':AMOUNT')).getValue();
-            socket.emit(name, { value, time, speed, amount });
+            let time = getFormValue(form, name.replace(':STATE', ':TIME'));
+            let speed = getFormValue(form, name.replace(':STATE', ':SPEED'));
+            let amount = getFormValue(form, name.replace(':STATE', ':AMOUNT'));
+            socket.emit(name, { 'command': name, value, time, speed, amount });
         } else {
-            socket.emit(name, { value });
+            socket.emit(name, { 'command': name, value });
         }
-        socket.emit("DB:COMMAND", { name, value, 'command':'UPDATE', table });
-    });      
-    socket.emit("DB:COMMAND", { 'command':'ALL', table });
+        socket.emit("DB:COMMAND", { name, value, 'command': 'UPDATE', table });
+    });
+    socket.emit("DB:COMMAND", { 'command': 'ALL', table });
 }
 
 function initPumpFormEvents(pumpsForm) {
@@ -36,30 +41,33 @@ function initPumpFormEvents(pumpsForm) {
             socket.emit(command);
         }
     });
-    initFormEvents(pumpsForm, 'PUMP');
+    initFormEvents(pumpsForm, 'CONTROL');
 }
 
 function initDatabaseEvents() {
     socket.on('DB:RESULT', function (data) {
-        if (data.table == 'PUMP') {   
-            processFormEvents(pumpsForm, data);   
-        } else if (data.table == 'SETTING') {
+        if (data.table == 'SETTING') {
             processFormEvents(settingsForm, data);
         } else if (data.table == 'CONTROL') {
             processFormEvents(controlsForm, data);
+            processFormEvents(pumpsForm, data);
+            processFormEvents(levelsForm, data);
         } else if (data.table == 'NUTRIENT') {
             processFormEvents(nutrientAdjustForm, data);
         } else if (data.table == 'EVENT') {
             processSchedulerEvents(data);
-        }           
-    });     
+        }
+    });
 }
 
 function processFormEvents(form, data) {
     if (data.rows) {
-        data.rows.forEach(function(row) {
+        data.rows.forEach(function (row) {
             if (row.name.endsWith(':SLIDER')) {
-                if (row.value) form.setValue({ [row.name]: row.value });
+                if (row.value) {
+                    let parts = row.value.split(',');
+                    form.setValue({ [row.name]: [ parts[0], parts[1] ] });
+                }
             } else {
                 form.setValue({ [row.name]: row.value });
             }

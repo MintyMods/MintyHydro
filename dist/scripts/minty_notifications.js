@@ -19,7 +19,7 @@ var buttons = {
 };
 
 function showServerConfirmation(msg) {
-    showMsg('confirmation', msg.title, msg.text, msg.icon + ' fa-2x'); 
+    showMsg('confirmation', msg.title, msg.text, msg.icon + ' fa-2x');
 }
 
 function showMsg(type, title, text, icon) {
@@ -128,22 +128,22 @@ function showMissingMintyHydroHubError(reason) {
 let feedback_opts = null;
 function showPumpStartedFeedBack(opts) {
     feedback_opts = opts;
-    setTimeout(function(){
+    setTimeout(function () {
         showPumpStoppedFeedBack(opts)
     }, opts.time);
     let control = pumpsForm.getItem(opts.command);
-    control.config.color='success';
+    control.config.color = 'success';
     control.config.loading = true;
-    control.paint();    
+    control.paint();
 }
 
 function showPumpStoppedFeedBack(opts) {
-    opts ? opts : feedback_opts;
-    let control = pumpsForm.getItem(opts.command);
+    opts = opts ? opts : feedback_opts;
+    let control = opts ? pumpsForm.getItem(opts.command) : undefined;
     if (control) {
-        control.config.color='primary';
+        control.config.color = 'primary';
         control.config.loading = false;
         control.paint();
     }
-    runningPump = null;   
+    runningPump = null;
 }

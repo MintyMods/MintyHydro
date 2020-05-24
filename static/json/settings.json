@@ -8,22 +8,22 @@
          "padding": 5,
          "rows": [
             {
-                     "type": "datepicker",
-                     "id": "CONFIG:GROW:START_DATE",
-                     "labelInline": true,
-                     "placeholder": "Start Date",
-                     "label": "Start date",
-                     "width": "300",
-                     "labelWidth": "120"
+               "type": "datepicker",
+               "id": "CONFIG:GROW:START_DATE",
+               "labelInline": true,
+               "placeholder": "Start Date",
+               "label": "Start date",
+               "width": "300",
+               "labelWidth": "120"
             },
             {
-                     "type": "datepicker",
-                     "id": "CONFIG:GROW:END_DATE",
-                     "placeholder": "End Date",
-                     "labelInline": true,
-                     "label": "End date",
-                     "width": "300",
-                     "labelWidth": "120"
+               "type": "datepicker",
+               "id": "CONFIG:GROW:END_DATE",
+               "placeholder": "End Date",
+               "labelInline": true,
+               "label": "End date",
+               "width": "300",
+               "labelWidth": "120"
             },
             {
                "type": "input",
@@ -61,7 +61,6 @@
          "gravity": false,
          "padding": 5,
          "rows": [
-
             {
                "type": "input",
                "id": "CONFIG:GROW_AREA:HEIGHT",
@@ -246,7 +245,7 @@
                   }
                ]
             },
-            { 
+            {
                "padding": 5,
                "css": "dhx_widget--border_top",
                "rows": [
@@ -284,7 +283,7 @@
             },
             {
                "padding": 5,
-               "css": "dhx_widget--border_top dhx_widget--border_bottom",               
+               "css": "dhx_widget--border_top dhx_widget--border_bottom",
                "rows": [
                   {
                      "type": "input",
@@ -378,7 +377,6 @@
                "gravity": false,
                "width": "300"
             }
-            
          ]
       },
       {

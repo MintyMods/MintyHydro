@@ -1,9 +1,9 @@
 const io = require('socket.io-client');
 const five = require('johnny-five');
 const config = require('./MintyConfig');
-const MintyHydro = require('./MintyHydroBox');
 const MintyIO = require('./MintyIO');
 const Serialport = require("serialport");
+const MintyHydro = require('./MintyHydroBox');
 const MintyDataSource = require('./MintyDataSource');
 
 const serial = new Serialport(config.serialPort, {
@@ -41,16 +41,16 @@ board.on("error", function(msg) {
   // shutDown();
 });
 
+// 240v Relays
+global.relayWaterPump = null;
+global.relayWaterHeater = null;
+
 log("Minty-Hydro connecting to socket server: " + config.url);
 const mintyIO = new MintyIO(board, serial);
 const socket = mintyIO.getSocket();
 MintyDataSource.initDatabase(mintyIO);
 MintyHydro.setIO(mintyIO);
 MintyHydro.runAfterTimeout(MintyDataSource);
-
-// 240v Relays
-let relayWaterPump;
-let relayWaterHeater;
 
 // Peristaltic Pump Motors
 let pumpCalMag = null;
@@ -118,6 +118,7 @@ board.on('ready', function () {
     pin: config.HWR_RELAY_TWO_PIN, type: "NC"
   });
 
+  
   /* Peristaltic Dosing Pumps */
   pumpCalMag = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M1);
   pumpFloraMicro = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M2);
@@ -335,25 +336,13 @@ board.on('ready', function () {
     sendAutoOffRfCommand(config.MINTY_FDD.DRAIN, opts);
   });
   socket.on('PUMP:DRAIN:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.MINTY_FDD.DRAIN);
-      sendConfirmation('Drain Pumps On', 'The drain pumps have been turned on.', 'fal fa-cog fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.MINTY_FDD.OFF);
-      sendConfirmation('Drain Pumps Off', 'The drain pumps have been turned off.', 'fal fa-cog');
-    }
+    MintyHydro.processDrainPump(opts);
   });
   socket.on('PUMP:FILL:DOSE', function (opts) {
     sendAutoOffRfCommand(config.MINTY_FDD.FILL, opts);
   });
   socket.on('PUMP:FILL:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.MINTY_FDD.FILL);
-      sendConfirmation('Fill Pump On', 'The fill pump has been turned on.', 'fal fa-cog fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.MINTY_FDD.OFF);
-      sendConfirmation('Fill Pump Off', 'The fill pump has been turned off.', 'fal fa-cog ');
-    }
+    MintyHydro.processFillPump(opts);
   });
   socket.on('PUMP:MAGMIX:DOSE', function (opts) {
     sendAutoOffRfCommand(config.MINTY_FDD.MAGMIX, opts);
@@ -371,13 +360,7 @@ board.on('ready', function () {
     sendAutoOffRfCommand(config.MINTY_FDD.DRIP, opts);
   });
   socket.on('PUMP:DRIP:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.MINTY_FDD.DRIP);
-      sendConfirmation('Drip Pumps On', 'The drip pumps have been turned on.', 'fal fa-cog fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.MINTY_FDD.OFF);
-      sendConfirmation('Mag Mix Fans Dose', 'The magnetic mixing fans are dosing.', 'fal fa-magic fa-spin');
-    }
+    MintyHydro.processDripPump(opts);
   });
 
   waterLevelTankHigh.on("open", function () {
@@ -412,135 +395,48 @@ board.on('ready', function () {
     MintyDataSource.insert({ name: 'WLS:RES:LOW', value: 'CLOSE', table: 'READING' });
     socketEmit('WLS:RES:LOW:CLOSE');
   });
-
   socket.on('BASE_NUTRIENTS:UPDATE', function (row) {
     sendConfirmation('Base Nutrients Updated', 'Base nutrients data has been update. Dosing amounts recalculated.', 'fal balance-scale');
   });
-
   socket.on('PUMP:RECIRCULATING:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      relayWaterPump.on();
-      sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin');
-    } else if (opts.value == 'OFF') {
-      relayWaterPump.off();
-      sendConfirmation('Water Pump Off', 'Recirculating water pump has been stopped.', 'fal fa-cog');
-    }
+    MintyHydro.processWaterPump(opts);
   });
   socket.on('CONTROL:WATER_PUMP:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      relayWaterPump.on();
-      sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin');
-    } else if (opts.value == 'OFF') {
-      relayWaterPump.off();
-      sendConfirmation('Water Pump Off', 'Recirculating water pump has been stopped.', 'fal fa-cog');
-    }
+    MintyHydro.processWaterPump(opts);
   });
-
   socket.on('CONTROL:WATER_HEATER:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      relayWaterHeater.on();
-      sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-spin');
-    } else if (opts.value == 'OFF') {
-      relayWaterHeater.off();
-      sendConfirmation('Water Heater Off', 'Water heater has been turned off.', 'fal fa-water');
-    }
+    MintyHydro.processWaterHeater(opts);
   });
   socket.on('CONTROL:AIR_PUMP:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.AirPump.on);
-      sendConfirmation('Air Pump On', 'Air pump has been turned on.', 'fal fa-wind fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.AirPump.off);
-      sendConfirmation('Air Pump Off', 'Air pump has been turned off.', 'fal fa-wind');
-    }
+    MintyHydro.processAirPump(opts);    
   });
   socket.on('CONTROL:DEHUMIDIFIER:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.Dehumidifier.on);
-      sendConfirmation('De-Humidifier On', 'De-Humidifier has been turned on.', 'fal fa-tint-slash fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.Dehumidifier.off);
-      sendConfirmation('De-Humidifier Off', 'De-Humidifier has been turned off.', 'fal fa-tint-slash');
-    }
+    MintyHydro.processDeHumidifier(opts);
   });
   socket.on('CONTROL:HUMIDIFIER:STATE', function (opts) {
-    if (opts.value == 'LOW') {
-      sendRF(config.RF.Humidifier.low);
-      setTimeout(function () {
-        sendRF(config.RF.Humidifier.off_high);
-      }.bind(this), 500);
-      sendConfirmation('Humidifier Low', 'Humidifier has been turned on low.', 'fal fa-tint fa-spin');
-    } else if (opts.value == 'HIGH') {
-      sendRF(config.RF.Humidifier.high);
-      setTimeout(function () {
-        sendRF(config.RF.Humidifier.low);
-      }.bind(this), 500);
-      sendConfirmation('Humidifier High', 'Humidifier has been turned on high.', 'fal fa-tint fa-pulse');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.Humidifier.off_low);
-      setTimeout(function () {
-        sendRF(config.RF.Humidifier.off_high);
-      }.bind(this), 500);
-      sendConfirmation('Humidifier Off', 'Humidifier has been turned off.', 'fal fa-tint');
-    }
+    MintyHydro.processHumidifier(opts);
   });
   socket.on('CONTROL:HEATER:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.Heater.on);
-      sendConfirmation('Air Heater Off', 'Air heater has been turned off.', 'fal fa-heat fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.Heater.off);
-      sendConfirmation('Air Heater On', 'Air heater has been turned on.', 'fal fa-heat');
-    }
+    MintyHydro.processAirHeater(opts);
   });
   socket.on('CONTROL:AIR_EXTRACT_FAN:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.AirExtractFan.on);
-      sendConfirmation('Air Extract On', 'Air extract fans have been turned on.', 'fal fa-fan fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.AirExtractFan.off);
-      sendConfirmation('Air Extract Off', 'Air extract fans have been turned off.', 'fal fa-fan');
-    }
+    MintyHydro.processAirExtractState(opts);
   });
   socket.on('CONTROL:AIR_INTAKE_FAN:STATE', function (opts) {
-    if (opts.value == 'LOW') {
-      sendRF(config.RF.AirIntakeFan.low);
-      sendConfirmation('Air Intake Low', 'Air intake fans has been turned low.', 'fal fa-hurricane fa-spin');
-    } else if (opts.value == 'HIGH') {
-      sendRF(config.RF.AirIntakeFan.high);
-      sendConfirmation('Air Intake High', 'Air intake fans has been turned high.', 'fal fa-hurricane fa-pulse');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.AirIntakeFan.off);
-      sendConfirmation('Air Intake Off', 'Air intake fans has been turned off.', 'fal fa-hurricane');
-    }
+    MintyHydro.processAirIntakeState(opts);
   });
   socket.on('CONTROL:AIR_MOVEMENT_FAN_A:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.AirMovementFanA.on);
-      sendConfirmation('Air Movement A On', 'Air oscillating fan A has been turned on.', 'fal fa-fan-table fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.AirMovementFanA.off);
-      sendConfirmation('Air Movement A Off', 'Air oscillating fan A has been turned off.', 'fal fa-fan-table');
-    }
+    MintyHydro.processAirMovementFanA(opts);
+
   });
   socket.on('CONTROL:AIR_MOVEMENT_FAN_B:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.AirMovementFanB.on);
-      sendConfirmation('Air Movement B On', 'Air oscillating fan B has been turned on.', 'fal fa-fan-table fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.AirMovementFanB.off);
-      sendConfirmation('Air Movement B Off', 'Air oscillating fan B has been turned off.', 'fal fa-fan-table');
-    }
+    MintyHydro.processAirMovementFanB(opts);
+
   });
   socket.on('CONTROL:LIGHT:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.Light.on);
-      sendConfirmation('Lights On', 'Lights have been turned on.', 'fal fa-lightbulb-on fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.Light.off);
-      sendConfirmation('Lights Off', 'Lights have been turned off.', 'fal fa-lightbulb');
-    }
+    MintyHydro.processLightState(opts);
   });
+
   socket.on('CONTROL:CAMERA:STATE', function (opts) {
     if (opts.value == 'ON') {
       sendRF(config.RF.Camera.on);
@@ -598,3 +494,4 @@ function log(msg, payload) {
   if (config.debug) console.log("[" + (new Date()).toUTCString() + "]  [ARDUINO] " + msg, payload != undefined ? payload : "");
 }
 
+module.exports = this;

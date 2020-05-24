@@ -1,6 +1,6 @@
 
 function isCompact() {
-    return window.innerWidth < 1000   
+    return window.innerWidth < 1000
 }
 
 function warn(msg, payload) {
@@ -52,9 +52,9 @@ function loadJSON(url) {
     }
 }
 
-function toCamelCase(str){
-    return str.split(' ').map(function(word,index){
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+function toCamelCase(str) {
+    return str.split(' ').map(function (word, index) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }).join(' ');
 }
 

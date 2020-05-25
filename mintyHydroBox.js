@@ -288,16 +288,15 @@ const MintyHydroBox = {
     let opts = {
       config,
       row,
+      "condition": row.condition,
       "resource": row.resource + 'STATE',
-      "trigger": "trigger:on",
-      "condition": "TEMP:AIR:HIGH",
+      "trigger": row.trigger,
       "value": row.trigger.replace('trigger:','').toUpperCase(),
     }
     switch(row.condition) {
       case "TEMP:AIR:HIGH" :
       case "TEMP:AIR:LOW" :
         this.processAirTemp(opts);
-        log("air");
         break;
       case "TEMP:WATER:HIGH" :
       case "TEMP:WATER:LOW" :
@@ -345,11 +344,11 @@ const MintyHydroBox = {
     let current = this.reading.temp.air;
     if (opts.condition == 'TEMP:AIR:HIGH') {
       if (current >= high) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     } else if (opts.condition == 'TEMP:AIR:LOW') {
       if (current <= low) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     }
   },
@@ -361,11 +360,11 @@ const MintyHydroBox = {
     let current = this.reading.temp.water;
     if (opts.condition == 'TEMP:WATER:HIGH') {
       if (current >= high) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     } else if (opts.condition == 'TEMP:WATER:LOW') {
       if (current <= low) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     }
   },
@@ -377,11 +376,11 @@ const MintyHydroBox = {
     let current = this.reading.humidity;
     if (opts.condition == 'HUMIDITY:AIR:HIGH') {
       if (current >= high) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     } else if (opts.condition == 'HUMIDITY:AIR:LOW') {
       if (current <= low) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     }
   },
@@ -393,11 +392,11 @@ const MintyHydroBox = {
     let current = this.reading.ph;
     if (opts.condition == 'PH:WATER:HIGH') {
       if (current >= high) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     } else if (opts.condition == 'PH:WATER:LOW') {
       if (current <= low) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     }
   },
@@ -409,37 +408,43 @@ const MintyHydroBox = {
     let current = this.reading.ec;
     if (opts.condition == 'EC:WATER:HIGH') {
       if (current >= high) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     } else if (opts.condition == 'EC:WATER:LOW') {
       if (current <= low) {
-        processResourceState(opts);
+        this.processResourceState(opts);
       }
     }
   },
-
+  
   processWaterLevelHighTank: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
-
+  
   processWaterLevelMediumTank: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
-
+  
   processWaterLevelLowTank: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
-
+  
   processWaterLevelHighRes: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
-
+  
   processWaterLevelMediumRes: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
-
+  
   processWaterLevelLowRes: function (opts) {
     log("@todo implement... ", opts);
+    // this.processResourceState(opts);
   },
 
   setPollAllSensors: function (poll) {
@@ -477,91 +482,91 @@ const MintyHydroBox = {
     // this.processAirHumidity();
   },
 
-  processAirHumidity: function () {
-    let humidity = this.reading.humidity;
-    if (isValidHumidityReading(humidity)) {
-      if (humidity < hydroTarget.getMinHumidity()) {
-        // this.io.socketEmit('RF:HUMIDIFIER:HIGH');
-        // this.io.socketEmit('RF:DEHUMIDIFIER:OFF');
-      } else if (humidity > hydroTarget.getMinHumidity() && humidity < hydroTarget.getRecHumidity()) {
-        // this.io.socketEmit('RF:HUMIDIFIER:OFF');
-      } else if (humidity > hydroTarget.getRecHumidity() && humidity < hydroTarget.getMaxHumidity()) {
-        // this.io.socketEmit('RF:HUMIDIFIER:OFF');
-        // this.io.socketEmit('RF:DEHUMIDIFIER:ON');
-      } else if (humidity > hydroTarget.getMaxHumidity()) {
-        // this.io.socketEmit('RF:HUMIDIFIER:OFF');
-        // this.io.socketEmit('RF:DEHUMIDIFIER:ON');
-      }
-    }
-  },
+  // processAirHumidity: function () {
+  //   let humidity = this.reading.humidity;
+  //   if (isValidHumidityReading(humidity)) {
+  //     if (humidity < hydroTarget.getMinHumidity()) {
+  //       // this.io.socketEmit('RF:HUMIDIFIER:HIGH');
+  //       // this.io.socketEmit('RF:DEHUMIDIFIER:OFF');
+  //     } else if (humidity > hydroTarget.getMinHumidity() && humidity < hydroTarget.getRecHumidity()) {
+  //       // this.io.socketEmit('RF:HUMIDIFIER:OFF');
+  //     } else if (humidity > hydroTarget.getRecHumidity() && humidity < hydroTarget.getMaxHumidity()) {
+  //       // this.io.socketEmit('RF:HUMIDIFIER:OFF');
+  //       // this.io.socketEmit('RF:DEHUMIDIFIER:ON');
+  //     } else if (humidity > hydroTarget.getMaxHumidity()) {
+  //       // this.io.socketEmit('RF:HUMIDIFIER:OFF');
+  //       // this.io.socketEmit('RF:DEHUMIDIFIER:ON');
+  //     }
+  //   }
+  // },
 
-  reCycleAir: function () {
-    this.io.socketEmit('RF:AIR_EXTRACT_FAN:ON');
-  },
+  // reCycleAir: function () {
+  //   this.io.socketEmit('RF:AIR_EXTRACT_FAN:ON');
+  // },
 
-  processAirTemperature: function () {
-    let current = this.reading.temp.air;
-    if (isValidTemperatureReading(current)) {
-      if (current < hydroTarget.getMinAirTemp()) {
-        // this.io.socketEmit('RF:HEATER:OFF'); // 'TODO ON 
-      } else if (current > hydroTarget.getMinAirTemp()) {
-        // this.io.socketEmit('RF:HEATER:OFF');
-      }
-    }
-  },
+  // processAirTemperature: function () {
+  //   let current = this.reading.temp.air;
+  //   if (isValidTemperatureReading(current)) {
+  //     if (current < hydroTarget.getMinAirTemp()) {
+  //       // this.io.socketEmit('RF:HEATER:OFF'); // 'TODO ON 
+  //     } else if (current > hydroTarget.getMinAirTemp()) {
+  //       // this.io.socketEmit('RF:HEATER:OFF');
+  //     }
+  //   }
+  // },
 
-  processWaterEC: function () {
-    let current = this.reading.ec;
-    if (isValidEcReading(current)) {
-      if (current < hydroTarget.getMinEC()) {
+  // processWaterEC: function () {
+  //   let current = this.reading.ec;
+  //   if (isValidEcReading(current)) {
+  //     if (current < hydroTarget.getMinEC()) {
 
-      } else if (current > hydroTarget.getMaxEC()) {
+  //     } else if (current > hydroTarget.getMaxEC()) {
 
-      }
-    }
-  },
+  //     }
+  //   }
+  // },
 
-  processWaterPH: function () {
-    let current = this.reading.ph;
-    if (isValidPhReading(current)) {
-      if (current < hydroTarget.getMinPH()) {
-        this.phDoseUp();
-      } else if (current > hydroTarget.getMaxPH()) {
-        this.phDoseDown();
-      }
-    }
-  },
+  // processWaterPH: function () {
+  //   let current = this.reading.ph;
+  //   if (isValidPhReading(current)) {
+  //     if (current < hydroTarget.getMinPH()) {
+  //       this.phDoseUp();
+  //     } else if (current > hydroTarget.getMaxPH()) {
+  //       this.phDoseDown();
+  //     }
+  //   }
+  // },
 
-  processWaterTemperature: function () {
-    let current = this.reading.temp.water;
-    if (isValidTemperatureReading(current)) {
-      if (current < hydroTarget.getMinWaterTemp()) {
-        // this.io.socketEmit('RF:WATER_HEATER:ON');
-      } else {
-        // this.io.socketEmit('RF:WATER_HEATER:OFF');
-      }
-    }
-  },
+  // processWaterTemperature: function () {
+  //   let current = this.reading.temp.water;
+  //   if (isValidTemperatureReading(current)) {
+  //     if (current < hydroTarget.getMinWaterTemp()) {
+  //       // this.io.socketEmit('RF:WATER_HEATER:ON');
+  //     } else {
+  //       // this.io.socketEmit('RF:WATER_HEATER:OFF');
+  //     }
+  //   }
+  // },
 
-  phDoseUp: function () {
-    log("PH Up - Dosing ph+");
-    const pump = {
-      id: 'G',
-      speed: 124,
-      time: 1000,
-    };
-    this.io.socketEmit("PERI:PUMP:DOSE", pump);
-  },
+  // phDoseUp: function () {
+  //   log("PH Up - Dosing ph+");
+  //   const pump = {
+  //     id: 'G',
+  //     speed: 124,
+  //     time: 1000,
+  //   };
+  //   this.io.socketEmit("PERI:PUMP:DOSE", pump);
+  // },
 
-  phDoseDown: function () {
-    log("PH Down - Dosing ph-");
-    const pump = {
-      id: 'H',
-      speed: 124,
-      time: 1000,
-    };
-    this.io.socketEmit("PERI:PUMP:DOSE", pump);
-  },
+  // phDoseDown: function () {
+  //   log("PH Down - Dosing ph-");
+  //   const pump = {
+  //     id: 'H',
+  //     speed: 124,
+  //     time: 1000,
+  //   };
+  //   this.io.socketEmit("PERI:PUMP:DOSE", pump);
+  // },
 
   /* CALIBRATION POLLING */
   pollTEMP: function () {

@@ -80,7 +80,11 @@ const MintyHydroBox = {
       opts.value = opts.trigger.toUpperCase();
     }
     if (!opts.name) {
-      opts.name = opts.resource + "STATE";
+      if  (opts.resource.endsWith('STATE')) {
+        opts.name = opts.resource;
+      } else {
+        opts.name = opts.resource + 'STATE';
+      }
     }
 
     switch (opts.name) {
@@ -92,6 +96,9 @@ const MintyHydroBox = {
         break;
       case "CONTROL:LIGHT:STATE":
         this.processLightState(opts);
+        break;
+      case "CONTROL:CAMERA:STATE":
+        this.processCameraState(opts);
         break;
       case "CONTROL:AIR_EXTRACT_FAN:STATE":
         this.processAirExtractState(opts);
@@ -126,6 +133,9 @@ const MintyHydroBox = {
       case "PUMP:DRIP:STATE":
         this.processDripPump(opts);
         break;
+      case "PUMP:MAGMIX:STATE":
+        this.processMagMixPump(opts);
+        break;
     }
   },
 
@@ -142,7 +152,7 @@ const MintyHydroBox = {
   processWaterHeater: function(opts) {
     if (opts.value == 'ON') {
       relayWaterHeater.on();
-      this.sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-spin');
+      this.sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-beat');
     } else if (opts.value == 'OFF') {
       relayWaterHeater.off();
       this.sendConfirmation('Water Heater Off', 'Water heater has been turned off.', 'fal fa-water');
@@ -155,7 +165,7 @@ const MintyHydroBox = {
       this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned on.', 'fal fa-cog fa-spin');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
-      this.sendConfirmation('Mag Mix Fans Dose', 'The magnetic mixing fans are dosing.', 'fal fa-magic fa-spin');
+      this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned off.', 'fal fa-cog ');
     }
   },
 
@@ -176,6 +186,16 @@ const MintyHydroBox = {
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
       this.sendConfirmation('Fill Pump Off', 'The fill pump has been turned off.', 'fal fa-cog ');
+    }
+  },
+
+  processMagMixPump: function (opts) {
+    if (opts.value == 'ON') {
+      this.sendRF(config.MINTY_FDD.MAGMIX);
+      this.sendConfirmation('MagMix On', 'The mag mixers been turned on.', 'fal fa-cog fa-spin');
+    } else if (opts.value == 'OFF') {
+      this.sendRF(config.MINTY_FDD.OFF);
+      this.sendConfirmation('MagMix Off', 'The mag mixers have been turned off.', 'fal fa-cog ');
     }
   },
 
@@ -284,10 +304,19 @@ const MintyHydroBox = {
     }
   },
 
+  processCameraState: function (opts) {
+    if (opts.value == 'ON') {
+      this.sendRF(config.RF.Camera.on);
+      this.sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-lightbulb-on fa-spin');
+    } else if (opts.value == 'OFF') {
+      this.sendRF(config.RF.Camera.off);
+      this.sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-lightbulb');
+    }
+  },
+
   processConditionalState: function(row, config) {
     let opts = {
-      config,
-      row,
+      config, row,
       "condition": row.condition,
       "resource": row.resource + 'STATE',
       "trigger": row.trigger,
@@ -343,13 +372,9 @@ const MintyHydroBox = {
     let high = range[1];
     let current = this.reading.temp.air;
     if (opts.condition == 'TEMP:AIR:HIGH') {
-      if (current >= high) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
     } else if (opts.condition == 'TEMP:AIR:LOW') {
-      if (current <= low) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
 
@@ -359,13 +384,9 @@ const MintyHydroBox = {
     let high = range[1];
     let current = this.reading.temp.water;
     if (opts.condition == 'TEMP:WATER:HIGH') {
-      if (current >= high) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
     } else if (opts.condition == 'TEMP:WATER:LOW') {
-      if (current <= low) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
 
@@ -375,13 +396,9 @@ const MintyHydroBox = {
     let high = range[1];
     let current = this.reading.humidity;
     if (opts.condition == 'HUMIDITY:AIR:HIGH') {
-      if (current >= high) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
     } else if (opts.condition == 'HUMIDITY:AIR:LOW') {
-      if (current <= low) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
 
@@ -391,13 +408,9 @@ const MintyHydroBox = {
     let high = range[1];
     let current = this.reading.ph;
     if (opts.condition == 'PH:WATER:HIGH') {
-      if (current >= high) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
     } else if (opts.condition == 'PH:WATER:LOW') {
-      if (current <= low) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
 
@@ -407,13 +420,9 @@ const MintyHydroBox = {
     let high = range[1];
     let current = this.reading.ec;
     if (opts.condition == 'EC:WATER:HIGH') {
-      if (current >= high) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
     } else if (opts.condition == 'EC:WATER:LOW') {
-      if (current <= low) {
-        this.processResourceState(opts);
-      }
+      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
   
@@ -605,6 +614,18 @@ const MintyHydroBox = {
     this.io.sendRF(code);
   }
 
+}
+
+function toggleOptsValue(opts) {
+  let current = opts.value;
+  if (current.toUpperCase() == 'ON') {
+    opts.value = 'OFF';
+  } else if (current.toUpperCase() == 'OFF') {
+    opts.value = 'ON';
+  } else {
+    throw "Unknown Opts type " + opts.value;
+  }
+  return opts;
 }
 
 function isValidHumidityReading(humidity) {

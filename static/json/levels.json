@@ -1,17 +1,17 @@
 {
     "title": "Environmental Control Ranges",
-    "padding": 10,
+    "padding": 1,
     "rows": [
         {
           "title": "",
-          "align": "around",
+
           "padding": 25,
           "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
           "rows": [
              {
                 "type": "slider",
                 "range":true,
-                "label": "p.H.",
+                "label": "Water pH: (potential of Hydrogen)",
                 "labelInline": false,
                 "labelWidth": "150px",
                 "width": "90%",
@@ -25,7 +25,7 @@
              {
                 "type": "slider",
                 "range":true,
-                "label": "E.C.",
+                "label": "Water EC: ppm (parts per million)",
                 "labelInline": false,
                 "labelWidth": "150px",
                 "width": "90%",
@@ -41,7 +41,7 @@
                 "range":true,
                 "type": "slider",
                 "id": "CONTROL:WATER:TEMPERATURE:SLIDER",
-                "label": "Water Temp ℃",
+                "label": "Water Temperature (℃)",
                 "labelInline": false,
                 "labelWidth": "140px",
                 "width": "90%",
@@ -54,7 +54,7 @@
                 "type": "slider",
                 "range":true,
                 "id": "CONTROL:AIR:TEMPERATURE:SLIDER",
-                "label": "Air Temp ℃",
+                "label": "Air Temperature (℃)",
                 "labelInline": false,
                 "labelWidth": "150px",
                 "width": "90%",
@@ -66,7 +66,7 @@
              {
                 "type": "slider",
                 "range":true,
-                "label": "Relative Humidity",
+                "label": "Relative Humidity (%)",
                 "labelInline": false,
                 "labelWidth": "150px",
                 "width": "90%",

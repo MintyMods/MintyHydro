@@ -118,7 +118,7 @@ board.on('ready', function () {
     pin: config.HWR_RELAY_TWO_PIN, type: "NC"
   });
 
-  
+
   /* Peristaltic Dosing Pumps */
   pumpCalMag = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M1);
   pumpFloraMicro = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M2);
@@ -193,8 +193,8 @@ board.on('ready', function () {
     }
   }
 
-  function sendConfirmation(title, text, icon) {
-    socketEmit('ARDUINO:CONFIM', { title, text, icon });
+  function sendConfirmation(title, text, icon, css) {
+    socketEmit('ARDUINO:CONFIM', { title, text, icon, css });
   }
 
   /* ATLAS Calibration Routines */
@@ -440,10 +440,10 @@ board.on('ready', function () {
   socket.on('CONTROL:CAMERA:STATE', function (opts) {
     if (opts.value == 'ON') {
       sendRF(config.RF.Camera.on);
-      sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-lightbulb-on fa-spin');
+      sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-camera-home fa-beat');
     } else if (opts.value == 'OFF') {
       sendRF(config.RF.Camera.off);
-      sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-lightbulb');
+      sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-camera-home');
     }
   });
   socket.on('I2C:TEMP:GET', function () {

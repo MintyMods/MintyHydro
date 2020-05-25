@@ -51,3 +51,38 @@ body {
     height: 2px;
   }
   
+
+#layout_container > div > div.dhx_layout-cell.dhx_layout-columns.dhx_layout-cell--gravity > div:nth-child(2) > div > div.dhx_layout-cell-header.dhx_layout-cell-header--row {
+    background-color:#93c3dd;
+    border:1px white;
+    outline: 1px white !important;
+}
+.sparkdiv {
+    width:100%;
+}
+.toolbar-notifications {
+    margin-right:30px;
+}
+
+.card-column {
+    flex: 1;
+    display: flex;
+}
+.card-icon {
+    width:30px;
+    margin-right: 10px;
+}
+.card-title {
+    width:auto;
+}
+.card-text {
+    width:100%;
+}
+.card-column > span {
+    margin: auto;
+}
+
+.card-row {
+    display: flex;
+    flex: 1;
+}

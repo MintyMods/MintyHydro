@@ -8,6 +8,7 @@ let controlsForm = null;
 let sensorsForm = null;
 let settingsForm = null;
 let levelsForm = null;
+let notificationsForm = null;
 let nutrientAdjustForm = null;
 let envLayout = null;
 let calibrateLayout = null;
@@ -34,12 +35,8 @@ function initMintyHydro() {
 }
 
 function initCharts() {
-    sparkline.sparkline(getById("chart-ph"), [6.0, 6.1, 6.1, 6.0, 6.0, 6.1, 6.2, 6.3, 6.3, 6.3, 6.2, 6.2, 6.1]);
-    sparkline.sparkline(getById("chart-ec"), [1, 2, 3, 4, 3, 2, 7, 1, 5, 2, 5, 8, 3, 7]);
-    sparkline.sparkline(getById("chart-water-temp"), [4, 5, 3, 1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);
-    sparkline.sparkline(getById("chart-air-temp"), [4, 5, 3, 1, 5, 2, 4, 8, 3, 7, 6, 8, 3, 7]);
-    sparkline.sparkline(getById("chart-humidity"), [1, 1, 5, 2, 4, 8, 3, 7, 3, 2, 4, 8, 7, 8]);
-    sparkline.sparkline(getById("chart-wattage"), [1, 5, 2, 4, 8, 1, 5, 2, 4, 8, 3, 7, 3, 7]);
+
+    envLayout.paint();
 }
 
 function registerEventHandlers() {
@@ -54,8 +51,13 @@ function initSocket() {
         console.info("Client Connected to Socket Server");
         hideMissingMintyHydroHubError();
     });
+    let count = 0;
     socket.on("ARDUINO:CONFIM", function (msg) {
-        showServerConfirmation(msg);
+        notificationsForm.data.add(msg, 1);
+        let messages = toolbar.data.getItem("notifications");
+        messages['count']=count++;
+        toolbar.paint();
+        //showServerConfirmation(msg);
     });
     socket.on('disconnect', function (e) {
         showMissingMintyHydroHubError();
@@ -76,6 +78,54 @@ const getResCapacity = function () {
     return config.defaults.res.capacity;
 }
 
+function getChart() {
+
+    var data = [
+        { text: '02', 'value': 6.1 },
+        { text: '03', 'value': 6.03 },
+        { text: '04', 'value': 5.94 },
+        { text: '05', 'value': 5.97 },
+        { text: '06', 'value': 6.0 },
+        { text: '07', 'value': 6.1 },
+        { text: '08', 'value': 6.2 },
+        { text: '09', 'value': 6.2 },
+        { text: '10', 'value': 6.1 },
+        { text: '11', 'value': 6.0 },
+        // more data items
+    ];
+    var config = {
+        type: "area",
+        scales: {
+            "bottom": {
+                text: "text",
+                showText: false
+            },
+            "left": {
+                maxTicks: 5,
+                max: 7.0,
+                min: 5.0
+            }
+        },
+        series: [
+            {
+                value: "value",
+                color: "#5E83BA",
+                strokeWidth: 2
+            }
+        ],
+        legend: {
+            
+            valign: "top",
+            halign: "right"
+        }    
+    };
+
+    let chart = new dhx.Chart(null, config);
+    chart.data.parse(data);    
+
+    return chart;
+}
+
 function initComponents() {
 
     loadJSONAsync('/json/layouts/main.json', function (json) {
@@ -87,15 +137,13 @@ function initComponents() {
 
     loadJSONAsync('/json/layouts/environment.json', function (json) {
         envLayout = new dhx.Layout(null, json);
-        envLayout.events.on("AfterShow", function () {
-            initCharts();
-        });
-        envLayout.events.on("BeforeShow", function () {
-            initCharts();
-        });
-        envLayout.events.on("AfterAdd", function () {
-            initCharts();
-        });
+        envLayout.getCell("water_ph_container").attach(getChart());
+        envLayout.getCell("water_ec_container").attach(getChart());
+        envLayout.getCell("water_temp_container").attach(getChart());
+        envLayout.getCell("air_temp_container").attach(getChart());
+        envLayout.getCell("air_humidity_container").attach(getChart());
+        envLayout.getCell("wattage_container").attach(getChart());
+        // envLayout.getCell("control_container").attach(getChart());
         initMainContent('environment');
     })
 
@@ -119,6 +167,16 @@ function initComponents() {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
     });
+    notificationsForm = new dhx.List(null,{
+        itemHeight: 50,
+        template: function(msg) {
+            return '<div class="card-row ' + msg.css + '">' +
+            '<div class="card-column card-icon"><i class="fa-2x ' + msg.icon + '"></i></div>' + 
+            '<div class="card-column card-title">' + msg.title + '</div>' +
+            '<div class="card-column card-text"><span>' + msg.text + '</span></div></div>';
+        }
+    });
+
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 
@@ -177,7 +235,7 @@ function initMainContent(id) {
     } else if (id === "levels") {
         layout.cell("content_container").attach(levelsForm);
     } else {
-        layout.cell("content_container").attachHtml(orignalHtml);
+        layout.cell("content_container").attachHtml(orignalHtml);        
     }
 }
 
@@ -197,7 +255,7 @@ function initToolBar() {
         if (id === "toggle-sidebar") {
             sidebar.toggle();
         } else if (id === "notifications") {
-            showMsg('error', "Notifications", 'Currently not implemented');
+            layout.cell("content_container").attach(notificationsForm);
         }
     });
     layout.cell("toolbar_container").attach(toolbar);

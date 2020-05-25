@@ -342,6 +342,9 @@ function getResourceIcon(event) {
         case 'CONTROL:LIGHT:':
             icon = 'event-icon fal ' + (off ? 'fa-lightbulb fa-stack-1x fa-2x' : 'fa-lightbulb-on fa-beat fa-2x');
             break;
+        case 'CONTROL:CAMERA:':
+            icon = 'event-icon fal ' + (off ? 'fa-camera-home fa-stack-1x fa-2x' : 'fa-camera-home fa-beat fa-2x');
+            break;
         case 'CONTROL:AIR_EXTRACT_FAN:':
             icon = 'event-icon fal fa-fan ' + (off ? 'fa-stack-1x fa-2x' : 'fa-spin fa-2x');
             break;

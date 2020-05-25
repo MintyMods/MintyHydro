@@ -19,6 +19,7 @@
    {
       "type": "button",
       "color": "secondary",
+      "css": "toolbar-notifications",
       "view": "link",
       "circle": true,
       "id": "notifications",

@@ -313,12 +313,6 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     },
-                     {
-                        "type": "radioButton",
                         "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
@@ -334,6 +328,12 @@
                         "label": "High",
                         "labelPosition": "left",
                         "value": "HIGH"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
                      }
                   ]
                }
@@ -355,12 +355,6 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     },
-                     {
-                        "type": "radioButton",
                         "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
@@ -370,7 +364,13 @@
                         "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
-                     }
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }                     
                   ]
                }
             }
@@ -391,12 +391,6 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     },
-                     {
-                        "type": "radioButton",
                         "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
@@ -406,6 +400,12 @@
                         "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
                      }
                   ]
                }
@@ -427,12 +427,6 @@
                   "cols": [
                      {
                         "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     },
-                     {
-                        "type": "radioButton",
                         "label": "Off",
                         "labelPosition": "left",
                         "value": "OFF"
@@ -442,7 +436,13 @@
                         "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
-                     }
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }                     
                   ]
                }
             }

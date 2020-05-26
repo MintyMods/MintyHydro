@@ -159,80 +159,80 @@ const MintyHydroBox = {
   processWaterPump: function (opts) {
     if (opts.value == 'ON') {
       relayWaterPump.on();
-      this.sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin');
+      this.sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin', opts);
     } else if (opts.value == 'OFF') {
       relayWaterPump.off();
-      this.sendConfirmation('Water Pump Off', 'Recirculating water pump has been stopped.', 'fal fa-cog');
+      this.sendConfirmation('Water Pump Off', 'Recirculating water pump has been stopped.', 'fal fa-cog', opts);
     }
   },
 
   processWaterHeater: function (opts) {
     if (opts.value == 'ON') {
       relayWaterHeater.on();
-      this.sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-beat');
+      this.sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-beat', opts);
     } else if (opts.value == 'OFF') {
       relayWaterHeater.off();
-      this.sendConfirmation('Water Heater Off', 'Water heater has been turned off.', 'fal fa-water');
+      this.sendConfirmation('Water Heater Off', 'Water heater has been turned off.', 'fal fa-water', opts);
     }
   },
 
   processDripPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.MINTY_FDD.DRIP);
-      this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned on.', 'fal fa-cog fa-spin');
+      this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned on.', 'fal fa-cog fa-spin', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
-      this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned off.', 'fal fa-cog ');
+      this.sendConfirmation('Drip Pumps On', 'The drip pumps have been turned off.', 'fal fa-cog ', opts);
     }
   },
 
   processDrainPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.MINTY_FDD.DRAIN);
-      this.sendConfirmation('Drain Pumps On', 'The drain pumps have been turned on.', 'fal fa-cog fa-spin');
+      this.sendConfirmation('Drain Pumps On', 'The drain pumps have been turned on.', 'fal fa-cog fa-spin', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
-      this.sendConfirmation('Drain Pumps Off', 'The drain pumps have been turned off.', 'fal fa-cog');
+      this.sendConfirmation('Drain Pumps Off', 'The drain pumps have been turned off.', 'fal fa-cog', opts);
     }
   },
 
   processFillPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.MINTY_FDD.FILL);
-      this.sendConfirmation('Fill Pump On', 'The fill pump has been turned on.', 'fal fa-cog fa-spin');
+      this.sendConfirmation('Fill Pump On', 'The fill pump has been turned on.', 'fal fa-cog fa-spin', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
-      this.sendConfirmation('Fill Pump Off', 'The fill pump has been turned off.', 'fal fa-cog ');
+      this.sendConfirmation('Fill Pump Off', 'The fill pump has been turned off.', 'fal fa-cog ', opts);
     }
   },
 
   processMagMixPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.MINTY_FDD.MAGMIX);
-      this.sendConfirmation('MagMix On', 'The mag mixers been turned on.', 'fal fa-cog fa-beat');
+      this.sendConfirmation('MagMix On', 'The mag mixers been turned on.', 'fal fa-cog fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
-      this.sendConfirmation('MagMix Off', 'The mag mixers have been turned off.', 'fal fa-cog ');
+      this.sendConfirmation('MagMix Off', 'The mag mixers have been turned off.', 'fal fa-cog ', opts);
     }
   },
 
   processAirPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirPump.on);
-      this.sendConfirmation('Air Pump On', 'Air pump has been turned on.', 'fal fa-wind fa-beat');
+      this.sendConfirmation('Air Pump On', 'Air pump has been turned on.', 'fal fa-wind fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirPump.off);
-      this.sendConfirmation('Air Pump Off', 'Air pump has been turned off.', 'fal fa-wind');
+      this.sendConfirmation('Air Pump Off', 'Air pump has been turned off.', 'fal fa-wind', opts);
     }
   },
 
   processDeHumidifier: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Dehumidifier.on);
-      this.sendConfirmation('De-Humidifier On', 'De-Humidifier has been turned on.', 'fal fa-tint-slash fa-beat');
+      this.sendConfirmation('De-Humidifier On', 'De-Humidifier has been turned on.', 'fal fa-tint-slash fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Dehumidifier.off);
-      this.sendConfirmation('De-Humidifier Off', 'De-Humidifier has been turned off.', 'fal fa-tint-slash');
+      this.sendConfirmation('De-Humidifier Off', 'De-Humidifier has been turned off.', 'fal fa-tint-slash', opts);
     }
   },
 
@@ -242,92 +242,92 @@ const MintyHydroBox = {
       setTimeout(function () {
         this.sendRF(config.RF.Humidifier.off_high);
       }.bind(this), 500);
-      this.sendConfirmation('Humidifier Low', 'Humidifier has been turned on low.', 'fal fa-tint fa-spin');
+      this.sendConfirmation('Humidifier Low', 'Humidifier has been turned on low.', 'fal fa-tint fa-spin', opts);
     } else if (opts.value == 'HIGH') {
       this.sendRF(config.RF.Humidifier.high);
       setTimeout(function () {
         this.sendRF(config.RF.Humidifier.low);
       }.bind(this), 500);
-      this.sendConfirmation('Humidifier High', 'Humidifier has been turned on high.', 'fal fa-tint fa-pulse');
+      this.sendConfirmation('Humidifier High', 'Humidifier has been turned on high.', 'fal fa-tint fa-pulse', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Humidifier.off_low);
       setTimeout(function () {
         this.sendRF(config.RF.Humidifier.off_high);
       }.bind(this), 500);
-      this.sendConfirmation('Humidifier Off', 'Humidifier has been turned off.', 'fal fa-tint');
+      this.sendConfirmation('Humidifier Off', 'Humidifier has been turned off.', 'fal fa-tint', opts);
     }
   },
 
   processAirHeater: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Heater.on);
-      this.sendConfirmation('Air Heater Off', 'Air heater has been turned off.', 'fal fa-heat fa-beat');
+      this.sendConfirmation('Air Heater Off', 'Air heater has been turned off.', 'fal fa-heat fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Heater.off);
-      this.sendConfirmation('Air Heater On', 'Air heater has been turned on.', 'fal fa-heat');
+      this.sendConfirmation('Air Heater On', 'Air heater has been turned on.', 'fal fa-heat', opts);
     }
   },
 
   processAirMovementFanB: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirMovementFanB.on);
-      this.sendConfirmation('Air Movement B On', 'Air oscillating fan B has been turned on.', 'fal fa-fan-table fa-beat');
+      this.sendConfirmation('Air Movement B On', 'Air oscillating fan B has been turned on.', 'fal fa-fan-table fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirMovementFanB.off);
-      this.sendConfirmation('Air Movement B Off', 'Air oscillating fan B has been turned off.', 'fal fa-fan-table');
+      this.sendConfirmation('Air Movement B Off', 'Air oscillating fan B has been turned off.', 'fal fa-fan-table', opts);
     }
   },
 
   processAirMovementFanA: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirMovementFanA.on);
-      this.sendConfirmation('Air Movement A On', 'Air oscillating fan A has been turned on.', 'fal fa-fan-table fa-beat');
+      this.sendConfirmation('Air Movement A On', 'Air oscillating fan A has been turned on.', 'fal fa-fan-table fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirMovementFanA.off);
-      this.sendConfirmation('Air Movement A Off', 'Air oscillating fan A has been turned off.', 'fal fa-fan-table');
+      this.sendConfirmation('Air Movement A Off', 'Air oscillating fan A has been turned off.', 'fal fa-fan-table', opts);
     }
   },
 
   processAirIntakeState: function (opts) {
     if (opts.value == 'LOW') {
       this.sendRF(config.RF.AirIntakeFan.low);
-      this.sendConfirmation('Air Intake Low', 'Air intake fans has been turned low.', 'fal fa-hurricane fa-spin');
+      this.sendConfirmation('Air Intake Low', 'Air intake fans has been turned low.', 'fal fa-hurricane fa-spin', opts);
     } else if (opts.value == 'HIGH') {
       this.sendRF(config.RF.AirIntakeFan.high);
-      this.sendConfirmation('Air Intake High', 'Air intake fans has been turned high.', 'fal fa-hurricane fa-pulse');
+      this.sendConfirmation('Air Intake High', 'Air intake fans has been turned high.', 'fal fa-hurricane fa-pulse', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirIntakeFan.off);
-      this.sendConfirmation('Air Intake Off', 'Air intake fans has been turned off.', 'fal fa-hurricane');
+      this.sendConfirmation('Air Intake Off', 'Air intake fans has been turned off.', 'fal fa-hurricane', opts);
     }
   },
 
   processAirExtractState: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirExtractFan.on);
-      this.sendConfirmation('Air Extract On', 'Air extract fans have been turned on.', 'fal fa-fan fa-spin');
+      this.sendConfirmation('Air Extract On', 'Air extract fans have been turned on.', 'fal fa-fan fa-spin', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirExtractFan.off);
-      this.sendConfirmation('Air Extract Off', 'Air extract fans have been turned off.', 'fal fa-fan');
+      this.sendConfirmation('Air Extract Off', 'Air extract fans have been turned off.', 'fal fa-fan', opts);
     }
   },
 
   processLightState: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Light.on);
-      this.sendConfirmation('Lights On', 'Lights have been turned on.', 'fal fa-lightbulb-on fa-beat');
+      this.sendConfirmation('Lights On', 'Lights have been turned on.', 'fal fa-lightbulb-on fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Light.off);
-      this.sendConfirmation('Lights Off', 'Lights have been turned off.', 'fal fa-lightbulb');
+      this.sendConfirmation('Lights Off', 'Lights have been turned off.', 'fal fa-lightbulb', opts);
     }
   },
 
   processCameraState: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Camera.on);
-      this.sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-camera-home fa-beat');
+      this.sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-camera-home fa-beat', opts);
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Camera.off);
-      this.sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-camera-home');
+      this.sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-camera-home', opts);
     }
   },
 

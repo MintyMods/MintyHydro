@@ -121,7 +121,7 @@
                   {
                      "type": "input",
                      "label": "Barometer (pressure) :",
-                     "icon": "fal fa-wind",
+                     "icon": "fal fa-mountains",
                      "placeholder": "Air Pressure",
                      "labelPosition": "left",
                      "labelWidth": "150",

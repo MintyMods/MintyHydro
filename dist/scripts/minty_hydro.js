@@ -202,7 +202,7 @@ function initMainContent(id) {
     } else if (id === "levels") {
         layout.cell("content_container").attach(levelsForm);
     } else {
-        layout.cell("content_container").attachHtml(orignalHtml);        
+        //layout.cell("content_container").attachHtml(orignalHtml);        
     }
 }
 

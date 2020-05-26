@@ -150,7 +150,7 @@ board.on('ready', function () {
         pumpStop(runningPump);
       }, time);
       pump.start(opts.speed);
-      sendConfirmation(pump.name + ' Dosing Started', 'Pumping ' + (opts.amount ? opts.amount : 1) + 'ml', 'fal fa-cog fa-spin');
+      sendConfirmation(pump.name + ' Dosing Started', 'Pumping ' + (opts.amount ? opts.amount : 1) + 'ml', 'fal fa-cog fa-spin', opts);
     } catch (e) {
       pump.stop();
     }
@@ -161,11 +161,11 @@ board.on('ready', function () {
     try {
       pump.minty_opts = opts;
       pump.start(opts ? opts.speed : undefined);
-      sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.', 'fal fa-cog fa-spin');
+      sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.', 'fal fa-cog fa-spin', opts);
     } catch (e) {
       warn("Error Starting pump: " + e, pump);
       pump.stop();
-      sendConfirmation(pump.name + ' Pump Failed', 'The ' + pump.name + ' pump Failed to start.', 'fal fa-exclamation-triangle');
+      sendConfirmation(pump.name + ' Pump Failed', 'The ' + pump.name + ' pump Failed to start.', 'fal fa-exclamation-triangle', opts);
     }
   }
 
@@ -174,7 +174,7 @@ board.on('ready', function () {
     try {
       pump.stop();
       socketEmit('PUMP:DOSING:STOPPED', pump.minty_opts);
-      sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.', 'fal fa-cog');
+      sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.', 'fal fa-cog', opts);
     } catch (e) {
       warn("Error stopping pump: " + e, pump);
       pump.stop();
@@ -186,17 +186,17 @@ board.on('ready', function () {
     try {
       setTimeout(function () {
         sendRF(config.MINTY_FDD.OFF);
-        sendConfirmation((opts.name ? opts.name : code) + ' Pump Stopped', 'The auto running pump has been stopped.', 'fal fa-cog');
+        sendConfirmation((opts.name ? opts.name : code) + ' Pump Stopped', 'The auto running pump has been stopped.', 'fal fa-cog', opts);
       }.bind(this), opts.time);
       sendRF(code);
-      sendConfirmation((opts.name ? opts.name : code) + ' Pump Auto Running', 'Pump auto running for (' + opts.time + ' seconds)', 'fal fa-cog fa-spin');
+      sendConfirmation((opts.name ? opts.name : code) + ' Pump Auto Running', 'Pump auto running for (' + opts.time + ' seconds)', 'fal fa-cog fa-spin', opts);
     } catch (e) {
       sendRF(config.MINTY_FDD.OFF);
     }
   }
 
-  function sendConfirmation(title, text, icon, css) {
-    socketEmit('ARDUINO:CONFIM', { title, text, icon, css });
+  function sendConfirmation(title, text, icon, opts) {
+    socketEmit('ARDUINO:CONFIM', { title, text, icon, opts });
   }
 
   /* ATLAS Calibration Routines */

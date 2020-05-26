@@ -1,4 +1,3 @@
-
 const io = require('socket.io-client');
 const Encoder7Bit = require('encoder7bit');
 const config = require('./MintyConfig');
@@ -8,24 +7,24 @@ const MintyIO = function (board, serial) {
     this.board = board;
     this.serial = serial;
 
-    this.getSocket = function() {
+    this.getSocket = function () {
         return socket;
     },
 
-    this.sendRF = function (code) {
-        if (config.isSendingRfSignals) {
-            log("RF@" + code);
-            this.sendSerial(config.RCT_OUTPUT_DETACH, config.RCT_OUT_PIN);
-            this.sendSerial(config.RCT_OUTPUT_ATTACH, config.RCT_OUT_PIN);
-            if (config.RCT_PULSE_LENGTH) {
-                this.sendSerial(config.RCT_OUTPUT_PULSE_LENGTH, config.RCT_OUT_PIN, config.RCT_PULSE_LENGTH);
+        this.sendRF = function (code) {
+            if (config.isSendingRfSignals) {
+                log("RF@" + code);
+                this.sendSerial(config.RCT_OUTPUT_DETACH, config.RCT_OUT_PIN);
+                this.sendSerial(config.RCT_OUTPUT_ATTACH, config.RCT_OUT_PIN);
+                if (config.RCT_PULSE_LENGTH) {
+                    this.sendSerial(config.RCT_OUTPUT_PULSE_LENGTH, config.RCT_OUT_PIN, config.RCT_PULSE_LENGTH);
+                }
+                let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(this.longToByteArray(code)));
+                this.sendSerial(config.RCT_OUTPUT_CODE_LONG, config.RCT_OUT_PIN, bytes);
+            } else {
+                warn("RF@" + code + " - surpressed");
             }
-            let bytes = Encoder7Bit.to7BitArray([0x18, 0x00].concat(this.longToByteArray(code)));
-            this.sendSerial(config.RCT_OUTPUT_CODE_LONG, config.RCT_OUT_PIN, bytes);
-        } else {
-            warn("RF@" + code + " - surpressed");
-        }
-    }.bind(this);
+        }.bind(this);
 
     /* rework of https://github.com/git-developer/RCSwitchFirmata */
     this.sendSerial = function (command, pin, val) {

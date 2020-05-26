@@ -10,8 +10,8 @@ const MintyDataSource = {
     io: null,
     socket: null,
     shutdown: false,
- 
-    initDatabase: function(mintyIO) {
+
+    initDatabase: function (mintyIO) {
         this.io = mintyIO;
         this.socket = mintyIO.getSocket();
         this.createTables();
@@ -22,105 +22,105 @@ const MintyDataSource = {
         this.io = mintyIO;
     },
 
-    initEvents: function() {
+    initEvents: function () {
         this.socket.on(DB_COMMAND, function (opts) {
             switch (opts.command) {
-                case 'INSERT' :
+                case 'INSERT':
                     this.insert(opts);
                     break;
-                case 'UPDATE' :
+                case 'UPDATE':
                     this.update(opts);
                     break;
-                case 'SELECT' :
+                case 'SELECT':
                     this.select(opts);
                     break;
-                case 'ALL' :
+                case 'ALL':
                     this.all(opts);
                     break;
-                case 'DELETE' :
+                case 'DELETE':
                     this.delete(opts);
-                case 'JSON:GET' :
+                case 'JSON:GET':
                     this.getJSON(opts);
                     break;
-                case 'JSON:SET' :
+                case 'JSON:SET':
                     this.setJSON(opts);
                     break;
-                case 'JSON:ALL' :
+                case 'JSON:ALL':
                     this.allJSON(opts);
                     break;
-                case 'SAVE:EVENT' :
+                case 'SAVE:EVENT':
                     this.saveEvent(opts);
                     break;
-                case 'SPARKLINE' :
+                case 'SPARKLINE':
                     this.getSparklineData(opts);
                     break;
             }
         }.bind(this));
     },
 
-    getSparklineData: function(opts, callback) {
-        let sql = "SELECT sensor, value FROM MH_READING" + 
-                  " WHERE strftime('%Y-%m-%d %H:%M:%S', datesetup)" + 
-                  " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now', '-30 minute', 'localtime'))" + 
-                  " AND sensor = '" + opts.sensor + "'";
-        db.serialize(function() {
-            db.all(sql, function(err, rows) {
+    getSparklineData: function (opts, callback) {
+        let sql = "SELECT sensor, value FROM MH_READING" +
+            " WHERE strftime('%Y-%m-%d %H:%M:%S', datesetup)" +
+            " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now', '-30 minute', 'localtime'))" +
+            " AND sensor = '" + opts.sensor + "'";
+        db.serialize(function () {
+            db.all(sql, function (err, rows) {
                 if (err == null) {
                     opts.rows = rows;
                     this.io.socketEmit(DB_RESULT, opts);
                     if (callback) callback(rows);
                 }
             }.bind(this));
-        }.bind(this));  
+        }.bind(this));
     },
 
-    getActiveControlStates: function(callback) {
+    getActiveControlStates: function (callback) {
         let sql = "SELECT name, value FROM MH_CONTROL";
-        db.serialize(function() {
-            db.all(sql, function(err, rows) {
+        db.serialize(function () {
+            db.all(sql, function (err, rows) {
                 if (err == null) {
                     if (callback) callback(rows);
                 }
             }.bind(this));
-        }.bind(this));  
+        }.bind(this));
     },
-  
-    getActiveSchedules: function(callback) {
-        let sql = "SELECT E.resource, E.trigger, E.condition, C.value" + 
-                  " FROM MH_EVENT E, MH_CONTROL C" +
-                  " WHERE (strftime('%Y-%m-%d %H:%M:%S', E.start_date)" + 
-                  " <= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))" + 
-                  " AND strftime('%Y-%m-%d %H:%M:%S', e.end_date) " + 
-                  " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))) " + 
-                  " AND E.resource||'STATE' = C.name " + 
-                  " AND C.value = 'AUTO' " + 
-                  " ORDER BY E.resource, E.condition ";
-        log("sql",sql);
-        db.serialize(function() {
-            db.all(sql, function(err, rows) {
+
+    getActiveSchedules: function (callback) {
+        let sql = "SELECT E.resource, E.trigger, E.condition, C.value" +
+            " FROM MH_EVENT E, MH_CONTROL C" +
+            " WHERE (strftime('%Y-%m-%d %H:%M:%S', E.start_date)" +
+            " <= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))" +
+            " AND strftime('%Y-%m-%d %H:%M:%S', e.end_date) " +
+            " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now','localtime'))) " +
+            " AND E.resource||'STATE' = C.name " +
+            " AND C.value = 'AUTO' " +
+            " ORDER BY E.resource, E.condition ";
+        log("sql", sql);
+        db.serialize(function () {
+            db.all(sql, function (err, rows) {
                 if (err == null) {
                     if (callback) callback(rows);
                 }
             }.bind(this));
-        }.bind(this));  
+        }.bind(this));
     },
 
 
-    insert: function(opts, callback) {
+    insert: function (opts, callback) {
         opts.command = 'INSERT';
-        db.serialize(function() {
+        db.serialize(function () {
             let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now', 'localtime'))");
-            stmt.run(opts.name, opts.value, function(err, row) {
+            stmt.run(opts.name, opts.value, function (err, row) {
             }.bind(this));
             stmt.finalize();
             if (callback) callback(opts);
         }.bind(this));
     },
 
-    getJSON : function(opts, callback) {
+    getJSON: function (opts, callback) {
         opts.command = 'JSON:GET';
-        db.serialize(function() {
-            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function(err, row) {
+        db.serialize(function () {
+            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function (err, row) {
                 if (err == null) {
                     opts.json = row.value;
                     this.io.socketEmit(DB_JSON, opts);
@@ -130,10 +130,10 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    allJSON : function(opts, callback) {
+    allJSON: function (opts, callback) {
         opts.command = 'JSON:ALL';
-        db.serialize(function() {
-            db.all("SELECT value FROM MH_" + opts.table, function(err, rows) {
+        db.serialize(function () {
+            db.all("SELECT value FROM MH_" + opts.table, function (err, rows) {
                 if (err == null) {
                     opts.json = rows;
                     this.io.socketEmit(DB_JSON, opts);
@@ -143,16 +143,16 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    setJSON : function(opts, callback) {
+    setJSON: function (opts, callback) {
         opts.command = 'JSON:SET';
-        db.serialize(function() {
+        db.serialize(function () {
             let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?,datetime('now', 'localtime'))");
-            stmt.run(opts.name, JSON.stringify(opts.json), function(err, row) {
+            stmt.run(opts.name, JSON.stringify(opts.json), function (err, row) {
                 stmt.finalize();
                 if (err == null) {
                     if (callback) callback(opts);
                 } else {
-                    db.serialize(function() {
+                    db.serialize(function () {
                         stmt = db.prepare("UPDATE MH_" + opts.table + " SET value = ? WHERE name = ?");
                         stmt.run(JSON.stringify(opts.json), opts.name);
                         stmt.finalize();
@@ -163,50 +163,50 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    saveEvent : function(opts, callback) {
+    saveEvent: function (opts, callback) {
         let event = opts.event;
         opts.command = 'SAVE:EVENT';
-        db.serialize(function() {
+        db.serialize(function () {
             let stmt = db.prepare("INSERT INTO MH_EVENT VALUES (?,?,?,?,?,?,?,?,?)");
             stmt.run(event.id, event.start_date, event.end_date,
-                     event.desc,event.textColor, event.color, event.automation.resource, 
-                     event.automation.trigger, event.automation.condition,  
-                     function(err, row) {
-                stmt.finalize();
-                if (err == null) {
-                    if (callback) callback(opts);
-                } else {
-                    db.serialize(function() {
-                        let sql = "UPDATE MH_EVENT SET start_date = ?, end_date = ?,";
-                        sql += " desc = ?, textColor = ?, color = ?, ";
-                        sql += " resource = ?, trigger = ?, condition = ? ";
-                        sql += " WHERE id = ?";
-                        stmt = db.prepare(sql);
-                        stmt.run(event.start_date, 
+                event.desc, event.textColor, event.color, event.automation.resource,
+                event.automation.trigger, event.automation.condition,
+                function (err, row) {
+                    stmt.finalize();
+                    if (err == null) {
+                        if (callback) callback(opts);
+                    } else {
+                        db.serialize(function () {
+                            let sql = "UPDATE MH_EVENT SET start_date = ?, end_date = ?,";
+                            sql += " desc = ?, textColor = ?, color = ?, ";
+                            sql += " resource = ?, trigger = ?, condition = ? ";
+                            sql += " WHERE id = ?";
+                            stmt = db.prepare(sql);
+                            stmt.run(event.start_date,
                                 event.end_date,
                                 event.desc, event.textColor, event.color,
-                                event.automation.resource, 
+                                event.automation.resource,
                                 event.automation.trigger,
-                                event.automation.condition, 
+                                event.automation.condition,
                                 event.id);
-                        stmt.finalize();
-                        if (callback) callback(opts);
-                    }.bind(this));
-                }
-            }.bind(this));
+                            stmt.finalize();
+                            if (callback) callback(opts);
+                        }.bind(this));
+                    }
+                }.bind(this));
         }.bind(this));
     },
 
-    update : function(opts, callback) {
+    update: function (opts, callback) {
         opts.command = 'UPDATE';
-        db.serialize(function() {
+        db.serialize(function () {
             let stmt = db.prepare("INSERT INTO MH_" + opts.table + " VALUES (?,?, datetime('now', 'localtime'))");
-            stmt.run(opts.name, opts.value.toString(), function(err, row) {
+            stmt.run(opts.name, opts.value.toString(), function (err, row) {
                 stmt.finalize();
                 if (err == null) {
                     if (callback) callback(opts);
                 } else {
-                    db.serialize(function() {
+                    db.serialize(function () {
                         stmt = db.prepare("UPDATE MH_" + opts.table + " SET value = ? WHERE name = ?");
                         stmt.run(opts.value.toString(), opts.name);
                         stmt.finalize();
@@ -217,10 +217,10 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    select : function(opts, callback) {
+    select: function (opts, callback) {
         opts.command = 'SELECT';
-        db.serialize(function() {
-            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function(err, row) {
+        db.serialize(function () {
+            db.get("SELECT value FROM MH_" + opts.table + " WHERE name = " + opts.name, function (err, row) {
                 opts.row = row;
                 if (err == null) {
                     opts.value = row.value;
@@ -231,10 +231,10 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    all : function(opts, callback) {
+    all: function (opts, callback) {
         opts.command = 'ALL';
-        db.serialize(function() {
-            db.all("SELECT * FROM MH_" + opts.table, function(err, rows) {
+        db.serialize(function () {
+            db.all("SELECT * FROM MH_" + opts.table, function (err, rows) {
                 opts.rows = rows;
                 if (err == null) {
                     this.io.socketEmit(DB_RESULT, opts);
@@ -244,21 +244,21 @@ const MintyDataSource = {
         }.bind(this));
     },
 
-    delete : function(opts, callback) {
+    delete: function (opts, callback) {
         opts.command = 'DELETE';
-        db.serialize(function() {
-            db.get("DELETE FROM MH_" + opts.table + " WHERE name = '" + opts.name + "'", function(err, row) {
+        db.serialize(function () {
+            db.get("DELETE FROM MH_" + opts.table + " WHERE name = '" + opts.name + "'", function (err, row) {
                 if (callback) callback(opts);
             }.bind(this));
         }.bind(this));
     },
 
-    createTables: function() {
+    createTables: function () {
         this.createControlsTable();
         this.createSensorTable();
-        this.createSensorReadingTable();  
-        this.createSettingTable();      
-        this.createNutrientTable();      
+        this.createSensorReadingTable();
+        this.createSettingTable();
+        this.createNutrientTable();
         this.createSchedulerEventsTable();
     },
 
@@ -309,7 +309,7 @@ const MintyDataSource = {
         sql += " name TEXT PRIMARY KEY,";
         sql += " desc TEXT NOT NULL,";
         sql += " unit TEXT NOT NULL,";
-        sql += " datesetup datetime"; 
+        sql += " datesetup datetime";
         sql += ")";
         db.run(sql);
     },
@@ -323,7 +323,7 @@ const MintyDataSource = {
         db.run(sql);
     },
 
-    shutDown: function() {
+    shutDown: function () {
         try {
             db.close();
         } catch (e) {

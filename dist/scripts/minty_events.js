@@ -12,19 +12,14 @@ function getFormValue(form, name) {
     return item ? item.getValue() : undefined;
 }
 
+let loadedForms = [];
+function formLoaded(form) {
+   return (form ? loadedForms[form._uid] == true : false);
+}
+
 function initFormEvents(form, table) {
-    form.events.on("Change", function (name, value) {
-        if (name.indexOf(':STATE') > -1) {
-            let time = getFormValue(form, name.replace(':STATE', ':TIME'));
-            let speed = getFormValue(form, name.replace(':STATE', ':SPEED'));
-            let amount = getFormValue(form, name.replace(':STATE', ':AMOUNT'));
-            socket.emit(name, { 'command': name, value, time, speed, amount });
-        } else {
-            socket.emit(name, { 'command': name, value });
-        }
-        socket.emit("DB:COMMAND", { name, value, 'command': 'UPDATE', table });
-    });
-    socket.emit("DB:COMMAND", { 'command': 'ALL', table });
+    let id = form._uid;
+    socket.emit("DB:COMMAND", { id, 'command': 'ALL', table });
 }
 
 function initPumpFormEvents(pumpsForm) {
@@ -49,9 +44,10 @@ function initDatabaseEvents() {
         if (data.table == 'SETTING') {
             processFormEvents(settingsForm, data);
         } else if (data.table == 'CONTROL') {
-            processFormEvents(controlsForm, data);
-            processFormEvents(pumpsForm, data);
-            processFormEvents(levelsForm, data);
+            let id = data.id;
+            if (controlsForm._uid == id) processFormEvents(controlsForm, data);
+            if (pumpsForm._uid == id) processFormEvents(pumpsForm, data);
+            if (levelsForm._uid == id) processFormEvents(levelsForm, data);
         } else if (data.table == 'NUTRIENT') {
             processFormEvents(nutrientAdjustForm, data);
         } else if (data.table == 'EVENT') {
@@ -85,6 +81,7 @@ function processChartEvents(data) {
 }
 
 function processFormEvents(form, data) {
+    let table = data.table;
     if (data.rows) {
         data.rows.forEach(function (row) {
             if (row.name.endsWith(':SLIDER')) {
@@ -99,6 +96,25 @@ function processFormEvents(form, data) {
     } else {
         form.setValue({ [data.name]: data.value });
     }
+    
+    // setTimeout(function(){
+
+        form.events.on("Change", function (name, value) {
+            if (formLoaded(form)) {
+                let id = form._uid;
+                if (name.indexOf(':STATE') > -1) {
+                    let time = getFormValue(form, name.replace(':STATE', ':TIME'));
+                    let speed = getFormValue(form, name.replace(':STATE', ':SPEED'));
+                    let amount = getFormValue(form, name.replace(':STATE', ':AMOUNT'));
+                    socket.emit(name, { 'command': name, value, time, speed, amount });
+                } else {
+                    socket.emit(name, { 'command': name, value });
+                }
+                socket.emit("DB:COMMAND", { id, name, value, 'command': 'UPDATE', table });
+            }
+        });    
+    // },100);
+    loadedForms[form._uid] = true;
 }
 
 function initSensorFormEvents(sensorsForm) {

@@ -24,7 +24,7 @@ const MintyHydroBox = {
   setIO: function (mintyIO) {
     this.io = mintyIO;
   },
-  
+
   poll: function () {
     log("----<<<< Minty Hydro Main Cycle Ping >>>>---- ");
 
@@ -42,8 +42,7 @@ const MintyHydroBox = {
     this.runAfterTimeout();
   },
 
-  processAutomation: function() {
-
+  processAutomation: function () {
     MintyDataSource.getActiveSchedules(function (rows) {
       for (var key in rows) {
         let row = rows[key];
@@ -54,10 +53,9 @@ const MintyHydroBox = {
         }
       }
     }.bind(this));
-
   },
 
-  processAutomationOriginal: function() {
+  processAutomationOriginal: function () {
     MintyDataSource.getActiveControlStates(function (rows) {
       let config = {};
       for (var key in rows) {
@@ -99,7 +97,7 @@ const MintyHydroBox = {
       opts.value = opts.trigger.toUpperCase();
     }
     if (!opts.name) {
-      if  (opts.resource.endsWith('STATE')) {
+      if (opts.resource.endsWith('STATE')) {
         opts.name = opts.resource;
       } else {
         opts.name = opts.resource + 'STATE';
@@ -108,10 +106,10 @@ const MintyHydroBox = {
 
     switch (opts.name) {
       case "CONTROL:WATER_HEATER:STATE":
-          this.processWaterHeater(opts);
-          break;
-        case "CONTROL:WATER_PUMP:STATE":
-          this.processWaterPump(opts);
+        this.processWaterHeater(opts);
+        break;
+      case "CONTROL:WATER_PUMP:STATE":
+        this.processWaterPump(opts);
         break;
       case "CONTROL:LIGHT:STATE":
         this.processLightState(opts);
@@ -158,7 +156,7 @@ const MintyHydroBox = {
     }
   },
 
-  processWaterPump: function(opts) {
+  processWaterPump: function (opts) {
     if (opts.value == 'ON') {
       relayWaterPump.on();
       this.sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin');
@@ -168,15 +166,15 @@ const MintyHydroBox = {
     }
   },
 
-  processWaterHeater: function(opts) {
+  processWaterHeater: function (opts) {
     if (opts.value == 'ON') {
       relayWaterHeater.on();
       this.sendConfirmation('Water Heater On', 'Water heater has been turned on.', 'fal fa-water fa-beat');
     } else if (opts.value == 'OFF') {
       relayWaterHeater.off();
       this.sendConfirmation('Water Heater Off', 'Water heater has been turned off.', 'fal fa-water');
-    }  
-  },  
+    }
+  },
 
   processDripPump: function (opts) {
     if (opts.value == 'ON') {
@@ -333,56 +331,56 @@ const MintyHydroBox = {
     }
   },
 
-  processConditionalState: function(row, config) {
+  processConditionalState: function (row, config) {
     let opts = {
       config, row,
       "condition": row.condition,
       "resource": row.resource + 'STATE',
       "trigger": row.trigger,
-      "value": row.trigger.replace('trigger:','').toUpperCase(),
+      "value": row.trigger.replace('trigger:', '').toUpperCase(),
     }
-    switch(row.condition) {
-      case "TEMP:AIR:HIGH" :
-      case "TEMP:AIR:LOW" :
+    switch (row.condition) {
+      case "TEMP:AIR:HIGH":
+      case "TEMP:AIR:LOW":
         this.processAirTemp(opts);
         break;
-      case "TEMP:WATER:HIGH" :
-      case "TEMP:WATER:LOW" :
+      case "TEMP:WATER:HIGH":
+      case "TEMP:WATER:LOW":
         this.processWaterTemp(opts);
         break;
-      case "HUMIDITY:AIR:HIGH" :
-      case "HUMIDITY:AIR:LOW" :
+      case "HUMIDITY:AIR:HIGH":
+      case "HUMIDITY:AIR:LOW":
         this.processHumidity(opts);
         break;
-      case "PH:WATER:HIGH" :
-      case "PH:WATER:LOW" :
+      case "PH:WATER:HIGH":
+      case "PH:WATER:LOW":
         this.processWaterPH(opts);
         break;
-      case "EC:WATER:HIGH" :
-      case "EC:WATER:LOW" :
+      case "EC:WATER:HIGH":
+      case "EC:WATER:LOW":
         this.processWaterEC(opts);
         break;
-      case "LEVEL:TANK:HIGH" :
+      case "LEVEL:TANK:HIGH":
         this.processWaterLevelHighTank(opts);
         break;
-      case "LEVEL:TANK:MEDIUM" :
+      case "LEVEL:TANK:MEDIUM":
         this.processWaterLevelMediumTank(opts);
         break;
-      case "LEVEL:TANK:LOW" :
+      case "LEVEL:TANK:LOW":
         this.processWaterLevelLowTank(opts);
         break;
-      case "LEVEL:RES:HIGH" :
+      case "LEVEL:RES:HIGH":
         this.processWaterLevelHighRes(opts);
         break;
-      case "LEVEL:RES:HIGH:MEDIUM" :
+      case "LEVEL:RES:HIGH:MEDIUM":
         this.processWaterLevelMediumRes(opts);
         break;
-      case "LEVEL:RES:LOW" :
+      case "LEVEL:RES:LOW":
         this.processWaterLevelLowRes(opts);
         break;
-      default :
-      warn("UNKNOWN - Condition " + row.condition, row);
-    }    
+      default:
+        warn("UNKNOWN - Condition " + row.condition, row);
+    }
   },
 
   processAirTemp: function (opts) {
@@ -444,32 +442,32 @@ const MintyHydroBox = {
       this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
     }
   },
-  
+
   processWaterLevelHighTank: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
   },
-  
+
   processWaterLevelMediumTank: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
   },
-  
+
   processWaterLevelLowTank: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
   },
-  
+
   processWaterLevelHighRes: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
   },
-  
+
   processWaterLevelMediumRes: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
   },
-  
+
   processWaterLevelLowRes: function (opts) {
     log("@todo implement... ", opts);
     // this.processResourceState(opts);
@@ -686,4 +684,3 @@ function log(msg, payload) {
   if (config.debug) console.log("[" + (new Date()).toUTCString() + "]  [HYDRO] " + msg, payload != undefined ? payload : "");
 }
 module.exports = MintyHydroBox;
-

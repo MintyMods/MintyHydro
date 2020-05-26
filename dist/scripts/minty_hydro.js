@@ -27,10 +27,6 @@ function resetSchedulerLayoutConfig() {
     return true;
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
-    initMintyHydro();
-});
-
 function initMintyHydro() {
     initSocket();
     registerEventHandlers();
@@ -41,7 +37,6 @@ function initMintyHydro() {
 }
 
 function initCharts() {
-
     envLayout.paint();
 }
 
@@ -59,11 +54,10 @@ function initSocket() {
     });
     let count = 0;
     socket.on("ARDUINO:CONFIM", function (msg) {
-        notificationsForm.data.add(msg, 1);
-        let messages = toolbar.data.getItem("notifications");
-        messages['count']=count++;
+        notificationsForm.data.add(msg, 0);
+        toolbar.data.getItem("notifications")['count']=count++;
         toolbar.paint();
-        //showServerConfirmation(msg);
+        showServerConfirmation(msg);
     });
     socket.on('disconnect', function (e) {
         showMissingMintyHydroHubError();
@@ -91,36 +85,6 @@ function initComponents() {
         initSideBar();
         initToolBar();
     });
-
-    loadJSONAsync('/json/layouts/environment.json', function (json) {
-        envLayout = new dhx.Layout(null, json);
-        loadJSONAsync('/json/charts/water_ph.json', function (json) {
-            chartWaterPh = new dhx.Chart(null, json);
-            envLayout.getCell("water_ph_container").attach(chartWaterPh);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT' });
-        });
-        loadJSONAsync('/json/charts/water_ec.json', function (json) {
-            chartWaterEc = new dhx.Chart(null, json);
-            envLayout.getCell("water_ec_container").attach(chartWaterEc);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT' });
-        });
-        loadJSONAsync('/json/charts/water_temp.json', function (json) {
-            chartWaterTemp = new dhx.Chart(null, json);
-            envLayout.getCell("water_temp_container").attach(chartWaterTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT' });
-        });
-        loadJSONAsync('/json/charts/air_temp.json', function (json) {
-            chartAirTemp = new dhx.Chart(null, json);
-            envLayout.getCell("air_temp_container").attach(chartAirTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS' });
-        });
-        loadJSONAsync('/json/charts/air_humidity.json', function (json) {
-            chartAirHumidity = new dhx.Chart(null, json);
-            envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH' });
-        });
-        initMainContent('environment');
-    })
 
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
@@ -155,10 +119,38 @@ function initComponents() {
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 
+    loadJSONAsync('/json/layouts/environment.json', function (json) {
+        envLayout = new dhx.Layout(null, json);
+        loadJSONAsync('/json/charts/water_ph.json', function (json) {
+            chartWaterPh = new dhx.Chart(null, json);
+            envLayout.getCell("water_ph_container").attach(chartWaterPh);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT' });
+        });
+        loadJSONAsync('/json/charts/water_ec.json', function (json) {
+            chartWaterEc = new dhx.Chart(null, json);
+            envLayout.getCell("water_ec_container").attach(chartWaterEc);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT' });
+        });
+        loadJSONAsync('/json/charts/water_temp.json', function (json) {
+            chartWaterTemp = new dhx.Chart(null, json);
+            envLayout.getCell("water_temp_container").attach(chartWaterTemp);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT' });
+        });
+        loadJSONAsync('/json/charts/air_temp.json', function (json) {
+            chartAirTemp = new dhx.Chart(null, json);
+            envLayout.getCell("air_temp_container").attach(chartAirTemp);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS' });
+        });
+        loadJSONAsync('/json/charts/air_humidity.json', function (json) {
+            chartAirHumidity = new dhx.Chart(null, json);
+            envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH' });
+        });
+        initMainContent('environment');
+    })
+    initDatabaseEvents();
     initScheduler();
     initNutrientSection();
-    initDatabaseEvents();
-
 }
 
 function stopSchedule() {
@@ -231,6 +223,8 @@ function initToolBar() {
             sidebar.toggle();
         } else if (id === "notifications") {
             layout.cell("content_container").attach(notificationsForm);
+            toolbar.data.getItem("notifications")['count']=0;
+            toolbar.paint();
         }
     });
     layout.cell("toolbar_container").attach(toolbar);

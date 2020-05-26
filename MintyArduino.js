@@ -10,10 +10,11 @@ const serial = new Serialport(config.serialPort, {
   baudRate: 9600,
   buffersize: 1
 });
+
 let board = new five.Board({
-    port: serial,
-    repl: false,
-    debug: config.debug
+  port: serial,
+  repl: false,
+  debug: config.debug
 });
 
 function shutDown() {
@@ -33,11 +34,12 @@ function shutDown() {
 board.on('exit', function () {
   shutDown();
 });
-board.on("error", function(msg) {
+
+board.on("error", function (msg) {
   warn("Arduino Not Responding : ", msg);
   Serialport.list().then(ports => {
     warn("PORTS:", ports);
-  });  
+  });
   // shutDown();
 });
 
@@ -85,15 +87,15 @@ board.on('ready', function () {
   });
 
   bme280.on("change", function () {
-      MintyHydro.reading.temp.air = this.thermometer.celsius;
-      MintyHydro.reading.humidity = this.hygrometer.relativeHumidity;
-      MintyHydro.reading.pressure = this.barometer.pressure;
-      MintyDataSource.insert({ name:'HTS:BME280:HUMIDITY:RH', value:this.hygrometer.relativeHumidity, table:'READING' });
-      MintyDataSource.insert({ name:'HTS:BME280:TEMP:CELSIUS', value:this.thermometer.celsius, table:'READING' });
-      MintyDataSource.insert({ name:'HTS:BME280:PRESSURE', value:this.barometer.pressure, table:'READING' });
-      socketEmit('HTS:BME280:HUMIDITY:RH', this.hygrometer.relativeHumidity);
-      socketEmit('HTS:BME280:TEMP:CELSIUS', this.thermometer.celsius);
-      socketEmit('HTS:BME280:PRESSURE', this.barometer.pressure);
+    MintyHydro.reading.temp.air = this.thermometer.celsius;
+    MintyHydro.reading.humidity = this.hygrometer.relativeHumidity;
+    MintyHydro.reading.pressure = this.barometer.pressure;
+    MintyDataSource.insert({ name: 'HTS:BME280:HUMIDITY:RH', value: this.hygrometer.relativeHumidity, table: 'READING' });
+    MintyDataSource.insert({ name: 'HTS:BME280:TEMP:CELSIUS', value: this.thermometer.celsius, table: 'READING' });
+    MintyDataSource.insert({ name: 'HTS:BME280:PRESSURE', value: this.barometer.pressure, table: 'READING' });
+    socketEmit('HTS:BME280:HUMIDITY:RH', this.hygrometer.relativeHumidity);
+    socketEmit('HTS:BME280:TEMP:CELSIUS', this.thermometer.celsius);
+    socketEmit('HTS:BME280:PRESSURE', this.barometer.pressure);
   });
 
   /* Water Level Switches */
@@ -126,7 +128,7 @@ board.on('ready', function () {
   pumpFloraBloom = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M4);
   pumpHydroGuard = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M5);
   pumpSpare = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M6);
-  pumpPhUp = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M7); 
+  pumpPhUp = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M7);
   pumpPhDown = new five.Motor(config.ADAFRUIT_MOTOR_SHIELD.M8);
   pumpCalMag.name = "CalMag";
   pumpFloraMicro.name = "Flora Micro";
@@ -141,30 +143,30 @@ board.on('ready', function () {
     log("Dosing Pump " + pump, opts);
     try {
       pump.minty_opts = opts;
-      let time = opts.amount ? ( parseFloat(opts.time) *  parseFloat(opts.amount)) :  parseFloat(opts.time);
+      let time = opts.amount ? (parseFloat(opts.time) * parseFloat(opts.amount)) : parseFloat(opts.time);
       let runningPump = pump;
       setTimeout(function () {
         log("After timeout - stopping pump ", runningPump);
         pumpStop(runningPump);
       }, time);
       pump.start(opts.speed);
-      sendConfirmation(pump.name + ' Dosing Started', 'Pumping ' + (opts.amount ? opts.amount : 1)  + 'ml', 'fal fa-cog fa-spin');
+      sendConfirmation(pump.name + ' Dosing Started', 'Pumping ' + (opts.amount ? opts.amount : 1) + 'ml', 'fal fa-cog fa-spin');
     } catch (e) {
       pump.stop();
     }
   }
 
   function pumpStart(pump, opts) {
-      log("Starting Pump". opts);
-      try {
-        pump.minty_opts = opts;
-        pump.start(opts ? opts.speed : undefined);
-        sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.','fal fa-cog fa-spin');
-      } catch (e) {
-        warn("Error Starting pump: " + e, pump);
-        pump.stop();
-        sendConfirmation(pump.name + ' Pump Failed', 'The ' + pump.name + ' pump Failed to start.','fal fa-exclamation-triangle');
-      }
+    log("Starting Pump".opts);
+    try {
+      pump.minty_opts = opts;
+      pump.start(opts ? opts.speed : undefined);
+      sendConfirmation(pump.name + ' Pump Started', 'The ' + pump.name + ' pump has been started.', 'fal fa-cog fa-spin');
+    } catch (e) {
+      warn("Error Starting pump: " + e, pump);
+      pump.stop();
+      sendConfirmation(pump.name + ' Pump Failed', 'The ' + pump.name + ' pump Failed to start.', 'fal fa-exclamation-triangle');
+    }
   }
 
   function pumpStop(pump) {
@@ -172,7 +174,7 @@ board.on('ready', function () {
     try {
       pump.stop();
       socketEmit('PUMP:DOSING:STOPPED', pump.minty_opts);
-      sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.','fal fa-cog');
+      sendConfirmation(pump.name + ' Pump Stopped', 'The ' + pump.name + ' pump has been stopped.', 'fal fa-cog');
     } catch (e) {
       warn("Error stopping pump: " + e, pump);
       pump.stop();
@@ -180,7 +182,7 @@ board.on('ready', function () {
   }
 
   function sendAutoOffRfCommand(code, opts) {
-    log("Sending Auto Off RF Code ", (opts ? opts : code) )
+    log("Sending Auto Off RF Code ", (opts ? opts : code))
     try {
       setTimeout(function () {
         sendRF(config.MINTY_FDD.OFF);
@@ -402,7 +404,7 @@ board.on('ready', function () {
     MintyHydro.processWaterHeater(opts);
   });
   socket.on('CONTROL:AIR_PUMP:STATE', function (opts) {
-    MintyHydro.processAirPump(opts);    
+    MintyHydro.processAirPump(opts);
   });
   socket.on('CONTROL:DEHUMIDIFIER:STATE', function (opts) {
     MintyHydro.processDeHumidifier(opts);

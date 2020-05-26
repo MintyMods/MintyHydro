@@ -25,7 +25,7 @@ app.use(webpackMiddleware(webpack(webpackConfig)));
 io.of('/arduino').on('connection', (socket) => {
   log('New connection to ArduinoServer@' + socket.id);
 
-  /* Database events */ 
+  /* Database events */
   socket.on('DB:COMMAND', function (data) {
     socket.broadcast.emit('DB:COMMAND', data);
   });
@@ -82,7 +82,7 @@ io.of('/arduino').on('connection', (socket) => {
     socket.broadcast.emit('BASE_NUTRIENTS:UPDATE', row);
   });
 
-  /* RF Remote Control Devices */ 
+  /* RF Remote Control Devices */
   socket.on('CONTROL:WATER_PUMP:STATE', function (opts) {
     socket.broadcast.emit('CONTROL:WATER_PUMP:STATE', opts);
   });
@@ -99,7 +99,7 @@ io.of('/arduino').on('connection', (socket) => {
     socket.broadcast.emit('CONTROL:HUMIDIFIER:STATE', opts);
   });
   socket.on('CONTROL:HEATER:STATE', function (opts) {
-    socket.broadcast.emit('CONTROL:HEATER:STATE',opts);
+    socket.broadcast.emit('CONTROL:HEATER:STATE', opts);
   });
   socket.on('CONTROL:AIR_EXTRACT_FAN:STATE', function (opts) {
     socket.broadcast.emit('CONTROL:AIR_EXTRACT_FAN:STATE', opts);
@@ -119,8 +119,8 @@ io.of('/arduino').on('connection', (socket) => {
   socket.on('CONTROL:CAMERA:STATE', function (opts) {
     socket.broadcast.emit('CONTROL:CAMERA:STATE', opts);
   });
- 
-  /* SENSOR OUTPUT */ 
+
+  /* SENSOR OUTPUT */
   socket.on('I2C:TEMP:RESULT', function (temp) {
     socket.broadcast.emit('I2C:TEMP:RESULT', temp);
   });
@@ -183,10 +183,10 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('PUMP:HYDROGUARD:STATE', function (opts) {
     socket.broadcast.emit('PUMP:HYDROGUARD:STATE', opts);
-  });  
+  });
   socket.on('PUMP:HYDROGUARD:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:HYDROGUARD:DOSE', opts);
-  });  
+  });
   socket.on('PUMP:FLORA_MICRO:STATE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_MICRO:STATE', opts);
   });
@@ -195,49 +195,49 @@ io.of('/arduino').on('connection', (socket) => {
   });
   socket.on('PUMP:FLORA_GROW:STATE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_GROW:STATE', opts);
-  });  
+  });
   socket.on('PUMP:FLORA_GROW:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_GROW:DOSE', opts);
-  });  
+  });
   socket.on('PUMP:FLORA_BLOOM:STATE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_BLOOM:STATE', opts);
-  });  
+  });
   socket.on('PUMP:FLORA_BLOOM:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FLORA_BLOOM:DOSE', opts);
-  });  
+  });
   socket.on('PUMP:SPARE:STATE', function (opts) {
     socket.broadcast.emit('PUMP:SPARE:STATE', opts);
-  });    
+  });
   socket.on('PUMP:SPARE:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:SPARE:DOSE', opts);
-  });    
+  });
   socket.on('PUMP:FILL:STATE', function (opts) {
     socket.broadcast.emit('PUMP:FILL:STATE', opts);
-  });   
+  });
   socket.on('PUMP:FILL:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:FILL:DOSE', opts);
-  });   
+  });
   socket.on('PUMP:DRAIN:STATE', function (opts) {
     socket.broadcast.emit('PUMP:DRAIN:STATE', opts);
-  });     
+  });
   socket.on('PUMP:DRAIN:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:DRAIN:DOSE', opts);
-  });     
+  });
   socket.on('PUMP:DRIP:STATE', function (opts) {
     socket.broadcast.emit('PUMP:DRIP:STATE', opts);
-  });     
+  });
   socket.on('PUMP:DRIP:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:DRIP:DOSE', opts);
-  });     
+  });
   socket.on('PUMP:MAGMIX:DOSE', function (opts) {
     socket.broadcast.emit('PUMP:MAGMIX:DOSE', opts);
-  }); 
+  });
   socket.on('PUMP:MAGMIX:STATE', function (opts) {
     socket.broadcast.emit('PUMP:MAGMIX:STATE', opts);
-  }); 
+  });
   socket.on('PUMP:RECIRCULATING:STATE', function (opts) {
     socket.broadcast.emit('PUMP:RECIRCULATING:STATE', opts);
-  }); 
+  });
 
 });
 

@@ -47,7 +47,6 @@ config.SYSEX_END = (0xF7);
 config.ATLAS_BYTES_TO_READ = 30;
 config.ATLAS_DELAY = 1400;
 
-
 /* Arduino Digital Pin Assignment */
 config.RESERVED_PIN = 2;
 config.SPARE_PIN = 3;

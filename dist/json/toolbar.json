@@ -24,7 +24,7 @@
       "circle": true,
       "id": "notifications",
       "icon": "fal fa-bell-on",
-      "count": 2,
+      "count": 0,
       "countColor": "primary"
    }
 ]

@@ -1,0 +1,21 @@
+{
+    "type": "line",
+    "scales": {
+        "bottom": {
+            "text": "text",
+            "showText": false
+        },
+        "left": {
+            "maxTicks": 5,
+            "max": 2000.00,
+            "min": 200.00
+        }
+    },
+    "series": [
+        {
+            "value": "value",
+            "color": "greenyellow",
+            "strokeWidth": 2
+        }
+    ]
+}

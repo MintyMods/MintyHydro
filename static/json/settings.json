@@ -14,7 +14,8 @@
                "placeholder": "Start Date",
                "label": "Start date",
                "width": "300",
-               "labelWidth": "120"
+               "labelWidth": "120",
+               "value":"01/05/20"
             },
             {
                "type": "datepicker",
@@ -48,7 +49,7 @@
                "placeholder": "Notes: Strain etc.",
                "labelPosition": "left",
                "labelWidth": "50",
-               "value": "",
+               "value": "Queen Seeds Easy Bud & Queen Seeds Royal Dwarf",
                "gravity": true,
                "width": "330"
             }
@@ -72,7 +73,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "",
+               "value": "2200",
                "gravity": false,
                "width": "300"
             },
@@ -87,7 +88,7 @@
                "validation": "number",
                "maxlength": "10",
                "labelWidth": "120",
-               "value": "",
+               "value": "1200",
                "gravity": false,
                "width": "300"
             },
@@ -102,7 +103,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "",
+               "value": "1200",
                "gravity": false,
                "width": "300"
             },
@@ -116,8 +117,8 @@
                "labelPosition": "left",
                "labelWidth": "120",
                "validation": "number",
-               "maxlength": "5",
-               "value": "",
+               "maxlength": "10",
+               "value": "480",
                "gravity": false,
                "width": "300"
             },
@@ -132,7 +133,7 @@
                "labelPosition": "left",
                "labelWidth": "120",
                "validation": "number",
-               "maxlength": "5",
+               "maxlength": "10",
                "value": "47.5",
                "gravity": false,
                "width": "300"
@@ -151,8 +152,8 @@
                      "labelPosition": "left",
                      "labelWidth": "120",
                      "validation": "number",
-                     "maxlength": "3",
-                     "value": "",
+                     "maxlength": "10",
+                     "value": "1700",
                      "gravity": false,
                      "width": "300"
                   },
@@ -167,7 +168,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "33",
                      "gravity": false,
                      "width": "300"
                   }
@@ -188,7 +189,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "3",
-                     "value": "",
+                     "value": "16",
                      "gravity": false,
                      "width": "300"
                   },
@@ -203,7 +204,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "7",
                      "gravity": false,
                      "width": "300"
                   }
@@ -223,8 +224,8 @@
                      "labelPosition": "left",
                      "labelWidth": "120",
                      "validation": "number",
-                     "maxlength": "3",
-                     "value": "",
+                     "maxlength": "10",
+                     "value": "535",
                      "gravity": false,
                      "width": "300"
                   },
@@ -239,7 +240,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "35",
                      "gravity": false,
                      "width": "300"
                   }
@@ -259,8 +260,8 @@
                      "labelPosition": "left",
                      "labelWidth": "120",
                      "validation": "number",
-                     "maxlength": "3",
-                     "value": "",
+                     "maxlength": "10",
+                     "value": "198",
                      "gravity": false,
                      "width": "300"
                   },
@@ -275,7 +276,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "26",
                      "gravity": false,
                      "width": "300"
                   }
@@ -296,7 +297,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "8",
                      "gravity": false,
                      "width": "300"
                   },
@@ -311,7 +312,7 @@
                      "labelWidth": "120",
                      "validation": "number",
                      "maxlength": "10",
-                     "value": "",
+                     "value": "650",
                      "gravity": false,
                      "width": "300"
                   }
@@ -328,7 +329,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "",
+               "value": "40",
                "gravity": false,
                "width": "300"
             },
@@ -343,7 +344,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "",
+               "value": "300",
                "gravity": false,
                "width": "300"
             },
@@ -358,7 +359,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "",
+               "value": "180",
                "gravity": false,
                "width": "300"
             },

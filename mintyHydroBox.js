@@ -37,6 +37,27 @@ const MintyHydroBox = {
       warn("Skipping Sensor Polling");
     }
 
+    this.processAutomation();
+
+    this.runAfterTimeout();
+  },
+
+  processAutomation: function() {
+
+    MintyDataSource.getActiveSchedules(function (rows) {
+      for (var key in rows) {
+        let row = rows[key];
+        if (row.condition) {
+          this.processConditionalState(row, config);
+        } else {
+          this.processResourceState(row);
+        }
+      }
+    }.bind(this));
+
+  },
+
+  processAutomationOriginal: function() {
     MintyDataSource.getActiveControlStates(function (rows) {
       let config = {};
       for (var key in rows) {
@@ -64,8 +85,6 @@ const MintyHydroBox = {
         }
       }.bind(this));
     }.bind(this));
-
-    this.runAfterTimeout();
   },
 
   runAfterTimeout: function () {
@@ -192,7 +211,7 @@ const MintyHydroBox = {
   processMagMixPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.MINTY_FDD.MAGMIX);
-      this.sendConfirmation('MagMix On', 'The mag mixers been turned on.', 'fal fa-cog fa-spin');
+      this.sendConfirmation('MagMix On', 'The mag mixers been turned on.', 'fal fa-cog fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.MINTY_FDD.OFF);
       this.sendConfirmation('MagMix Off', 'The mag mixers have been turned off.', 'fal fa-cog ');
@@ -202,7 +221,7 @@ const MintyHydroBox = {
   processAirPump: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirPump.on);
-      this.sendConfirmation('Air Pump On', 'Air pump has been turned on.', 'fal fa-wind fa-spin');
+      this.sendConfirmation('Air Pump On', 'Air pump has been turned on.', 'fal fa-wind fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirPump.off);
       this.sendConfirmation('Air Pump Off', 'Air pump has been turned off.', 'fal fa-wind');
@@ -212,7 +231,7 @@ const MintyHydroBox = {
   processDeHumidifier: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Dehumidifier.on);
-      this.sendConfirmation('De-Humidifier On', 'De-Humidifier has been turned on.', 'fal fa-tint-slash fa-spin');
+      this.sendConfirmation('De-Humidifier On', 'De-Humidifier has been turned on.', 'fal fa-tint-slash fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Dehumidifier.off);
       this.sendConfirmation('De-Humidifier Off', 'De-Humidifier has been turned off.', 'fal fa-tint-slash');
@@ -244,7 +263,7 @@ const MintyHydroBox = {
   processAirHeater: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Heater.on);
-      this.sendConfirmation('Air Heater Off', 'Air heater has been turned off.', 'fal fa-heat fa-spin');
+      this.sendConfirmation('Air Heater Off', 'Air heater has been turned off.', 'fal fa-heat fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Heater.off);
       this.sendConfirmation('Air Heater On', 'Air heater has been turned on.', 'fal fa-heat');
@@ -254,7 +273,7 @@ const MintyHydroBox = {
   processAirMovementFanB: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirMovementFanB.on);
-      this.sendConfirmation('Air Movement B On', 'Air oscillating fan B has been turned on.', 'fal fa-fan-table fa-spin');
+      this.sendConfirmation('Air Movement B On', 'Air oscillating fan B has been turned on.', 'fal fa-fan-table fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirMovementFanB.off);
       this.sendConfirmation('Air Movement B Off', 'Air oscillating fan B has been turned off.', 'fal fa-fan-table');
@@ -264,7 +283,7 @@ const MintyHydroBox = {
   processAirMovementFanA: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.AirMovementFanA.on);
-      this.sendConfirmation('Air Movement A On', 'Air oscillating fan A has been turned on.', 'fal fa-fan-table fa-spin');
+      this.sendConfirmation('Air Movement A On', 'Air oscillating fan A has been turned on.', 'fal fa-fan-table fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.AirMovementFanA.off);
       this.sendConfirmation('Air Movement A Off', 'Air oscillating fan A has been turned off.', 'fal fa-fan-table');
@@ -297,7 +316,7 @@ const MintyHydroBox = {
   processLightState: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Light.on);
-      this.sendConfirmation('Lights On', 'Lights have been turned on.', 'fal fa-lightbulb-on fa-spin');
+      this.sendConfirmation('Lights On', 'Lights have been turned on.', 'fal fa-lightbulb-on fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Light.off);
       this.sendConfirmation('Lights Off', 'Lights have been turned off.', 'fal fa-lightbulb');
@@ -307,10 +326,10 @@ const MintyHydroBox = {
   processCameraState: function (opts) {
     if (opts.value == 'ON') {
       this.sendRF(config.RF.Camera.on);
-      this.sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-lightbulb-on fa-spin');
+      this.sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-camera-home fa-beat');
     } else if (opts.value == 'OFF') {
       this.sendRF(config.RF.Camera.off);
-      this.sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-lightbulb');
+      this.sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-camera-home');
     }
   },
 

@@ -16,6 +16,12 @@ let schedulerHeader = null;
 let schedulerHeaderCompact = null;
 let runningPump = null;
 
+let chartWaterPh = null;
+let chartWaterEc = null;
+let chartWaterTemp = null;
+let chartAirTemp = null;
+let chartAirHumidity = null;
+
 function resetSchedulerLayoutConfig() {
     scheduler.config.header = isCompact() ? schedulerHeaderCompact : schedulerHeader;
     return true;
@@ -78,72 +84,41 @@ const getResCapacity = function () {
     return config.defaults.res.capacity;
 }
 
-function getChart() {
-
-    var data = [
-        { text: '02', 'value': 6.1 },
-        { text: '03', 'value': 6.03 },
-        { text: '04', 'value': 5.94 },
-        { text: '05', 'value': 5.97 },
-        { text: '06', 'value': 6.0 },
-        { text: '07', 'value': 6.1 },
-        { text: '08', 'value': 6.2 },
-        { text: '09', 'value': 6.2 },
-        { text: '10', 'value': 6.1 },
-        { text: '11', 'value': 6.0 },
-        // more data items
-    ];
-    var config = {
-        type: "area",
-        scales: {
-            "bottom": {
-                text: "text",
-                showText: false
-            },
-            "left": {
-                maxTicks: 5,
-                max: 7.0,
-                min: 5.0
-            }
-        },
-        series: [
-            {
-                value: "value",
-                color: "#5E83BA",
-                strokeWidth: 2
-            }
-        ],
-        legend: {
-            
-            valign: "top",
-            halign: "right"
-        }    
-    };
-
-    let chart = new dhx.Chart(null, config);
-    chart.data.parse(data);    
-
-    return chart;
-}
-
 function initComponents() {
 
     loadJSONAsync('/json/layouts/main.json', function (json) {
         layout = new dhx.Layout("layout_container", json);
         initSideBar();
         initToolBar();
-
     });
 
     loadJSONAsync('/json/layouts/environment.json', function (json) {
         envLayout = new dhx.Layout(null, json);
-        envLayout.getCell("water_ph_container").attach(getChart());
-        envLayout.getCell("water_ec_container").attach(getChart());
-        envLayout.getCell("water_temp_container").attach(getChart());
-        envLayout.getCell("air_temp_container").attach(getChart());
-        envLayout.getCell("air_humidity_container").attach(getChart());
-        envLayout.getCell("wattage_container").attach(getChart());
-        // envLayout.getCell("control_container").attach(getChart());
+        loadJSONAsync('/json/charts/water_ph.json', function (json) {
+            chartWaterPh = new dhx.Chart(null, json);
+            envLayout.getCell("water_ph_container").attach(chartWaterPh);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT' });
+        });
+        loadJSONAsync('/json/charts/water_ec.json', function (json) {
+            chartWaterEc = new dhx.Chart(null, json);
+            envLayout.getCell("water_ec_container").attach(chartWaterEc);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT' });
+        });
+        loadJSONAsync('/json/charts/water_temp.json', function (json) {
+            chartWaterTemp = new dhx.Chart(null, json);
+            envLayout.getCell("water_temp_container").attach(chartWaterTemp);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT' });
+        });
+        loadJSONAsync('/json/charts/air_temp.json', function (json) {
+            chartAirTemp = new dhx.Chart(null, json);
+            envLayout.getCell("air_temp_container").attach(chartAirTemp);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS' });
+        });
+        loadJSONAsync('/json/charts/air_humidity.json', function (json) {
+            chartAirHumidity = new dhx.Chart(null, json);
+            envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH' });
+        });
         initMainContent('environment');
     })
 

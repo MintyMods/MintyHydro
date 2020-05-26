@@ -348,13 +348,7 @@ board.on('ready', function () {
     sendAutoOffRfCommand(config.MINTY_FDD.MAGMIX, opts);
   });
   socket.on('PUMP:MAGMIX:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.MINTY_FDD.MAGMIX);
-      sendConfirmation('Mag Mix Fans On', 'The magnetic mixing fans have been turned on.', 'fal fa-magic fa-spin');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.MINTY_FDD.OFF);
-      sendConfirmation('Mag Mix Fans Off', 'The magnetic mixing fans have been turned off.', 'fal fa-magic');
-    }
+    MintyHydro.processMagMixPump(opts);
   });
   socket.on('PUMP:DRIP:DOSE', function (opts) {
     sendAutoOffRfCommand(config.MINTY_FDD.DRIP, opts);
@@ -438,13 +432,7 @@ board.on('ready', function () {
   });
 
   socket.on('CONTROL:CAMERA:STATE', function (opts) {
-    if (opts.value == 'ON') {
-      sendRF(config.RF.Camera.on);
-      sendConfirmation('Camera On', 'Camera has been turned on.', 'fal fa-camera-home fa-beat');
-    } else if (opts.value == 'OFF') {
-      sendRF(config.RF.Camera.off);
-      sendConfirmation('Camera Off', 'Camera has been turned off.', 'fal fa-camera-home');
-    }
+    MintyHydro.processCameraState(opts);
   });
   socket.on('I2C:TEMP:GET', function () {
     sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {

@@ -2,7 +2,7 @@ const SERIAL_PORT = 'COM6';
 //const SERIAL_PORT = '/dev/ttyACM0' ;
 const SOCKET_IO_NAMESPACE = 'arduino';
 const IP_ADDRESS = 'localhost';
-const DEBUGGING = false;
+const DEBUGGING = true;
 const SEND_RF_SIGNALS = false;
 
 const development = {
@@ -112,7 +112,7 @@ const RF_CODE_12V = {
 
 config.MINTY_FDD = {
   DRIP: RF_CODE_12V.RF_1000,
-  FILL: RF_CODE_12V.RF_0110,
+  FILL: RF_CODE_12V.RF_0100,
   DRAIN: RF_CODE_12V.RF_0010,
   MAGMIX: RF_CODE_12V.RF_0001,
   OFF: RF_CODE_12V.RF_0000,

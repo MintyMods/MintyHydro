@@ -56,8 +56,32 @@ function initDatabaseEvents() {
             processFormEvents(nutrientAdjustForm, data);
         } else if (data.table == 'EVENT') {
             processSchedulerEvents(data);
+        } else if (data.table == 'READING') {
+            processChartEvents(data);
         }
     });
+}
+
+function processChartEvents(data) {
+    if (data.rows) {
+        switch (data.sensor) {
+            case "I2C:PH:RESULT" : 
+            chartWaterPh.data.parse(data.rows);
+            break;
+            case "I2C:EC:RESULT" : 
+            chartWaterEc.data.parse(data.rows);
+            break;
+            case "I2C:TEMP:RESULT" : 
+            chartWaterTemp.data.parse(data.rows);
+            break;
+            case "HTS:BME280:TEMP:CELSIUS" : 
+            chartAirTemp.data.parse(data.rows);
+            break;
+            case "HTS:BME280:HUMIDITY:RH" : 
+            chartAirHumidity.data.parse(data.rows);
+            break;
+        }
+    }
 }
 
 function processFormEvents(form, data) {

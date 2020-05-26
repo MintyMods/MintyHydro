@@ -8,13 +8,13 @@
         "left": {
             "maxTicks": 5,
             "max": 80,
-            "min": 0
+            "min": 20
         }
     },
     "series": [
         {
             "value": "value",
-            "color": "blue",
+            "color": "pink",
             "strokeWidth": 2
         }
     ]

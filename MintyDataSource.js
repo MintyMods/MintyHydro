@@ -51,15 +51,23 @@ const MintyDataSource = {
                 case 'SAVE:EVENT' :
                     this.saveEvent(opts);
                     break;
+                case 'SPARKLINE' :
+                    this.getSparklineData(opts);
+                    break;
             }
         }.bind(this));
     },
 
-    getActiveControlStates: function(callback) {
-        let sql = "SELECT name, value FROM MH_CONTROL";// WHERE value IN ('ON','OFF')
+    getSparklineData: function(opts, callback) {
+        let sql = "SELECT sensor, value FROM MH_READING" + 
+                  " WHERE strftime('%Y-%m-%d %H:%M:%S', datesetup)" + 
+                  " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now', '-30 minute', 'localtime'))" + 
+                  " AND sensor = '" + opts.sensor + "'";
         db.serialize(function() {
             db.all(sql, function(err, rows) {
                 if (err == null) {
+                    opts.rows = rows;
+                    this.io.socketEmit(DB_RESULT, opts);
                     if (callback) callback(rows);
                 }
             }.bind(this));
@@ -273,7 +281,7 @@ const MintyDataSource = {
         var sql = "CREATE TABLE IF NOT EXISTS MH_CONTROL (";
         sql += " name TEXT PRIMARY KEY,";
         sql += " value TEXT,";
-        sql += " datetime TEXT";
+        sql += " datesetup datetime";
         sql += ")";
         db.run(sql);
     },
@@ -282,7 +290,7 @@ const MintyDataSource = {
         var sql = "CREATE TABLE IF NOT EXISTS MH_SETTING (";
         sql += " name TEXT PRIMARY KEY,";
         sql += " value TEXT,";
-        sql += " datetime TEXT";
+        sql += " datesetup datetime";
         sql += ")";
         db.run(sql);
     },
@@ -291,7 +299,7 @@ const MintyDataSource = {
         var sql = "CREATE TABLE IF NOT EXISTS MH_NUTRIENT (";
         sql += " name TEXT PRIMARY KEY,";
         sql += " value TEXT,";
-        sql += " datetime TEXT";
+        sql += " datesetup datetime";
         sql += ")";
         db.run(sql);
     },
@@ -301,7 +309,7 @@ const MintyDataSource = {
         sql += " name TEXT PRIMARY KEY,";
         sql += " desc TEXT NOT NULL,";
         sql += " unit TEXT NOT NULL,";
-        sql += " datetime TEXT"; 
+        sql += " datesetup datetime"; 
         sql += ")";
         db.run(sql);
     },
@@ -310,7 +318,7 @@ const MintyDataSource = {
         var sql = "CREATE TABLE IF NOT EXISTS MH_READING (";
         sql += " sensor TEXT,";
         sql += " value TEXT, ";
-        sql += " datetime TEXT";
+        sql += " datesetup datetime";
         sql += ")";
         db.run(sql);
     },

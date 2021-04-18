@@ -152,6 +152,6 @@ function initHydroSlaveEvents(sensorsForm) {
         sensorsForm.getItem('SLAVE:TEMP:RESULT').setValue(json["WATER_TEMP"]);
         sensorsForm.getItem('SLAVE:TEMP:CELSIUS').setValue(json["AIR_TEMP"]);
         sensorsForm.getItem('SLAVE:HUMIDITY:RH').setValue(json["AIR_HUMIDITY"]);
-        setTimeout(function() { initHydroSlaveEvents(sensorsForm) }, 0);
+        setTimeout(function() { initHydroSlaveEvents(sensorsForm) }, 2000);
     });
 }

@@ -1,232 +1,160 @@
 {
    "title": "Sensors / Probes",
-   "padding": 1,
    "rows": [
- 
       {
-         "title": "Environment:",
+         "title": "Air Temperature:",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
+         "cols": [
             {
-               "padding": 10,
-               "cols": [
-                  {
-                     "type": "input",
-                     "label": "Temperature (℃) :",
-                     "icon": "fal fa-heat",
-                     "placeholder": "Air Temp ℃",
-                     "labelPosition": "left",
-                     "labelWidth": "150",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:TEMP:CELSIUS"
-                  },
-                  {
-                     "type": "input",
-                     "icon": "fal fa-heat",
-                     "placeholder": "Air Temp ℃",
-                     "labelPosition": "left",
-                     "labelWidth": "0",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "SLAVE:TEMP:CELSIUS"
-                  }              
-               ]
+               "type": "input",
+               "icon": "fal fa-heat",
+               "placeholder": "Air Temp ℃",
+               "value": "0.00",
+               "id": "HTS:BME280:TEMP:CELSIUS"
             },
             {
-               "padding": 10,
-               "cols": [
-                  {
-                     "type": "input",
-                     "label": "Relative Humidity (%) :",
-                     "icon": "fal fa-humidity",
-                     "placeholder": "rh %",
-                     "labelPosition": "left",
-                     "labelWidth": "150",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:HUMIDITY:RH"
-                  },
-                  {
-                     "type": "input",
-                     "label": "",
-                     "icon": "fal fa-humidity",
-                     "placeholder": "rh %",
-                     "labelPosition": "left",
-                     "labelWidth": "0",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "SLAVE:HUMIDITY:RH"
-                  }                  
-               ]
-            }
+               "type": "input",
+               "icon": "fal fa-heat",
+               "placeholder": "Air Temp ℃",
+               "value": "0.00",
+               "id": "SLAVE:TEMP:CELSIUS"
+            }              
          ]
       },
-
+      {
+         "title": "Air Humidity:",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "cols": [
+            {
+               "type": "input",
+               "icon": "fal fa-humidity",
+               "placeholder": "rh %",
+               "value": "0.00",
+               "id": "HTS:BME280:HUMIDITY:RH"
+            },
+            {
+               "type": "input",
+               "icon": "fal fa-humidity",
+               "placeholder": "rh %",
+               "value": "0.00",
+               "id": "SLAVE:HUMIDITY:RH"
+            }                  
+         ]
+      },
+      {
+         "title": "Water Temperature:",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "cols": [
+            {
+               "type": "input",
+               "icon": "fal fa-oil-temp",
+               "placeholder": "Water Temp ℃",
+               "value": "0.00",
+               "id": "I2C:TEMP:RESULT"
+            },
+            {
+               "type": "input",
+               "icon": "fal fa-oil-temp",
+               "placeholder": "Water Temp ℃",
+               "value": "0.00",
+               "id": "SLAVE:TEMP:RESULT"
+            }                  
+         ]
+      },      
       {
          "title": "Water pH: (potential of Hydrogen)",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
             {
-               "padding": 10,
-               
-               "rows": [
+               "cols": [
                   {
-
-                     "cols": [
-                        {
-
-                           "type": "input",
-                           "label": "pH :",
-                           "icon": "fal fa-dewpoint",
-                           "placeholder": "pH",
-                           "labelPosition": "left",
-                           "labelWidth": "150px",
-                           "value": "0.00",
-                           "readOnly": "false",
-                           "id": "I2C:PH:RESULT"
-                        },
-                        {
-
-                           "type": "input",
-                           "label": "",
-                           "icon": "fal fa-dewpoint",
-                           "placeholder": "pH",
-                           "labelPosition": "left",
-                           "labelWidth": "0px",
-                           "value": "0.00",
-                           "readOnly": "false",
-                           "id": "SLAVE:PH:RESULT"
-                        }                       
-                     ]
+                     "type": "input",
+                     "icon": "fal fa-dewpoint",
+                     "placeholder": "pH",
+                     "value": "0.00",
+                     "id": "I2C:PH:RESULT"
                   },
                   {
-                     "cols":[
-                        {
-                           "gravity":true
-                        },                        
-                        {
-                           "type": "button",
-                           "value": "Calibrate",
-                           "icon": "fal fa-ballot-check",
-                           "size": "small",
-                           "view": "flat",
-                           "color": "secondary",
-                           "id": "CALIBRATE:PH"
-                        },
-                        {
-                           "type": "button",
-                           "disabled":true,
-                           "value": "Calibrate",
-                           "icon": "fal fa-ballot-check",
-                           "size": "small",
-                           "view": "flat",
-                           "color": "secondary",
-                           "id": "SLAVE:CALIBRATE:PH"                           
-                        }
-                     ]
+                     "type": "input",
+                     "icon": "fal fa-dewpoint",
+                     "placeholder": "pH",
+                     "value": "0.00",
+                     "id": "SLAVE:PH:RESULT"
+                  }                       
+               ]
+            },
+            {
+               "cols":[
+                  {
+                     "type": "button",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "secondary",
+                     "id": "CALIBRATE:PH"
+                  },
+                  {
+                     "type": "button",
+                     "disabled":true,
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "secondary",
+                     "id": "SLAVE:CALIBRATE:PH"                           
                   }
                ]
             }
          ]
+   
       },
       {
          "title": "Water EC: (Electrical Conductivity)",
          "css": "dhx_layout-cell--bordered dhx_layout-cell",
          "rows": [
             {
-               "padding": 10,
-               "rows": [
+               "cols":[
                   {
-                     "cols":[
-                        {
-                           "type": "input",
-                           "label": "E.C. :",
-                           "icon": "fal fa-heart-rate",
-                           "placeholder": "E.C.",
-                           "labelPosition": "left",
-                           "labelWidth": "150px",
-                           "value": "0.00",
-                           "readOnly": "false",
-                           "id": "I2C:EC:RESULT"
-                        },
-                        {
-                           "type": "input",
-                           "label": "",
-                           "icon": "fal fa-heart-rate",
-                           "placeholder": "E.C.",
-                           "labelPosition": "left",
-                           "labelWidth": "0px",
-                           "value": "0.00",
-                           "readOnly": "false",
-                           "id": "SLAVE:EC:RESULT"
-                           }
-                        ]
+                     "type": "input",
+                     "icon": "fal fa-heart-rate",
+                     "placeholder": "E.C.",
+                     "value": "0.00",
+                     "id": "I2C:EC:RESULT"
                   },
                   {
-                     "cols":[
-                        {
-                           "gravity":true
-
-                        },              
-                        {
-                           "type": "button",
-                           "value": "Calibrate",
-                           "icon": "fal fa-ballot-check",
-                           "size": "small",
-                           "view": "flat",
-                           "color": "secondary",
-                           "id": "CALIBRATE:EC"
-                        },
-                        {
-                           "type": "button",
-                           "value": "Calibrate",
-                           "disabled":true,
-                           "icon": "fal fa-ballot-check",
-                           "size": "small",
-                           "view": "flat",
-                           "color": "secondary",
-                           "id": "SLAVE:CALIBRATE:EC"
-                        }
-
-                     ]
+                     "type": "input",
+                     "icon": "fal fa-heart-rate",
+                     "placeholder": "E.C.",
+                     "value": "0.00",
+                     "id": "SLAVE:EC:RESULT"
+                     }
+                  ]
+            },
+            {
+               "cols":[
+                  {
+                     "type": "button",
+                     "value": "Calibrate",
+                     "icon": "fal fa-ballot-check",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "secondary",
+                     "id": "CALIBRATE:EC"
+                  },
+                  {
+                     "type": "button",
+                     "value": "Calibrate",
+                     "disabled":true,
+                     "icon": "fal fa-ballot-check",
+                     "size": "small",
+                     "view": "flat",
+                     "color": "secondary",
+                     "id": "SLAVE:CALIBRATE:EC"
                   }
                ]
             }
          ]
-      },
-      {
-         "title": "Water Temperature:",
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "padding": 10,
-               "cols": [
-                  {
-                     "type": "input",
-                     "label": "Water Temp (℃) :",
-                     "icon": "fal fa-oil-temp",
-                     "placeholder": "Water Temp ℃",
-                     "labelPosition": "left",
-                     "labelWidth": "150px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "I2C:TEMP:RESULT"
-                  },
-                  {
-                     "type": "input",
-                     "label": "",
-                     "icon": "fal fa-oil-temp",
-                     "placeholder": "Water Temp ℃",
-                     "labelPosition": "left",
-                     "labelWidth": "0px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "SLAVE:TEMP:RESULT"
-                  }                  
-               ]
-            }
-         ]
-      }      
+      }
    ]
 }

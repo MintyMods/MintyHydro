@@ -1,13 +1,14 @@
 [
    {
-      "id": "environment",
+      "id": "controls",
       "type": "button",
       "active": false,
       "group": "nav",
       "twoState": true,
-      "icon": "fal fa-cannabis",
-      "value": "Environment"
+      "icon": "fal fa-hand-holding-seedling",
+      "value": "Controls"
    },
+   
    {
       "id": "sensors",
       "type": "button",
@@ -17,6 +18,7 @@
       "icon": "fal fa-sensor",
       "value": "Sensors"
    },
+
    {
       "id": "levels",
       "type": "button",
@@ -26,15 +28,7 @@
       "icon": "fal fa-sliders-h-square",
       "value": "Levels"
    },   
-   {
-      "id": "controls",
-      "type": "button",
-      "active": false,
-      "group": "nav",
-      "twoState": true,
-      "icon": "fal fa-hand-holding-seedling",
-      "value": "Controls"
-   },
+
    {
       "id": "pumps",
       "type": "button",
@@ -44,6 +38,15 @@
       "icon": "fal fa-faucet-drip",
       "value": "Pumps"
    },
+   {
+      "id": "environment",
+      "type": "button",
+      "active": false,
+      "group": "nav",
+      "twoState": true,
+      "icon": "fal fa-cannabis",
+      "value": "Environment"
+   },   
    {
       "id": "schedule",
       "type": "button",

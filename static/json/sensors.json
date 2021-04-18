@@ -114,24 +114,6 @@
                      "width": "250"
                   }
                ]
-            },
-            {
-               "padding": 10,
-               "cols": [
-                  {
-                     "type": "input",
-                     "label": "Barometer (pressure) :",
-                     "icon": "fal fa-mountains",
-                     "placeholder": "Air Pressure",
-                     "labelPosition": "left",
-                     "labelWidth": "150",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "HTS:BME280:PRESSURE",
-                     "gravity": false,
-                     "width": "250"
-                  }
-               ]
             }
          ]
       },

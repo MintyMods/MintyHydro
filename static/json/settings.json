@@ -134,7 +134,7 @@
                "labelWidth": "120",
                "validation": "number",
                "maxlength": "10",
-               "value": "47.5",
+               "value": "40",
                "gravity": false,
                "width": "300"
             },
@@ -375,6 +375,36 @@
                "validation": "number",
                "maxlength": "10",
                "value": "",
+               "gravity": false,
+               "width": "300"
+            },
+            {
+               "type": "input",
+               "id": "CONFIG:GROW_AREA:AIRCON:WATTS",
+               "labelInline": true,
+               "label": "Air Conditioner",
+               "icon": "fal fa-bolt",
+               "placeholder": "watts",
+               "labelPosition": "left",
+               "labelWidth": "120",
+               "validation": "number",
+               "maxlength": "10",
+               "value": "210",
+               "gravity": false,
+               "width": "300"
+            },
+            {
+               "type": "input",
+               "id": "CONFIG:GROW_AREA:AIRCON:BTU",
+               "labelInline": true,
+               "label": "Air Conditioner",
+               "icon": "fal fa-recycle",
+               "placeholder": "BTU",
+               "labelPosition": "left",
+               "labelWidth": "120",
+               "validation": "number",
+               "maxlength": "10",
+               "value": "2300",
                "gravity": false,
                "width": "300"
             }

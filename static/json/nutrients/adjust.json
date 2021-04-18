@@ -19,7 +19,7 @@
                     "labelWidth": "150",
                     "validation": "number",
                     "maxlength": "5",
-                    "value": ".8",
+                    "value": "40",
                     "width": 300
                 }
             ]

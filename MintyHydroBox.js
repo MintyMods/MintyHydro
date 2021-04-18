@@ -31,6 +31,11 @@ const MintyHydroBox = {
     if (!this.defaultsLoaded) {
       this.loadDefaults();
     }
+
+
+    //sendAtlasStatusCode(['O,?'.charCodeAt(0),'O,?'.charCodeAt(1),'O,?'.charCodeAt(2)]);
+    // sendAtlasStatusCode(['O,?']);
+
     if (pollAllSensors) {
       this.pollAtlasSensors();
     } else {
@@ -43,6 +48,7 @@ const MintyHydroBox = {
   },
 
   processAutomation: function () {
+    log('Getting Rows ');
     MintyDataSource.getActiveSchedules(function (rows) {
       for (var key in rows) {
         let row = rows[key];
@@ -52,6 +58,7 @@ const MintyHydroBox = {
           this.processResourceState(row);
         }
       }
+      log('Rows ', rows);
     }.bind(this));
   },
 
@@ -154,12 +161,14 @@ const MintyHydroBox = {
         this.processMagMixPump(opts);
         break;
     }
+    this.sendBackGroundConfirmation('Background Process', 'Processed:' + opts.name, 'fal fa-cog fa-spin', opts);
+    
   },
 
   processWaterPump: function (opts) {
     if (opts.value == 'ON') {
       relayWaterPump.on();
-      this.sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fa-cog fa-spin', opts);
+      this.sendConfirmation('Water Pump On', 'Recirculating water pump has been started.', 'fal fad-server', opts);
     } else if (opts.value == 'OFF') {
       relayWaterPump.off();
       this.sendConfirmation('Water Pump Off', 'Recirculating water pump has been stopped.', 'fal fa-cog', opts);
@@ -334,6 +343,7 @@ const MintyHydroBox = {
   processConditionalState: function (row, config) {
     let opts = {
       config, row,
+      suppress:true,
       "condition": row.condition,
       "resource": row.resource + 'STATE',
       "trigger": row.trigger,
@@ -384,63 +394,84 @@ const MintyHydroBox = {
   },
 
   processAirTemp: function (opts) {
-    let range = opts.config['CONTROL:AIR:TEMPERATURE:SLIDER']['value'].split(',');
-    let low = range[0];
-    let high = range[1];
-    let current = this.reading.temp.air;
-    if (opts.condition == 'TEMP:AIR:HIGH') {
-      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
-    } else if (opts.condition == 'TEMP:AIR:LOW') {
-      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
-    }
+    getSliderValue('CONTROL:AIR:TEMPERATURE:SLIDER', function(reading){
+      log('Processing Airtemp', reading);
+      let low = reading[0];
+      let high = reading[1];
+      getLastReading('HTS:BME280:TEMP:CELSIUS', function(current){
+        log("Current Air Temp: ",current);
+        log("Reading Air Temp: ", reading);
+        if (opts.condition == 'TEMP:AIR:HIGH') {
+          this.processResourceState((parseFloat(current) >= parseFloat(high)) ? opts : toggleOptsValue(opts));
+        } else if (opts.condition == 'TEMP:AIR:LOW') {
+          this.processResourceState((parseFloat(current) <= parseFloat(low)) ? opts : toggleOptsValue(opts));
+        }
+      }.bind(this));
+    }.bind(this));
   },
-
   processWaterTemp: function (opts) {
-    let range = opts.config['CONTROL:WATER:TEMPERATURE:SLIDER']['value'].split(',');
-    let low = range[0];
-    let high = range[1];
-    let current = this.reading.temp.water;
-    if (opts.condition == 'TEMP:WATER:HIGH') {
-      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
-    } else if (opts.condition == 'TEMP:WATER:LOW') {
-      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
-    }
+    getSliderValue('CONTROL:WATER:TEMPERATURE:SLIDER', function(reading){
+      log('Processing Water Temp', reading);
+      let low = reading[0];
+      let high = reading[1];
+      getLastReading('I2C:TEMP:RESULT', function(current){
+        log("Current Water Temp: " + current, this);
+        log("Reading Water Temp: " + reading);
+        if (opts.condition == 'TEMP:WATER:HIGH') {
+          this.processResourceState((parseFloat(current) >= parseFloat(high)) ? opts : toggleOptsValue(opts));
+        } else if (opts.condition == 'TEMP:WATER:LOW') {
+          this.processResourceState((parseFloat(current) <= parseFloat(low)) ? opts : toggleOptsValue(opts));
+        }
+      }.bind(this));
+    }.bind(this));
   },
-
   processHumidity: function (opts) {
-    let range = opts.config['CONTROL:AIR:HUMIDITY:SLIDER']['value'].split(',');
-    let low = range[0];
-    let high = range[1];
-    let current = this.reading.humidity;
-    if (opts.condition == 'HUMIDITY:AIR:HIGH') {
-      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
-    } else if (opts.condition == 'HUMIDITY:AIR:LOW') {
-      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
-    }
+    getSliderValue('CONTROL:AIR:HUMIDITY:SLIDER', function(reading){
+      log('Processing Humidity', reading);
+      let low = reading[0];
+      let high = reading[1];
+      getLastReading('HTS:BME280:HUMIDITY:RH', function(current){
+        log("Current Humidity: " + current, this);
+        log("Reading Humidity: " + reading);
+        if (opts.condition == 'HUMIDITY:AIR:HIGH') {
+          this.processResourceState((parseFloat(current) >= parseFloat(high)) ? opts : toggleOptsValue(opts));
+        } else if (opts.condition == 'HUMIDITY:AIR:LOW') {
+          this.processResourceState((parseFloat(current) <= parseFloat(low)) ? opts : toggleOptsValue(opts));
+        }
+      }.bind(this));
+    }.bind(this));
   },
-
   processWaterPH: function (opts) {
-    let range = opts.config['CONTROL:WATER:PH:SLIDER']['value'].split(',');
-    let low = range[0];
-    let high = range[1];
-    let current = this.reading.ph;
-    if (opts.condition == 'PH:WATER:HIGH') {
-      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
-    } else if (opts.condition == 'PH:WATER:LOW') {
-      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
-    }
+    getSliderValue('CONTROL:WATER:PH:SLIDER', function(reading){
+      log('Processing PH', reading);
+      let low = reading[0];
+      let high = reading[1];
+      getLastReading('I2C:PH:RESULT', function(current){
+        log("Current PH: " + current, this);
+        log("Reading PH: " + reading);
+        if (opts.condition == 'PH:WATER:HIGH') {
+          this.processResourceState((parseFloat(current) >= parseFloat(high)) ? opts : toggleOptsValue(opts));
+        } else if (opts.condition == 'PH:WATER:LOW') {
+          this.processResourceState((parseFloat(current) <= parseFloat(low)) ? opts : toggleOptsValue(opts));
+        }
+      }.bind(this));
+    }.bind(this));
   },
-
   processWaterEC: function (opts) {
-    let range = opts.config['CONTROL:WATER:EC:SLIDER']['value'].split(',');
-    let low = range[0];
-    let high = range[1];
-    let current = this.reading.ec;
-    if (opts.condition == 'EC:WATER:HIGH') {
-      this.processResourceState((current >= high) ? opts : toggleOptsValue(opts));
-    } else if (opts.condition == 'EC:WATER:LOW') {
-      this.processResourceState((current <= low) ? opts : toggleOptsValue(opts));
-    }
+    getSliderValue('CONTROL:WATER:EC:SLIDER', function(reading){
+      log('Processing EC', reading);
+      let low = reading[0];
+      let high = reading[1];
+      getLastReading('I2C:EC:RESULT', function(current){
+        log("Current EC: " + current, this);
+        log("Reading EC: " + reading);
+        if (opts.condition == 'EC:WATER:HIGH') {
+          this.processResourceState((parseFloat(current) >= parseFloat(high)) ? opts : toggleOptsValue(opts));
+        } else if (opts.condition == 'EC:WATER:LOW') {
+          this.processResourceState((parseFloat(current) <= parseFloat(low)) ? opts : toggleOptsValue(opts));
+        }
+      }.bind(this));
+    }.bind(this));
   },
 
   processWaterLevelHighTank: function (opts) {
@@ -481,20 +512,28 @@ const MintyHydroBox = {
     this.defaultsLoaded = true;
   },
 
+  // sendAtlasStatusCode: function (code) {
+  //   this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, code, function (value) {
+  //     log("Atlas Stats : ", value);
+  //     this.sendConfirmation('ATLAS', JSON.stringify(value), 'fal fa-cog fa-eye');
+  //   }.bind(this));
+  // },
+
+
   pollAtlasSensors: function () {
-    this.io.sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ph) {
-      this.reading.ph = ph;
-      MintyDataSource.insert({ name: 'I2C:PH:RESULT', value: ph, table: 'READING' });
-      this.io.socketEmit('I2C:PH:RESULT', ph);
-      this.io.sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (temp) {
-        this.reading.temp.water = temp;
-        MintyDataSource.insert({ name: 'I2C:TEMP:RESULT', value: temp, table: 'READING' });
-        this.io.socketEmit('I2C:TEMP:RESULT', temp);
-        this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (ec) {
-          this.reading.ec = ec;
-          MintyDataSource.insert({ name: 'I2C:EC:RESULT', value: ec, table: 'READING' });
-          this.io.socketEmit('I2C:EC:RESULT', ec);
-          this.processSensors();
+    this.io.sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (value) {
+      this.reading.ph = value;
+      this.io.socketEmit('I2C:PH:RESULT', value);
+      MintyDataSource.insert({ name: 'I2C:PH:RESULT', value, table: 'READING' });
+      this.io.sendAtlasI2C(config.I2C_ATLAS_TEMP_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (value) {
+        this.reading.temp.water = value;
+        this.io.socketEmit('I2C:TEMP:RESULT', value);
+        MintyDataSource.insert({ name: 'I2C:TEMP:RESULT', value, table: 'READING' });
+        this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (value) {
+          this.reading.ec = value;
+          this.io.socketEmit('I2C:EC:RESULT', value);
+          MintyDataSource.insert({ name: 'I2C:EC:RESULT', value, table: 'READING' });
+          //this.processSensors();
         }.bind(this));
       }.bind(this));
     }.bind(this));
@@ -619,8 +658,16 @@ const MintyHydroBox = {
     }.bind(this));
   },
 
-  sendConfirmation: function (title, text, icon) {
-    this.io.socketEmit('ARDUINO:CONFIM', { title, text, icon });
+  sendConfirmation: function (title, text, icon, opts) {
+    if (opts.suppress) {
+      this.io.socketEmit('ARDUINO:CONFIM', { title, text, icon, type:'background' });
+    } else {
+      this.io.socketEmit('ARDUINO:CONFIM', { title, text, icon, type:'standard' });
+    }
+  },
+
+  sendBackGroundConfirmation: function (title, text, icon, opts) {
+    this.io.socketEmit('ARDUINO:CONFIM', { title, text, icon, type:'background' });
   },
 
   socketEmit: function (namespace, payload) {
@@ -629,8 +676,30 @@ const MintyHydroBox = {
 
   sendRF: function (code) {
     this.io.sendRF(code);
-  }
+  },
 
+  debug: function(message, payload) {
+    if (config.debug)  {
+      if (payload) {
+        this.sendConfirmation('Debug', message + JSON.stringify(payload), 'fal fa-cog fa-eye');
+      } else {
+        this.sendConfirmation('Debug', message, 'fal fa-cog fa-eye');
+      }
+    }
+  }
+}
+
+function getLastReading(sensor, callback) {
+  MintyDataSource.getLastReading(sensor, function (row) {
+      log("Reading ROW:",row);
+      if (callback) callback(row);
+  });
+}
+function getSliderValue(slider, callback) {
+  MintyDataSource.getSliderValue(slider, function (row) {
+      log("Slider ROW:",row);
+      if (callback) callback(row);
+  });
 }
 
 function toggleOptsValue(opts) {
@@ -638,10 +707,21 @@ function toggleOptsValue(opts) {
   if (current.toUpperCase() == 'ON') {
     opts.value = 'OFF';
   } else if (current.toUpperCase() == 'OFF') {
-    opts.value = 'ON';
+    if (opts.condition.endsWith('LOW')) {
+      opts.value = 'LOW';
+    } else if (opts.condition.endsWith('HIGH')) {
+      opts.value = 'HIGH';
+    } else {
+      opts.value = 'ON';
+    }
+  } else if (current.toUpperCase() == 'LOW') {
+    opts.value = 'OFF';
+  } else if (current.toUpperCase() == 'HIGH') {
+    opts.value = 'OFF';
   } else {
     throw "Unknown Opts type " + opts.value;
   }
+  log('TOGGLE was = ' + current + ', now = ' + opts.value);
   return opts;
 }
 

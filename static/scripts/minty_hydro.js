@@ -43,7 +43,9 @@ function initSocket() {
         notificationsForm.data.add(msg, 0);
         toolbar.data.getItem("notifications")['count']=count++;
         toolbar.paint();
-        showServerConfirmation(msg);
+        if (msg.type == 'standard') {
+            showServerConfirmation(msg);
+        }
     });
     socket.on('disconnect', function (e) {
         showMissingMintyHydroHubError();

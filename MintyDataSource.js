@@ -77,12 +77,42 @@ const MintyDataSource = {
     getActiveControlStates: function (callback) {
         let sql = "SELECT name, value FROM MH_CONTROL";
         db.serialize(function () {
-            db.all(sql, function (err, rows) {
+            db.get(sql, function (err, rows) {
                 if (err == null) {
                     if (callback) callback(rows);
                 }
             }.bind(this));
         }.bind(this));
+    },
+
+    getSliderValue: function(name, callback) {
+        let sql = "SELECT value FROM MH_CONTROL WHERE name = '" + name + "'";
+        log("sql", sql);
+        db.serialize(function () {
+            db.all(sql, function (err, row) {
+                var result = row[0].value;
+                log("getSliderValue:", result);
+                if (err == null) {
+                    var parts = result.split(',');
+                    if (callback) callback(parts);
+                }
+            }.bind(this));
+        }.bind(this)); 
+    },
+
+    getLastReading: function(name, callback) {
+        let sql = "select value from mh_reading where sensor = '" + name + "' order by datesetup desc limit 1";
+        log("sql", sql);
+        db.serialize(function () {
+            db.get(sql, function (err, row) {
+                if (err == null) {
+                    log("getLastReading: '" + row + "'", row);
+                    if (callback) callback(row);
+                } else {
+                    warn("Failed to get last reading " + err);
+                }
+            }.bind(this));
+        }.bind(this)); 
     },
 
     getActiveSchedules: function (callback) {

@@ -65,12 +65,16 @@ const MintyIO = function (board, serial) {
     }.bind(this);
 
     this.socketEmit = function (namespace, payload) {
-        log("EMIT@" + namespace, payload != undefined ? payload : "");
-        socket.emit(namespace, payload);
+        if (payload != undefined && payload != "") {
+            log("EMIT@" + namespace, payload);
+            socket.emit(namespace, payload);
+        }
     }.bind(this);
     this.socketBroadcast = function (namespace, payload) {
-        log("BroadCast@" + namespace, payload != undefined ? payload : "");
-        socket.broadcast.emit(namespace, payload);
+        if (payload != undefined && payload != "") {        
+            log("BroadCast@" + namespace, payload);
+            socket.broadcast.emit(namespace, payload);
+        }
     }.bind(this);
 
     // https://stackoverflow.com/questions/8482309/converting-javascript-integer-to-byte-array-and-back

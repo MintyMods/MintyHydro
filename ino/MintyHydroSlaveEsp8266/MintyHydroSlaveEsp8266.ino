@@ -64,6 +64,7 @@ void register_API_handler() {
       }
       delay(100);
     }
+    server.sendHeader("Access-Control-Allow-Origin","*");
     server.send(200, "application/json", message);
     led_off();
   });
@@ -73,6 +74,7 @@ void register_reset_handler() {
   server.on("/reset", []() {
     persWM.resetSettings();
     flash_led();
+    server.sendHeader("Access-Control-Allow-Origin","*");
     server.send(200, "text/plain", "Reset...");
   });
 }
@@ -80,6 +82,7 @@ void register_reset_handler() {
 void register_404_handler() {
   server.onNotFound([]() {
     if (!handleFileRead(server.uri())) {
+      server.sendHeader("Access-Control-Allow-Origin","*");
       server.sendHeader("Cache-Control", " max-age=172800");
       server.send(302, "text/html", metaRefreshStr);
     }
@@ -142,11 +145,11 @@ bool handleFileRead(String path) {
   if (SPIFFS.exists(prefix + ".min" + ext + ".gz")) path = prefix + ".min" + ext + ".gz";
   if (SPIFFS.exists(path)) {
     File file = SPIFFS.open(path, "r");
+    server.sendHeader("Access-Control-Allow-Origin","*");
     if (server.hasArg("download"))
       server.sendHeader("Content-Disposition", " attachment;");
     if (server.uri().indexOf("nocache") < 0)
       server.sendHeader("Cache-Control", " max-age=172800");
-
     if (WiFi.status() == WL_CONNECTED && server.hasArg("alt")) {
       server.sendHeader("Location", server.arg("alt"), true);
       server.send ( 302, "text/plain", "");

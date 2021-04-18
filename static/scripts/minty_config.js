@@ -8,5 +8,8 @@ const config = {
         res: {
             capacity: 45
         }
+    },
+    slave:{
+        url:'http://192.168.1.126/api'
     }
 }

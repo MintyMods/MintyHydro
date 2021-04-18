@@ -125,38 +125,6 @@ function initSensorFormEvents(sensorsForm) {
             calibratePHProbeWizard();
         }
     });
-    socket.on('WLS:TANK:HIGH:OPEN', function (data) {
-        sensorsForm.getItem('WLS:TANK:HIGH').config.color = 'danger';
-        sensorsForm.getItem('WLS:TANK:HIGH').paint();
-    });
-    socket.on('WLS:TANK:HIGH:CLOSE', function (data) {
-        sensorsForm.getItem('WLS:TANK:HIGH').config.color = 'success';
-        sensorsForm.getItem('WLS:TANK:HIGH').paint();
-    });
-    socket.on('WLS:TANK:LOW:OPEN', function (data) {
-        sensorsForm.getItem('WLS:TANK:LOW').config.color = 'danger';
-        sensorsForm.getItem('WLS:TANK:LOW').paint();
-    });
-    socket.on('WLS:TANK:LOW:CLOSE', function (data) {
-        sensorsForm.getItem('WLS:TANK:LOW').config.color = 'success';
-        sensorsForm.getItem('WLS:TANK:LOW').paint();
-    });
-    socket.on('WLS:RES:HIGH:OPEN', function (data) {
-        sensorsForm.getItem('WLS:RES:HIGH').config.color = 'danger';
-        sensorsForm.getItem('WLS:RES:HIGH').paint();
-    });
-    socket.on('WLS:RES:HIGH:CLOSE', function (data) {
-        sensorsForm.getItem('WLS:RES:HIGH').config.color = 'success';
-        sensorsForm.getItem('WLS:RES:HIGH').paint();
-    });
-    socket.on('WLS:RES:LOW:OPEN', function (data) {
-        sensorsForm.getItem('WLS:RES:LOW').config.color = 'danger';
-        sensorsForm.getItem('WLS:RES:LOW').paint();
-    });
-    socket.on('WLS:RES:LOW:CLOSE', function (data) {
-        sensorsForm.getItem('WLS:RES:LOW').config.color = 'success';
-        sensorsForm.getItem('WLS:RES:LOW').paint();
-    });
     socket.on('I2C:EC:RESULT', function (data) {
         sensorsForm.getItem('I2C:EC:RESULT').setValue(data);
     });
@@ -174,5 +142,16 @@ function initSensorFormEvents(sensorsForm) {
     });
     socket.on('HTS:BME280:PRESSURE', function (data) {
         // sensorsForm.getItem('HTS:BME280:PRESSURE').setValue(data);
+    });
+}
+
+function initHydroSlaveEvents(sensorsForm) {
+    loadJSONAsync(config.slave.url, function (json) {
+        sensorsForm.getItem('SLAVE:EC:RESULT').setValue(json["WATER_EC"]);
+        sensorsForm.getItem('SLAVE:PH:RESULT').setValue(json["WATER_PH"]);
+        sensorsForm.getItem('SLAVE:TEMP:RESULT').setValue(json["WATER_TEMP"]);
+        sensorsForm.getItem('SLAVE:TEMP:CELSIUS').setValue(json["AIR_TEMP"]);
+        sensorsForm.getItem('SLAVE:HUMIDITY:RH').setValue(json["AIR_HUMIDITY"]);
+        setTimeout(function() { initHydroSlaveEvents(sensorsForm) }, 0);
     });
 }

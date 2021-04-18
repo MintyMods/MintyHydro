@@ -66,6 +66,7 @@ function initComponents() {
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
+        initHydroSlaveEvents(sensorsForm);
         initMainContent('sensors');
     });
     loadJSONAsync('/json/settings.json', function (json) {

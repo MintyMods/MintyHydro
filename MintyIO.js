@@ -54,6 +54,7 @@ const MintyIO = function (board, serial) {
     this.sendAtlasI2C = function (channel, command, callback) {
         log('I2C[' + lookupAtlasChannel(channel) + '] Sending Command: ' + lookupAtlasCommand(command));
         this.board.io.i2cWrite(channel, command);
+        log("Command sent, waiting..." + this.board);
         this.board.wait(config.ATLAS_DELAY, function () {
             this.board.i2cReadOnce(channel, config.ATLAS_BYTES_TO_READ, function (bytes) {
                 let data = (String.fromCharCode(...bytes.filter(Boolean)));

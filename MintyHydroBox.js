@@ -25,16 +25,23 @@ const MintyHydroBox = {
     this.io = mintyIO;
   },
 
+  sendAtlasStatusCode: function () {
+    debugger;
+    code = ['O,?'.charCodeAt(0),'O,?'.charCodeAt(1),'O,?'.charCodeAt(2)];
+    this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, code, function (value) {
+      log("Atlas Stats : ", value);
+      debugger;
+      this.sendConfirmation('ATLAS', JSON.stringify(value), 'fal fa-cog fa-eye');
+    }.bind(this));
+  },
+
   poll: function () {
     log("----<<<< Minty Hydro Main Cycle Ping >>>>---- ");
+    // this.sendAtlasStatusCode();
 
     if (!this.defaultsLoaded) {
       this.loadDefaults();
     }
-
-
-    //sendAtlasStatusCode(['O,?'.charCodeAt(0),'O,?'.charCodeAt(1),'O,?'.charCodeAt(2)]);
-    // sendAtlasStatusCode(['O,?']);
 
     if (pollAllSensors) {
       this.pollAtlasSensors();
@@ -512,12 +519,7 @@ const MintyHydroBox = {
     this.defaultsLoaded = true;
   },
 
-  // sendAtlasStatusCode: function (code) {
-  //   this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, code, function (value) {
-  //     log("Atlas Stats : ", value);
-  //     this.sendConfirmation('ATLAS', JSON.stringify(value), 'fal fa-cog fa-eye');
-  //   }.bind(this));
-  // },
+
 
 
   pollAtlasSensors: function () {

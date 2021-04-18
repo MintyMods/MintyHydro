@@ -117,33 +117,10 @@
             }
          ]
       },
-      {
-         "title": "Water Temperature:",
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "padding": 10,
-               "cols": [
-                  {
-                     "type": "input",
-                     "label": "Water Temp (℃) :",
-                     "icon": "fal fa-oil-temp",
-                     "placeholder": "Water Temp ℃",
-                     "labelPosition": "left",
-                     "labelWidth": "150px",
-                     "value": "0.00",
-                     "readOnly": "false",
-                     "id": "I2C:TEMP:RESULT",
-                     "gravity": false,
-                     "width": "250"
-                  }
-               ]
-            }
-         ]
-      },
+
       {
          "title": "Water pH: (potential of Hydrogen)",
-         "css": "dhx_layout-cell--bordered dhx_layout-cell",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
             {
                "padding": 10,
@@ -176,15 +153,15 @@
          ]
       },
       {
-         "title": "Water EC: ppm (parts per million) ",
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "title": "Water EC: (Electrical Conductivity)",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell",
          "rows": [
             {
                "padding": 10,
                "rows": [
                   {
                      "type": "input",
-                     "label": "E.C. (ppm) :",
+                     "label": "E.C. :",
                      "icon": "fal fa-heart-rate",
                      "placeholder": "E.C.",
                      "labelPosition": "left",
@@ -208,6 +185,30 @@
                ]
             }
          ]
-      }
+      },
+      {
+         "title": "Water Temperature:",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "padding": 10,
+               "cols": [
+                  {
+                     "type": "input",
+                     "label": "Water Temp (℃) :",
+                     "icon": "fal fa-oil-temp",
+                     "placeholder": "Water Temp ℃",
+                     "labelPosition": "left",
+                     "labelWidth": "150px",
+                     "value": "0.00",
+                     "readOnly": "false",
+                     "id": "I2C:TEMP:RESULT",
+                     "gravity": false,
+                     "width": "250"
+                  }
+               ]
+            }
+         ]
+      }      
    ]
 }

@@ -173,6 +173,6 @@ function initSensorFormEvents(sensorsForm) {
         sensorsForm.getItem('HTS:BME280:HUMIDITY:RH').setValue(data);
     });
     socket.on('HTS:BME280:PRESSURE', function (data) {
-        sensorsForm.getItem('HTS:BME280:PRESSURE').setValue(data);
+        // sensorsForm.getItem('HTS:BME280:PRESSURE').setValue(data);
     });
 }

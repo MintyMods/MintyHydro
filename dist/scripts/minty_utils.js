@@ -1,6 +1,7 @@
 
 function isCompact() {
-    return window.innerWidth < 1000
+   // return window.innerWidth < 800
+   return false;
 }
 
 function warn(msg, payload) {

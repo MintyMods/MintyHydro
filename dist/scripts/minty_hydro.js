@@ -2,7 +2,6 @@ let socket = null;
 let layout = null;
 let sidebar = null;
 let toolbar = null;
-
 let pumpsForm = null;
 let controlsForm = null;
 let sensorsForm = null;
@@ -15,7 +14,6 @@ let calibrateLayout = null;
 let schedulerHeader = null;
 let schedulerHeaderCompact = null;
 let runningPump = null;
-
 let chartWaterPh = null;
 let chartWaterEc = null;
 let chartWaterTemp = null;
@@ -29,19 +27,7 @@ function resetSchedulerLayoutConfig() {
 
 function initMintyHydro() {
     initSocket();
-    registerEventHandlers();
     initComponents();
-    setTimeout(initCharts, 360);
-    // resetSchedulerLayoutConfig();
-    // showUnderDevelopmentAlt();
-}
-
-function initCharts() {
-    envLayout.paint();
-}
-
-function registerEventHandlers() {
-    // @todo
 }
 
 function initSocket() {
@@ -57,7 +43,9 @@ function initSocket() {
         notificationsForm.data.add(msg, 0);
         toolbar.data.getItem("notifications")['count']=count++;
         toolbar.paint();
-        showServerConfirmation(msg);
+        if (msg.type == 'standard') {
+            showServerConfirmation(msg);
+        }
     });
     socket.on('disconnect', function (e) {
         showMissingMintyHydroHubError();
@@ -67,17 +55,6 @@ function initSocket() {
     });
 }
 
-function handleResize() {
-    resetSchedulerLayoutConfig();
-}
-
-const getResCapacity = function () {
-    if (settingsForm) {
-        return settingsForm.getItem('CONTROL:GROW_AREA:RES_CAPACITY').getValue();
-    }
-    return config.defaults.res.capacity;
-}
-
 function initComponents() {
 
     loadJSONAsync('/json/layouts/main.json', function (json) {
@@ -85,7 +62,12 @@ function initComponents() {
         initSideBar();
         initToolBar();
     });
-
+    
+    loadJSONAsync('/json/sensors.json', function (json) {
+        sensorsForm = new dhx.Form(null, json);
+        initSensorFormEvents(sensorsForm);
+        initMainContent('sensors');
+    });
     loadJSONAsync('/json/settings.json', function (json) {
         settingsForm = new dhx.Form(null, json);
         initFormEvents(settingsForm, 'SETTING');
@@ -101,10 +83,6 @@ function initComponents() {
     loadJSONAsync('/json/controls.json', function (json) {
         controlsForm = new dhx.Form(null, json);
         initFormEvents(controlsForm, 'CONTROL');
-    });
-    loadJSONAsync('/json/sensors.json', function (json) {
-        sensorsForm = new dhx.Form(null, json);
-        initSensorFormEvents(sensorsForm);
     });
     notificationsForm = new dhx.List(null,{
         itemHeight: 50,
@@ -124,40 +102,32 @@ function initComponents() {
         loadJSONAsync('/json/charts/water_ph.json', function (json) {
             chartWaterPh = new dhx.Chart(null, json);
             envLayout.getCell("water_ph_container").attach(chartWaterPh);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT' });
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT', 'duration':'30 mins' });
         });
         loadJSONAsync('/json/charts/water_ec.json', function (json) {
             chartWaterEc = new dhx.Chart(null, json);
             envLayout.getCell("water_ec_container").attach(chartWaterEc);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT' });
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT', 'duration':'30 mins' });
         });
         loadJSONAsync('/json/charts/water_temp.json', function (json) {
             chartWaterTemp = new dhx.Chart(null, json);
             envLayout.getCell("water_temp_container").attach(chartWaterTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT' });
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT', 'duration':'30 mins' });
         });
         loadJSONAsync('/json/charts/air_temp.json', function (json) {
             chartAirTemp = new dhx.Chart(null, json);
             envLayout.getCell("air_temp_container").attach(chartAirTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS' });
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS', 'duration':'30 mins' });
         });
         loadJSONAsync('/json/charts/air_humidity.json', function (json) {
             chartAirHumidity = new dhx.Chart(null, json);
             envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH' });
+            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH', 'duration':'30 mins' });
         });
-        initMainContent('environment');
     })
     initDatabaseEvents();
     initScheduler();
     initNutrientSection();
-}
-
-function stopSchedule() {
-    // @todo stop auto dosing when calibrating
-}
-function startSchedule() {
-    // @todo start auto dosing when calibrating
 }
 
 function runDosingPump(form, command) {
@@ -228,4 +198,15 @@ function initToolBar() {
         }
     });
     layout.cell("toolbar_container").attach(toolbar);
+}
+
+function handleResize() {
+    resetSchedulerLayoutConfig();
+}
+
+const getResCapacity = function () {
+    if (settingsForm) {
+        return settingsForm.getItem('CONTROL:GROW_AREA:RES_CAPACITY').getValue();
+    }
+    return config.defaults.res.capacity;
 }

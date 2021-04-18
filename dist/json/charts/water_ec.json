@@ -13,6 +13,7 @@
     },
     "series": [
         {
+            "id":"I2C:EC:RESULT",
             "value": "value",
             "color": "greenyellow",
             "strokeWidth": 2

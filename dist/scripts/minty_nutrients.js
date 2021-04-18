@@ -3,9 +3,9 @@ let nutrientLayout = null;
 function initNutrientSection() {
     nutrientLayout = new dhx.Layout(null, {
         rows: [
-            { height: "300px", gravity: false, padding: 5, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : Base Nutrients x Total Capacity" },
-            { height: "300px", gravity: false, padding: 5, headerIcon: "fal fa-balance-scale", id: "base_nutrients_container", header: "Base Nutrients @ ml amount per litre" },
-            { height: "100px", gravity: false, padding: 5, id: "dosing_adjust_container" }
+            { height: "430px", gravity: false, padding: 5, headerIcon: "fal fa-seedling", id: "dosing_amount_container", header: "Nutrient Dose : Base Nutrients x Total Capacity" },
+            { height: "50px", gravity: false, padding: 5, id: "dosing_adjust_container" },
+            { height: "430px", gravity: false, padding: 5, headerIcon: "fal fa-balance-scale", id: "base_nutrients_container", header: "Base Nutrients @ ml amount per litre" }
         ]
     });
 
@@ -31,8 +31,8 @@ function initNutrientSection() {
 
     initFormEvents(nutrientAdjustForm, 'NUTRIENT');
     nutrientLayout.cell("dosing_adjust_container").attach(nutrientAdjustForm);
-    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
     nutrientLayout.cell("dosing_amount_container").attach(dosingGrid);
+    nutrientLayout.cell("base_nutrients_container").attach(baseNutrientsGrid);
 
     const updateDosingGrid = function () {
         let base = baseNutrientsGrid.data.serialize();

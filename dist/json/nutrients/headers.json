@@ -46,6 +46,7 @@
       "id": "4",
       "width": 60,
       "type": "number",
+      "tooltip": "Transition",
       "header": [
          {
             "text": "4",
@@ -57,6 +58,7 @@
       "id": "5",
       "width": 60,
       "type": "number",
+      "tooltip": "Early Bloom",
       "header": [
          {
             "text": "5",
@@ -68,6 +70,7 @@
       "id": "6",
       "width": 60,
       "type": "number",
+      "tooltip": "Mid Bloom",
       "header": [
          {
             "text": "6",
@@ -79,6 +82,7 @@
       "id": "7",
       "width": 60,
       "type": "number",
+      "tooltip": "Late Bloom",
       "header": [
          {
             "text": "7",
@@ -90,6 +94,7 @@
       "id": "8",
       "width": 60,
       "type": "number",
+      "tooltip": "Ripen",
       "header": [
          {
             "text": "8",
@@ -101,6 +106,7 @@
       "id": "9",
       "width": 60,
       "type": "number",
+      "tooltip": "Flush",
       "header": [
          {
             "text": "9",

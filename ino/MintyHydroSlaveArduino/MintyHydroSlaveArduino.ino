@@ -39,15 +39,13 @@ void send_response() {
   const size_t CAPACITY = JSON_OBJECT_SIZE(6);
   StaticJsonDocument<CAPACITY> doc;
   JsonObject json = doc.to<JsonObject>();
-  request_reading_with_temp_comp(ph);
-  delay(256);
-  request_reading_with_temp_comp(ec);
-  delay(256);
+
   request_reading(temp);
-  delay(1000);
-  json["WATER_EC"] = receive_reading(ec);
-  json["WATER_PH"] = receive_reading(ph);
   json["WATER_TEMP"] = receive_reading(temp);
+  request_reading_with_temp_comp(ph);
+  json["WATER_PH"] = receive_reading(ph);
+  request_reading_with_temp_comp(ec);
+  json["WATER_EC"] = receive_reading(ec);
   json["AIR_TEMP"] = TH02.ReadTemperature();
   json["AIR_HUMIDITY"] = TH02.ReadHumidity();
   json["MILLIS"] =  millis();
@@ -56,6 +54,7 @@ void send_response() {
 
 void request_reading(Ezo_board &Sensor) {
    Sensor.send_read_cmd();
+   delay(1000);
 }
 
 void request_reading_with_temp_comp(Ezo_board &Sensor) {
@@ -63,7 +62,8 @@ void request_reading_with_temp_comp(Ezo_board &Sensor) {
     Sensor.send_read_with_temp_comp(temp.get_last_received_reading());
   } else {
     Sensor.send_read_cmd();
-  }  
+  }
+  delay(1000);
 }
 
 bool valid_temp_reading() {

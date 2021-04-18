@@ -1,20 +1,21 @@
-#include <PersWiFiManager.h>
 #include <ArduinoJson.h>
+#include <PersWiFiManager.h>  // https://github.com/r-downing/PersWiFiManage
+#include <EasySSDP.h>         // http://ryandowning.net/EasySSDP/
+#include <SPIFFSReadServer.h> // http://ryandowning.net/SPIFFSReadServer/
 #include <ESP8266WiFi.h>
 #include <ESP8266SSDP.h>
 #include <ESP8266WebServer.h>
 #include <DNSServer.h>
 #include <FS.h>
-#include <EasySSDP.h> // http://ryandowning.net/EasySSDP/
+#include <ESP8266mDNS.h>
 
 #define DEVICE_NAME "MintyHydroSlave"
+#define LED 2
 
 const char *metaRefreshStr = "<script>window.location='/wifi.htm'</script><a href='/'>redirecting...</a>";
 ESP8266WebServer server(80);
 DNSServer dnsServer;
 PersWiFiManager persWM(server, dnsServer);
-
-#define LED 2
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -26,26 +27,13 @@ void setup() {
   register_SSDP_handler();
   SPIFFS.begin();
   Serial.begin(115200);
+  WiFi.hostname(DEVICE_NAME);
   persWM.setApCredentials(DEVICE_NAME);
   persWM.setConnectNonBlock(true);
-//  persWM.resetSettings();
   persWM.begin();
+  MDNS.begin(DEVICE_NAME);
   server.begin();
   flash_led();
-}
-
-void flash_led() {
-  led_on();
-  delay(1000);
-  led_off();
-}
-
-void led_off() {
-  digitalWrite(LED, HIGH);
-}
-
-void led_on() {
-  digitalWrite(LED, LOW);
 }
 
 void loop() {
@@ -69,12 +57,12 @@ void register_API_handler() {
     led_on();
     String message = "Timed Out...";
     Serial.println("READ");
-    for (int i = 0; i < 30; i++) {    
+    for (int i = 0; i < 50; i++) {    
       if (Serial.available()) {
         message = Serial.readString();  
         break;
       }
-      delay(250);
+      delay(100);
     }
     server.send(200, "application/json", message);
     led_off();
@@ -108,6 +96,20 @@ void register_SSDP_handler() { //SSDP makes device visible on windows network
   SSDP.setURL("/");
   SSDP.setDeviceType("upnp:rootdevice");
   SSDP.begin();
+}
+
+void flash_led() {
+  led_on();
+  delay(1000);
+  led_off();
+}
+
+void led_off() {
+  digitalWrite(LED, HIGH);
+}
+
+void led_on() {
+  digitalWrite(LED, LOW);
 }
 
 bool handleFileRead(String path) {

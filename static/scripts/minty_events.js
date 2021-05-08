@@ -155,3 +155,32 @@ function initHydroSlaveEvents(sensorsForm) {
         setTimeout(function() { initHydroSlaveEvents(sensorsForm) }, 2000);
     });
 }
+
+function initSensorFormRanges(form) {
+    initRange(form, 'SLAVE:EC:RESULT', HighLightRange.WATER_EC);
+    initRange(form, 'SLAVE:PH:RESULT', HighLightRange.WATER_PH);
+    initRange(form, 'SLAVE:TEMP:RESULT', HighLightRange.WATER_TEMP);
+    initRange(form, 'SLAVE:TEMP:CELSIUS',  HighLightRange.AIR_TEMP);
+    initRange(form, 'SLAVE:HUMIDITY:RH',  HighLightRange.AIR_HUMIDITY);
+    initRange(form, 'I2C:EC:RESULT', HighLightRange.WATER_EC);
+    initRange(form, 'I2C:PH:RESULT', HighLightRange.WATER_PH);
+    initRange(form, 'I2C:TEMP:RESULT', HighLightRange.WATER_TEMP);
+    initRange(form, 'HTS:BME280:TEMP:CELSIUS', HighLightRange.AIR_TEMP);
+    initRange(form, 'HTS:BME280:HUMIDITY:RH',  HighLightRange.AIR_HUMIDITY);
+}
+
+function initRange(form, id, range) {
+    showRange(form.getItem(id), range);
+}
+
+function showRange(control, range) {
+    control.events.on("change", function(range, value) {
+        if (value <= range.min || value >= range.max) {
+            control.config.css='out-of-range';
+        } else if (value >= range.rec.min &&  value <= range.rec.max) { //@todo
+            control.config.css='in-range';
+        } else {
+            control.config.css='';
+        }
+    }.bind(this, range));
+}

@@ -62,11 +62,15 @@ function initComponents() {
         initSideBar();
         initToolBar();
     });
-    
+    loadJSONAsync('/json/controls.json', function (json) {
+        controlsForm = new dhx.Form(null, json);
+        initFormEvents(controlsForm, 'CONTROL');
+    });    
     loadJSONAsync('/json/sensors.json', function (json) {
         sensorsForm = new dhx.Form(null, json);
         initSensorFormEvents(sensorsForm);
         initHydroSlaveEvents(sensorsForm);
+        initSensorFormRanges(sensorsForm);
         initMainContent('sensors');
     });
     loadJSONAsync('/json/settings.json', function (json) {
@@ -81,10 +85,7 @@ function initComponents() {
         pumpsForm = new dhx.Form(null, json);
         initPumpFormEvents(pumpsForm);
     });
-    loadJSONAsync('/json/controls.json', function (json) {
-        controlsForm = new dhx.Form(null, json);
-        initFormEvents(controlsForm, 'CONTROL');
-    });
+
     notificationsForm = new dhx.List(null,{
         itemHeight: 50,
         template: function(msg) {
@@ -98,34 +99,34 @@ function initComponents() {
     schedulerHeader = loadJSON('/json/scheduler/header.json');
     schedulerHeaderCompact = loadJSON('/json/scheduler/header_compact.json');
 
-    loadJSONAsync('/json/layouts/environment.json', function (json) {
-        envLayout = new dhx.Layout(null, json);
-        loadJSONAsync('/json/charts/water_ph.json', function (json) {
-            chartWaterPh = new dhx.Chart(null, json);
-            envLayout.getCell("water_ph_container").attach(chartWaterPh);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT', 'duration':'30 mins' });
-        });
-        loadJSONAsync('/json/charts/water_ec.json', function (json) {
-            chartWaterEc = new dhx.Chart(null, json);
-            envLayout.getCell("water_ec_container").attach(chartWaterEc);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT', 'duration':'30 mins' });
-        });
-        loadJSONAsync('/json/charts/water_temp.json', function (json) {
-            chartWaterTemp = new dhx.Chart(null, json);
-            envLayout.getCell("water_temp_container").attach(chartWaterTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT', 'duration':'30 mins' });
-        });
-        loadJSONAsync('/json/charts/air_temp.json', function (json) {
-            chartAirTemp = new dhx.Chart(null, json);
-            envLayout.getCell("air_temp_container").attach(chartAirTemp);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS', 'duration':'30 mins' });
-        });
-        loadJSONAsync('/json/charts/air_humidity.json', function (json) {
-            chartAirHumidity = new dhx.Chart(null, json);
-            envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
-            socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH', 'duration':'30 mins' });
-        });
-    })
+    // loadJSONAsync('/json/layouts/environment.json', function (json) {
+    //     envLayout = new dhx.Layout(null, json);
+    //     loadJSONAsync('/json/charts/water_ph.json', function (json) {
+    //         chartWaterPh = new dhx.Chart(null, json);
+    //         envLayout.getCell("water_ph_container").attach(chartWaterPh);
+    //         socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:PH:RESULT', 'duration':'-1 hour' });
+    //     });
+    //     loadJSONAsync('/json/charts/water_ec.json', function (json) {
+    //         chartWaterEc = new dhx.Chart(null, json);
+    //         envLayout.getCell("water_ec_container").attach(chartWaterEc);
+    //         socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:EC:RESULT', 'duration':'-1 hour' });
+    //     });
+    //     loadJSONAsync('/json/charts/water_temp.json', function (json) {
+    //         chartWaterTemp = new dhx.Chart(null, json);
+    //         envLayout.getCell("water_temp_container").attach(chartWaterTemp);
+    //         socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'I2C:TEMP:RESULT', 'duration':'-1 hour' });
+    //     });
+    //     loadJSONAsync('/json/charts/air_temp.json', function (json) {
+    //         chartAirTemp = new dhx.Chart(null, json);
+    //         envLayout.getCell("air_temp_container").attach(chartAirTemp);
+    //         socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:TEMP:CELSIUS', 'duration':'-1 hour' });
+    //     });
+    //     loadJSONAsync('/json/charts/air_humidity.json', function (json) {
+    //         chartAirHumidity = new dhx.Chart(null, json);
+    //         envLayout.getCell("air_humidity_container").attach(chartAirHumidity);
+    //         socket.emit("DB:COMMAND", { 'command': 'SPARKLINE', 'table': 'READING', 'sensor': 'HTS:BME280:HUMIDITY:RH', 'duration':'-1 hour' });
+    //     });
+    // })
     initDatabaseEvents();
     initScheduler();
     initNutrientSection();

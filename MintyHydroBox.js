@@ -4,7 +4,7 @@ const MintyDataSource = require('./MintyDataSource');
 const MintyArduino = require('./MintyArduino');
 
 let pollingTimer = null;
-let pollAllSensors = true;
+let pollAllSensors = false;
 
 const MintyHydroBox = {
   io: null,
@@ -26,31 +26,22 @@ const MintyHydroBox = {
   },
 
   sendAtlasStatusCode: function () {
-    debugger;
     code = ['O,?'.charCodeAt(0),'O,?'.charCodeAt(1),'O,?'.charCodeAt(2)];
     this.io.sendAtlasI2C(config.I2C_ATLAS_EC_SENSOR_ADDR, code, function (value) {
       log("Atlas Stats : ", value);
-      debugger;
       this.sendConfirmation('ATLAS', JSON.stringify(value), 'fal fa-cog fa-eye');
     }.bind(this));
   },
 
   poll: function () {
     log("----<<<< Minty Hydro Main Cycle Ping >>>>---- ");
-    // this.sendAtlasStatusCode();
-
-    if (!this.defaultsLoaded) {
-      this.loadDefaults();
-    }
-
-    if (pollAllSensors) {
+    // this.processControlDefaults();
+    if (this.io.board.io.isReady) {
       this.pollAtlasSensors();
     } else {
       warn("Skipping Sensor Polling");
     }
-
     this.processAutomation();
-
     this.runAfterTimeout();
   },
 
@@ -66,6 +57,18 @@ const MintyHydroBox = {
         }
       }
       log('Rows ', rows);
+    }.bind(this));
+  },
+
+  processControlDefaults: function() {
+    MintyDataSource.getActiveControlStates(function (rows) {
+      for (var key in rows) {
+        let row = rows[key];
+        if (row.value == 'ON' || row.value == 'OFF') {
+          row.suppress = true;
+          this.processResourceState(row);
+        }
+      }
     }.bind(this));
   },
 
@@ -169,7 +172,6 @@ const MintyHydroBox = {
         break;
     }
     this.sendBackGroundConfirmation('Background Process', 'Processed:' + opts.name, 'fal fa-cog fa-spin', opts);
-    
   },
 
   processWaterPump: function (opts) {
@@ -514,14 +516,7 @@ const MintyHydroBox = {
   setPollAllSensors: function (poll) {
     pollAllSensors = poll;
   },
-
-  loadDefaults: function () {
-    this.defaultsLoaded = true;
-  },
-
-
-
-
+ 
   pollAtlasSensors: function () {
     this.io.sendAtlasI2C(config.I2C_ATLAS_PH_SENSOR_ADDR, config.ATLAS_READ_CHARCODE, function (value) {
       this.reading.ph = value;

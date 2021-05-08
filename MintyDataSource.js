@@ -59,10 +59,10 @@ const MintyDataSource = {
     },
 
     getSparklineData: function (opts, callback) {
-        let sql = "SELECT sensor, value, datesetup FROM MH_READING" +
+        let sql = "SELECT value, datesetup as id FROM MH_READING" +
             " WHERE strftime('%Y-%m-%d %H:%M:%S', datesetup)" +
-            " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now', opts.duration, 'localtime'))" +
-            " AND sensor = '" + opts.sensor + "'";
+            " >= strftime('%Y-%m-%d %H:%M:%S', datetime('now', '" + opts.duration + "', 'localtime'))" + 
+            " AND sensor = '" + opts.sensor + "' LIMIT 50";
         db.serialize(function () {
             db.all(sql, function (err, rows) {
                 if (err == null) {

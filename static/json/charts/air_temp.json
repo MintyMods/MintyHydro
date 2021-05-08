@@ -13,8 +13,6 @@
     },
     "series": [
         {
-            "id":"HTS:BME280:TEMP:CELSIUS",
-            "value": "value",
             "color": "blue",
             "strokeWidth": 2
         }

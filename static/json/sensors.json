@@ -40,26 +40,6 @@
                "id": "SLAVE:HUMIDITY:RH"
             }                  
          ]
-      },
-      {
-         "title": "Water Temperature:",
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "cols": [
-            {
-               "type": "input",
-               "icon": "fal fa-oil-temp",
-               "placeholder": "Water Temp ℃",
-               "value": "0.00",
-               "id": "I2C:TEMP:RESULT"
-            },
-            {
-               "type": "input",
-               "icon": "fal fa-oil-temp",
-               "placeholder": "Water Temp ℃",
-               "value": "0.00",
-               "id": "SLAVE:TEMP:RESULT"
-            }                  
-         ]
       },      
       {
          "title": "Water pH: (potential of Hydrogen)",
@@ -154,6 +134,26 @@
                   }
                ]
             }
+         ]
+      },
+      {
+         "title": "Water Temperature:",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "cols": [
+            {
+               "type": "input",
+               "icon": "fal fa-oil-temp",
+               "placeholder": "Water Temp ℃",
+               "value": "0.00",
+               "id": "I2C:TEMP:RESULT"
+            },
+            {
+               "type": "input",
+               "icon": "fal fa-oil-temp",
+               "placeholder": "Water Temp ℃",
+               "value": "0.00",
+               "id": "SLAVE:TEMP:RESULT"
+            }                  
          ]
       }
    ]

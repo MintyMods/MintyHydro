@@ -13,7 +13,6 @@
     },
     "series": [
         {
-            "value": "value",
             "color": "pink",
             "strokeWidth": 2
         }

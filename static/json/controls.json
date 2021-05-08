@@ -3,88 +3,14 @@
    "padding": 10,
    "rows": [
       {
-         "title": "Camera:",
+         "title": "De-Humidifier:",
          "align": "around",
-         "css": "dhx_layout-cell--bordered",
          "padding": 10,
-         "rows": [
-            {
-               "title": "Camera:",
-               "type": "radioGroup",
-               "name": "CONTROL:CAMERA:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "On",
-                        "labelPosition": "left",
-                        "value": "ON"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }                     
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "Grow Light:",
-         "align": "around",
-         "css": "dhx_layout-cell--bordered",
-         "padding": 10,
-         "rows": [
-            {
-               "title": "Grow Light:",
-               "type": "radioGroup",
-               "name": "CONTROL:LIGHT:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [                     
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "On",
-                        "labelPosition": "left",
-                        "value": "ON"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }                     
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "Recirculating Pump:",
-         "align": "around",
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "padding": 10,
          "rows": [
             {
                "type": "radioGroup",
-               "name": "CONTROL:WATER_PUMP:STATE",
+               "name": "CONTROL:DEHUMIDIFIER:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -100,7 +26,156 @@
                         "label": "On",
                         "labelPosition": "left",
                         "value": "ON"
-                     },                     {
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }                     
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "Intake Fan : Tent",
+         "align": "around",
+         "padding": 10,
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:AIR_INTAKE_FAN:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Low",
+                        "labelPosition": "left",
+                        "value": "LOW"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "High",
+                        "labelPosition": "left",
+                        "value": "HIGH"
+                     },{
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "6\" Canopy Fan : Tent",
+         "align": "around",
+         "padding": 10,
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:AIR_EXTRACT_FAN:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }                     
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "12\" Top Oscillating Fan : Tent",
+         "align": "around",
+         "padding": 10,
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:AIR_MOVEMENT_FAN_A:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     },{
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "12\" Bottom Oscillating Fan : Tent",
+         "align": "around",
+         "padding": 10,
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:AIR_MOVEMENT_FAN_B:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     },{
                         "type": "radioButton",
                         "label": "Auto",
                         "labelPosition": "left",
@@ -145,16 +220,17 @@
                }
             }
          ]
-      },
+      },      
       {
-         "title": "Extract Fan:",
+         "title": "USB HUB : ",
          "align": "around",
+         "css": "dhx_layout-cell--bordered",
          "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
             {
+               "title": "USB HUB:",
                "type": "radioGroup",
-               "name": "CONTROL:AIR_EXTRACT_FAN:STATE",
+               "name": "CONTROL:CAMERA:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
@@ -183,172 +259,19 @@
          ]
       },
       {
-         "title": "Intake Fan:",
+         "title": "8\" Extract : Loft",
          "align": "around",
+         "css": "dhx_layout-cell--bordered",
          "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
          "rows": [
             {
+               "title": "Loft Extract:",
                "type": "radioGroup",
-               "name": "CONTROL:AIR_INTAKE_FAN:STATE",
+               "name": "CONTROL:LIGHT:STATE",
                "options": {
                   "padding": "10px",
                   "align": "center",
-                  "cols": [
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "Low",
-                        "labelPosition": "left",
-                        "value": "LOW"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "High",
-                        "labelPosition": "left",
-                        "value": "HIGH"
-                     },{
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "Oscillating Fan A:",
-         "align": "around",
-         "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "type": "radioGroup",
-               "name": "CONTROL:AIR_MOVEMENT_FAN_A:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [
-                     
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "On",
-                        "labelPosition": "left",
-                        "value": "ON"
-                     },{
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "Oscillating Fan B:",
-         "align": "around",
-         "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "type": "radioGroup",
-               "name": "CONTROL:AIR_MOVEMENT_FAN_B:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "On",
-                        "labelPosition": "left",
-                        "value": "ON"
-                     },{
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "Humidifier:",
-         "align": "around",
-         "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "type": "radioGroup",
-               "name": "CONTROL:HUMIDIFIER:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [
-                     {
-                        "type": "radioButton",
-                        "label": "Off",
-                        "labelPosition": "left",
-                        "value": "OFF"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "Low",
-                        "labelPosition": "left",
-                        "value": "LOW"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "High",
-                        "labelPosition": "left",
-                        "value": "HIGH"
-                     },
-                     {
-                        "type": "radioButton",
-                        "label": "Auto",
-                        "labelPosition": "left",
-                        "value": "AUTO"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "title": "De-Humidifier:",
-         "align": "around",
-         "padding": 10,
-         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
-         "rows": [
-            {
-               "type": "radioGroup",
-               "name": "CONTROL:DEHUMIDIFIER:STATE",
-               "options": {
-                  "padding": "10px",
-                  "align": "center",
-                  "cols": [
+                  "cols": [                     
                      {
                         "type": "radioButton",
                         "label": "Off",
@@ -373,7 +296,42 @@
          ]
       },
       {
-         "title": "Air Heater:",
+         "title": "Recirculating Pump: (unused)",
+         "align": "around",
+         "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "padding": 10,
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:WATER_PUMP:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "On",
+                        "labelPosition": "left",
+                        "value": "ON"
+                     },                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "Air Heater: (unused)",
          "align": "around",
          "padding": 10,
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
@@ -409,7 +367,7 @@
          ]
       },
       {
-         "title": "Water Heater:",
+         "title": "Water Heater : (unused)",
          "align": "around",
          "padding": 10,
          "css": "dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
@@ -439,6 +397,48 @@
                         "labelPosition": "left",
                         "value": "AUTO"
                      }                     
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "title": "Humidifier : (unused)",
+         "align": "around",
+         "padding": 10,
+         "css": "display_none dhx_layout-cell--bordered dhx_layout-cell--no-border_top",
+         "rows": [
+            {
+               "type": "radioGroup",
+               "name": "CONTROL:HUMIDIFIER:STATE",
+               "options": {
+                  "padding": "10px",
+                  "align": "center",
+                  "cols": [
+                     {
+                        "type": "radioButton",
+                        "label": "Off",
+                        "labelPosition": "left",
+                        "value": "OFF"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Low",
+                        "labelPosition": "left",
+                        "value": "LOW"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "High",
+                        "labelPosition": "left",
+                        "value": "HIGH"
+                     },
+                     {
+                        "type": "radioButton",
+                        "label": "Auto",
+                        "labelPosition": "left",
+                        "value": "AUTO"
+                     }
                   ]
                }
             }
